@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import api from '../services/api'
 import Material from '../components/Material'
@@ -21,6 +22,7 @@ export default function MaterialsList() {
     return (
         <div>
             <h2>Lista de Materiais</h2>
+            <Link to="/new-materials">Adicionar material</Link >
             {materials?.map((material) => 
                 <Material 
                 id={material.id} 
