@@ -1,6 +1,6 @@
-export default function Material({id, name, quantity}){
+export default function Material({name, quantity}){
     return(
-        <li key={id}>
+        <li>
             <h3>{quantity}x {name}</h3>
         </li>
     )

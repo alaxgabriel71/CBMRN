@@ -22,10 +22,10 @@ export default function MaterialsList() {
     return (
         <div>
             <h2>Lista de Materiais</h2>
-            <Link to="/new-materials">Adicionar material</Link >
+            <Link to="/new-materials">Adicionar materiais</Link >
             {materials?.map((material) => 
                 <Material 
-                id={material.id} 
+                key={material._id}
                 name={material.name} 
                 quantity={material.quantity} 
                 />
