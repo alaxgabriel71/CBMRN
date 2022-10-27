@@ -25,6 +25,7 @@ export default function MaterialsList() {
             {materials?.map((material, i) => 
                 <Material 
                 key={material._id}
+                id={material._id}
                 name={material.name} 
                 quantity={material.quantity}
                 />
