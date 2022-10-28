@@ -1,15 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-import Modal from '../components/modals/Modal'
+import api from '../services/api'
+// import Modal from '../components/modals/Modal'
 
 export default function Militarylist(){
-    const [show, setShow] = useState(false);
+    // const [show, setShow] = useState(false);
+    const [military, setMilitary] = useState([]);
+
+    useEffect(() => {
+        api.get('/military')
+            .then( ({data}) => {
+                setMilitary(data.military)
+            })
+            .catch( err => {
+                console.error("error: " + err)
+            })
+    }, [])
+
+    console.log(military)
     
     return(
         <div>
             <h2>Militares</h2>
-            <button onClick={() => setShow(true)}>Editar</button>
-            <Modal onClose={() => setShow(false)} show={show}/>
+            {military?.map(mil => 
+                <h3 key={mil._id}>{mil.name}</h3>
+            )}
         </div>
     )
 }

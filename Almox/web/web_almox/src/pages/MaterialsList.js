@@ -13,7 +13,7 @@ export default function MaterialsList() {
                 setMaterials(data.materials)
             })
             .catch((err) => {
-                console.log("deu erro: " + err)
+                console.log("error: " + err)
             });
     }, [])
     console.log(materials)

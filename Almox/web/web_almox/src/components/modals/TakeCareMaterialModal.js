@@ -1,22 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import styles from './TakeCareMaterialModal.module.css'
+import api from '../../services/api'
 
 export default function TakeCareMaterialModal({show, onClose, materialId, materialName, materialQuantity}){
-    const options = [
+    /* const options = [
         {value: '', text: "-- Selecione um militar --"},
         {value: "Militar 1", text: "Militar 1"},
         {value: "Militar 2", text: "Militar 2"},
-    ]
+    ] */
     
     const [takeCareQuantity, setTakeCareQuantity] = useState(1)
-    const [military, setMilitary] = useState(options[0].value)
+    const [options, setOptions] = useState([])
+    const [military, setMilitary] = useState()
+
+    useEffect(() => {
+        api.get('/military')
+            .then(({data}) => {
+                setOptions(data.military)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }, []);
 
     if(!show) return null
 
     const takeCareMaterial = (event) => {
         event.preventDefault()
-        console.log(`${takeCareQuantity}x ${materialName} foram cautelados por ${military}`)
+        console.log(`${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military}`)
     }
 
     return (
@@ -43,9 +55,10 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
                         <label>
                             Cautelado por: 
                             <select name="military" value={military} onChange={event => setMilitary(event.target.value)} required>
-                                {options.map((option) => (
-                                    <option key={option.value} value={option.value}>{option.text}</option>
-                                ))}
+                                <option value="" key="0">-- Selecione um militar --</option>
+                                {options?.map(option => 
+                                    <option key={option._id} value={option.name}>{option.name}</option>
+                                )}
                             </select>
                         </label>
                     </form>
