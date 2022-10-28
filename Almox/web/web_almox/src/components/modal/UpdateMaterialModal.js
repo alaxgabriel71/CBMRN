@@ -1,53 +1,58 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import styles from './UpdateMaterialModal.module.css'
 import api from '../../services/api'
 
 export default function UpdateMaterialModal({ show, onClose, materialName, materialId, materialQuantity }) {
+    const [newName, setNewName] = useState(materialName);
+    const [newQuantity, setNewQuantity] = useState(materialQuantity);
+    const [materials, setMaterials] = useState([])
+
+    useEffect(() => {
+        api.get("/materials")
+            .then(({ data }) => {
+                setMaterials(data.materials)
+            })
+            .catch((err) => {
+                console.log("deu erro: " + err)
+            });
+    }, [])
+    // console.log(materials)
+
     if (!show) {
         return null
     }
 
-    const [newName, setNewName] = useState();
-    const [newQuantity, setNewQuantity] = useState();
-
     
-    /* function updateMaterial(){
-        // event.preventDefault();
+    const updateMaterial = (event) => {
         var materialExists = false;
-        var currentQuantity = 0;
-        var currentMaterialID = '';
-        var idToUpdate = '';
-        const updatedMaterial = {
+        var currentMaterial = {
+            id: '',
+            name: '',
+            quantity: 0
+        } 
+            
+        var updatedMaterial = {
             name: '',
             quantity: ''
         };
-   
 
         materials.forEach(material => {
             if(material.name.toLowerCase() === newName.toLowerCase()) {
                 materialExists = true
-                currentQuantity = material.quantity
-                currentMaterialID = material._id
-                console.log(`Quantidade atual = ${currentQuantity}; Nova quantidade = ${newQuantity}`)
+                currentMaterial.id = material._id
+                currentMaterial.name = material.name
             }
         })
 
-        
-        if(materialExists){
-            const totalQuantity = Number(currentQuantity) + Number(newQuantity)
-            console.log(totalQuantity)
-            updatedMaterial = {
-                name: newName,
-                quantity: totalQuantity
-            }
-            idToUpdate = currentMaterialID
-        } else {
-            updatedMaterial = {
-                name: newName,
-                quantity: Number(newQuantity)
-            }
-            idToUpdate = materialId
+        if(materialExists && (materialId !== currentMaterial.id)){
+            event.preventDefault();
+            return console.log(`Não foi possível concluir a edição, pois o material ${newName} já existe na lista de materiais.`)
+        } 
+
+        updatedMaterial = {
+            name: newName,
+            quantity: newQuantity
         }
 
         api.put(`/materials/${materialId}`, updatedMaterial)
@@ -55,7 +60,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
                 console.log("Update status: "+response.status)
             })
             .catch(err => console.error(err))
-    } */
+    }
     
     return (
         <div className={styles.modal}>
@@ -70,7 +75,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
                             <input 
                                 type="number" 
                                 min="1" 
-                                defayltValue={materialQuantity}
+                                defaultValue={materialQuantity}
                                 value={newQuantity}
                                 onChange={event => setNewQuantity(event.target.value)}
                                 required
