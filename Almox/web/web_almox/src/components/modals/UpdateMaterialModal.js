@@ -22,8 +22,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
     if (!show) {
         return null
     }
-
-    
+ 
     const updateMaterial = (event) => {
         var materialExists = false;
         var currentMaterial = {

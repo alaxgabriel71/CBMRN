@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import Modal from '../components/modal/Modal'
+import Modal from '../components/modals/Modal'
 
 export default function Militarylist(){
     const [show, setShow] = useState(false);
