@@ -6,7 +6,7 @@ module.exports = {
         try{
             const materials = await Material.find();
             return response.status(200).json({ materials });
-        } catch (err){
+        } catch(err){
             response.status(500).json({ error: err.message });
         }
     },
@@ -41,7 +41,8 @@ module.exports = {
     async update(request, response){
         const { name, quantity } = request.body;
 
-        if(!name && !quantity) return response.status(400).json({ error: "New name or new quantity of material not informed!" });
+        if(!name && !quantity) 
+            return response.status(400).json({ error: "New name or new quantity of material not informed!" });
         
         if(name) response.material.name = name;
         if(quantity) response.material.quantity = quantity;
