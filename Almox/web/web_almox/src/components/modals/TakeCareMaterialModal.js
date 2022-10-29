@@ -27,7 +27,23 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
     if(!show) return null
 
     const takeCareMaterial = (event) => {
-        event.preventDefault()
+        // event.preventDefault()
+
+        const finalQuantity = Number(materialQuantity) - Number(takeCareQuantity);
+
+        if(finalQuantity === 0){
+            api.delete(`/materials/${materialId}`)
+                .then(response => console.log(response))
+                .catch(err => console.error(err) )
+        }
+        else {
+            api.put(`/materials/${materialId}`, {
+                name: materialName,
+                quantity: finalQuantity
+            })
+                .then(response => console.log(response))
+                .catch(err => console.error(err))
+        }
         console.log(`${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military}`)
     }
 
