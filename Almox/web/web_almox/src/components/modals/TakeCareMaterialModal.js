@@ -4,15 +4,14 @@ import styles from './TakeCareMaterialModal.module.css'
 import api from '../../services/api'
 
 export default function TakeCareMaterialModal({show, onClose, materialId, materialName, materialQuantity}){
-    /* const options = [
-        {value: '', text: "-- Selecione um militar --"},
-        {value: "Militar 1", text: "Militar 1"},
-        {value: "Militar 2", text: "Militar 2"},
-    ] */
+    
+    var dateObject = new Date()
+    const today = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+dateObject.getDate()
     
     const [takeCareQuantity, setTakeCareQuantity] = useState(1)
     const [options, setOptions] = useState([])
     const [military, setMilitary] = useState()
+    const [date, setDate] = useState(today)
 
     useEffect(() => {
         api.get('/military')
@@ -26,14 +25,14 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
 
     if(!show) return null
 
-    const takeCareMaterial = (event) => {
-        // event.preventDefault()
-
+    const takeCareMaterial = (e) => {
+        e.preventDefault()
         const finalQuantity = Number(materialQuantity) - Number(takeCareQuantity);
+        const takeCareDate = date.slice(8,10)+'/'+date.slice(5,7)+'/'+date.slice(0,4)
 
         if(finalQuantity === 0){
             api.delete(`/materials/${materialId}`)
-                .then(response => console.log(response))
+                .then(response => console.log(response.status))
                 .catch(err => console.error(err) )
         }
         else {
@@ -41,10 +40,10 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
                 name: materialName,
                 quantity: finalQuantity
             })
-                .then(response => console.log(response))
+                .then(response => console.log(response.status))
                 .catch(err => console.error(err))
         }
-        console.log(`${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military}`)
+        console.log(`${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military} em ${takeCareDate}`)
     }
 
     return (
@@ -76,6 +75,10 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
                                     <option key={option._id} value={option.name}>{option.name}</option>
                                 )}
                             </select>
+                        </label>
+                        <label>
+                            Em:
+                            <input type="date" defaultValue={date} max={today} onChange={(e) => setDate(e.target.value)}/>
                         </label>
                     </form>
                 </div>
