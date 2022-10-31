@@ -34,6 +34,7 @@ export default function NewMaterialsForm() {
     function insertNewMaterial(event){
         event.preventDefault();
         var materialExists = false;
+        var currentName = ''
         var currentQuantity = 0;
         var currentMaterialID = '';
         var description = '';
@@ -42,6 +43,7 @@ export default function NewMaterialsForm() {
         materials.forEach(material => {
             if(material.name.toLowerCase() === newName.toLowerCase()) {
                 materialExists = true
+                currentName = material.name
                 currentQuantity = material.quantity
                 currentMaterialID = material._id
                 console.log(`Quantidade atual = ${currentQuantity}; Nova quantidade = ${newQuantity}`)
@@ -53,7 +55,7 @@ export default function NewMaterialsForm() {
             const totalQuantity = Number(currentQuantity) + Number(newQuantity)
             console.log(totalQuantity)
             const newMaterial = {
-                name: newName,
+                name: currentName,
                 quantity: totalQuantity
             }
             api.put(`/materials/${currentMaterialID}`, newMaterial)
@@ -76,7 +78,7 @@ export default function NewMaterialsForm() {
         }
         else {
             const newMaterial = {
-                name: newName,
+                name: newName[0].toUpperCase() + newName.substring(1).toLowerCase(),
                 quantity: newQuantity
             }
             api.post('/materials', newMaterial)
@@ -91,6 +93,7 @@ export default function NewMaterialsForm() {
                 })
                     .then(response => {
                         console.log(response.status)
+                        setStatus('Sucesso')
                         setMessage(true)
                     })
                     .catch(err => {

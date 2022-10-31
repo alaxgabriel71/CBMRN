@@ -47,6 +47,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
         materials.forEach(material => {
             if(material.name.toLowerCase() === newName.toLowerCase()) {
                 materialExists = true
+                currentMaterial.name = material.name
                 currentMaterial.id = material._id
                 currentMaterial.name = material.name
             }
@@ -58,7 +59,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
         } 
 
         updatedMaterial = {
-            name: newName,
+            name: newName[0].toUpperCase() + newName.substring(1).toLowerCase(),
             quantity: newQuantity
         }
 

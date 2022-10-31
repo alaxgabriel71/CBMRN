@@ -15,7 +15,7 @@ export default function StatusMessage({message, status}){
             const timer = setTimeout(() => {
                 setVisible(false)
                 window.location.reload()
-            }, 2000)
+            }, 1500)
     
             return () => clearTimeout(timer)
         }
