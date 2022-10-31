@@ -8,6 +8,10 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
     const [newQuantity, setNewQuantity] = useState(materialQuantity);
     const [materials, setMaterials] = useState([])
 
+    var dateObject = new Date()
+    const today = dateObject.getDate()+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
+    const date = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+dateObject.getDate()
+
     useEffect(() => {
         api.get("/materials")
             .then(({ data }) => {
@@ -24,6 +28,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
     }
  
     const updateMaterial = (event) => {
+        event.preventDefault()        
         var materialExists = false;
         var currentMaterial = {
             id: '',
@@ -57,6 +62,15 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
         api.put(`/materials/${materialId}`, updatedMaterial)
             .then((response) => {
                 console.log("Update status: "+response.status)
+
+                const description = `${materialQuantity}x ${materialName} foi(foram) atualizado(s) para ${newQuantity}x ${newName} em ${today}`
+                api.post('/movements', {
+                    operation: "Atualização",
+                    date,
+                    description
+                })
+                    .then(response => console.log(response.status))
+                    .catch(err => console.error(err))
             })
             .catch(err => console.error(err))
     }

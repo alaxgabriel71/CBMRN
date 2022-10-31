@@ -1,18 +1,29 @@
 import styles from './DeleteMaterialModal.module.css'
 import api from '../../services/api'
 
-export default function DeleteMaterialModal({show, onClose, materialName, materialId}){
-    
+export default function DeleteMaterialModal({show, onClose, materialId, materialName, materialQuantity}){
+    var dateObject = new Date()
+    const today = dateObject.getDate()+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
+
     if(!show) return null
 
     const deleteMaterial = () => {
         console.log("tentando deletar...")
         api.delete(`/materials/${materialId}`)
-            .then(response => {
-                console.log(response.status)
+            .then(response => console.log(response.status))
+            .then(() => {
+                const description = `${materialQuantity}x ${materialName} foi(foram) excluídos do almoxarifado em ${today}`
+                
+                api.post('/movements', {
+                    operation: "Exclusão",
+                    date: today,
+                    description 
+                })
+                    .then(response => response.status)
+                    .catch(err => console.error(err))
             })
             .catch(err => console.error(err))
-        window.location.reload(false)
+        // window.location.reload(false)
     }
     
     return(

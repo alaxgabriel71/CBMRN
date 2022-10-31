@@ -7,6 +7,10 @@ export default function NewMaterialsForm() {
     const [newName, setNewName] = useState();
     const [newQuantity, setNewQuantity] = useState();
 
+    var dateObject = new Date()
+    const today = dateObject.getDate()+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
+    const date = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+dateObject.getDate()
+
     function cancelSubmit(event) {
         event.preventDefault();
         setNewName('')
@@ -27,6 +31,7 @@ export default function NewMaterialsForm() {
         var materialExists = false;
         var currentQuantity = 0;
         var currentMaterialID = '';
+        var description = '';
    
 
         materials.forEach(material => {
@@ -49,6 +54,14 @@ export default function NewMaterialsForm() {
             api.put(`/materials/${currentMaterialID}`, newMaterial)
                 .then((response) => {
                     console.log("Update status: "+response.status)
+                    description = `A quantidade do material: ${newName} passou de ${currentQuantity} para ${newQuantity} em ${today}`
+                    api.post('/movements', {
+                        operation: "Atualização",
+                        date,
+                        description
+                    })
+                        .then(response => console.log(response.status))
+                        .catch(err => console.error(err))
                 })
                 .catch(err => console.error(err))
         }
@@ -60,6 +73,15 @@ export default function NewMaterialsForm() {
             api.post('/materials', newMaterial)
             .then(response => {
                 console.log("STATUS: "+response.status)
+
+                description = `${newQuantity}x ${newName} foi(foram) adicionados ao almoxarifado em ${today}`
+                api.post('/movements', {
+                    operation: "Recebimento",
+                    date,
+                    description
+                })
+                    .then(response => console.log(response.status))
+                    .catch(err => console.error(err))
             })
             .catch(err => {
                 console.log("error: "+err)

@@ -51,6 +51,7 @@ export default function Material({name, quantity, id}){
                 onClose={() => setShowDelete(false)}
                 show={showDelete}
                 materialName={name}
+                materialQuantity={quantity}
                 materialId={id}
             />
             <TakeCareMaterialModal

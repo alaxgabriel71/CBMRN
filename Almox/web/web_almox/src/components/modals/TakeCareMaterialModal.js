@@ -33,6 +33,17 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
         if(finalQuantity === 0){
             api.delete(`/materials/${materialId}`)
                 .then(response => console.log(response.status))
+                .then(() => {
+                    const description = `${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military} em ${takeCareDate}`
+                    
+                    api.post('/movements', {
+                        operation: "Cautela",
+                        date: today,
+                        description 
+                    })
+                        .then(response => response.status)
+                        .catch(err => console.error(err))
+                })
                 .catch(err => console.error(err) )
         }
         else {
@@ -41,9 +52,18 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
                 quantity: finalQuantity
             })
                 .then(response => console.log(response.status))
+                .then(() => {
+                    const description = `${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military} em ${takeCareDate}`
+                    
+                    api.post('/movements', {
+                        operation: "Cautela",
+                        date: today,
+                        description 
+                    })
+                })
                 .catch(err => console.error(err))
         }
-        console.log(`${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military} em ${takeCareDate}`)
+        // console.log(`${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military} em ${takeCareDate}`)
     }
 
     return (
