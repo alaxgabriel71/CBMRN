@@ -22,6 +22,7 @@ export default function MaterialsList() {
         <div>
             <h2>Lista de Materiais</h2>
             <Link to="/new-materials">Adicionar materiais</Link >
+            <Link to="/return-materials">Devolver materiais</Link >
             {materials?.map((material, i) => 
                 <Material 
                 key={material._id}

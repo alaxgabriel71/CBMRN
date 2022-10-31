@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import styles from './TakeCareMaterialModal.module.css'
 import api from '../../services/api'
+import StatusMessage from '../StatusMessage'
 
 export default function TakeCareMaterialModal({show, onClose, materialId, materialName, materialQuantity}){
     
@@ -12,6 +13,8 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
     const [options, setOptions] = useState([])
     const [military, setMilitary] = useState()
     const [date, setDate] = useState(today)
+    const [message, setMessage] = useState(false)
+    const [status, setStatus] = useState()
 
     useEffect(() => {
         api.get('/military')
@@ -41,10 +44,22 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
                         date: today,
                         description 
                     })
-                        .then(response => response.status)
-                        .catch(err => console.error(err))
+                        .then(response => {
+                            console.log(response.status)
+                            setStatus('Sucesso')
+                            setMessage(true)
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            setStatus('Falha')
+                            setMessage(true)
+                        })
                 })
-                .catch(err => console.error(err) )
+                .catch(err => {
+                    console.error(err)
+                    setStatus('Falha')
+                    setMessage(true)
+                })
         }
         else {
             api.put(`/materials/${materialId}`, {
@@ -60,8 +75,19 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
                         date: today,
                         description 
                     })
+                        .then(response => {
+                            console.log(response.status)
+                            setStatus('Sucesso')
+                            setMessage(true)
+                        })
+                        .catch(err => console.error(err))
                 })
-                .catch(err => console.error(err))
+                .catch(err => {
+                    console.error(err)
+                    setStatus('Sucesso')
+                    setMessage(true)
+                })
+            setMessage(false)
         }
         // console.log(`${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military} em ${takeCareDate}`)
     }
@@ -70,6 +96,7 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
         <div className={styles.modal}>
             <div className={styles.modal_content}>
                 <div className={styles.modal_header}>
+                    <StatusMessage message={message} status={status} />
                     <h4 className={styles.modal_title}>Cautelar Material</h4>
                 </div>
                 <div className={styles.modal_body}>
@@ -104,7 +131,7 @@ export default function TakeCareMaterialModal({show, onClose, materialId, materi
                 </div>
                 <div className={styles.modal_footer}>
                     <button onClick={onClose} className={styles.button}>Cancelar</button>
-                    <button type="submit" form="take-care-form">Confirmar cautela de material</button>
+                    <button type="submit" form="take-care-form" disabled={!military || !takeCareQuantity}>Confirmar cautela de material</button>
                 </div>
             </div>
         </div>
