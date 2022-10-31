@@ -4,7 +4,7 @@ const Material = require("../models/Material");
 module.exports = {
     async index(request, response){
         try{
-            const materials = await Material.find();
+            const materials = await Material.find().sort({name: 1});
             return response.status(200).json({ materials });
         } catch(err){
             response.status(500).json({ error: err.message });

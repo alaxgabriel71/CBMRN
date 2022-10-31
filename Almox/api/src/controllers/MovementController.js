@@ -4,7 +4,7 @@ const { v4: uuid } = require('uuid');
 module.exports = {
     async show(request, response){
         try{
-            const movements = await Movement.find();
+            const movements = await Movement.find().sort({_id: -1});
             return response.status(200).json({ movements });
         } catch(err){
             return response.status(500).json({ error: err.message });

@@ -4,7 +4,7 @@ const { v4: uuid } = require('uuid');
 module.exports = {
     async show(request, response){
         try{
-            const military = await Military.find();
+            const military = await Military.find().sort({name: -1});
             return response.status(200).json({ military });
         } catch(err){
             response.status(500).json({ error: err.message });
