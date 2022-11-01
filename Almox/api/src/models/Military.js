@@ -8,6 +8,10 @@ const militarySchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
+    },
+    rank: {
+        type: Number,
+        default: 0
     }
 })
 

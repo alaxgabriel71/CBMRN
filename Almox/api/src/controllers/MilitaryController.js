@@ -12,7 +12,7 @@ module.exports = {
     },
     
     async store(request, response){
-        const { name } = request.body;
+        const { name, rank } = request.body;
         
         if(!name) 
             return response.status(400).json({ error: "Military name not informed." });
@@ -32,13 +32,14 @@ module.exports = {
     },
 
     async update(request, response){
-        const { name } = request.body;
+        const { name, rank } = request.body;
         
         if(!name) 
             return response.status(400).json({ error: "Military new name not informed." });
         else
             response.military.name = name;
 
+        response.military.rank = rank;
         try{
             await response.military.save();
             return response.status(200).json({ message: "Military updated successfuly" });
