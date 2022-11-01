@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import api from '../services/api'
+import Military from '../components/Military'
+
 // import Modal from '../components/modals/Modal'
 
 export default function Militarylist(){
@@ -22,8 +25,9 @@ export default function Militarylist(){
     return(
         <div>
             <h2>Militares</h2>
+            <Link to='/new-military'>Cadastrar Militares</Link>
             {military?.map(mil => 
-                <h3 key={mil._id}>{mil.name}</h3>
+                <Military key={mil._id} name={mil.name} rank={mil.rank}/>
             )}
         </div>
     )

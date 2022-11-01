@@ -9,6 +9,7 @@ import MovimentHistory from './pages/MovimentHistory'
 import MilitaryList from './pages/MilitaryList'
 import NewMaterials from './pages/NewMaterials'
 import ReturnMaterials from './pages/ReturnMaterials'
+import NewMilitary from './pages/NewMilitary'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/military-list" element={<MilitaryList />}/>
         <Route path="/new-materials" element={<NewMaterials />}/>
         <Route path="/return-materials" element={<ReturnMaterials />}/>
+        <Route path="/new-military" element={<NewMilitary />}/>
       </Routes>
     </>
   );
