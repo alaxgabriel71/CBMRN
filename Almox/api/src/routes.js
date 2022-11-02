@@ -22,5 +22,6 @@ routes.delete("/military/:id", MilitaryMiddleware.validateId, MilitaryController
 
 routes.get("/movements", MovementController.show);
 routes.post("/movements", MovementController.store);
+routes.delete("/movements", MovementController.removeAll);
 
 module.exports = routes;

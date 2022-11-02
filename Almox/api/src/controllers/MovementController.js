@@ -30,5 +30,14 @@ module.exports = {
         } catch(err){
             return response.status(500).json({ error: err.message });
         }
+    },
+
+    async removeAll(request, response){
+        try{
+            await Movement.deleteMany({});
+            return response.status(200).json({ message: 'Movements history deleted successfully.' });
+        } catch(err) {
+            return response.status(500).json({ error: err.message });
+        }
     }
 };
