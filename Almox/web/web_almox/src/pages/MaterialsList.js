@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom'
 import api from '../services/api'
 import Material from '../components/Material'
 import Loading from '../components/Loading'
+import Pagination from '../components/Pagination'
 
 export default function MaterialsList() {
     const [materials, setMaterials] = useState([])
     const [loading, setLoading] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [materialsPerPage] = useState(5)
 
     useEffect(() => {
         setLoading(true)
@@ -18,9 +21,17 @@ export default function MaterialsList() {
             .catch((err) => {
                 console.log("error: " + err)
             });
-        // setLoading(false)
+        setLoading(false)
     }, [])
-    console.log(materials)
+    // console.log(materials)
+
+    const indexOfLastMaterial = currentPage * materialsPerPage
+    const indexOfFirstMaterial = indexOfLastMaterial - materialsPerPage
+    const currentMaterials = materials.slice(indexOfFirstMaterial, indexOfLastMaterial)
+    
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
 
     return (
         <div>
@@ -28,7 +39,8 @@ export default function MaterialsList() {
             <Link to="/new-materials">Adicionar materiais</Link >
             <Link to="/return-materials">Devolver materiais</Link >
             <Loading loading={loading} />
-            {materials?.map((material, i) => 
+            <Pagination itemsPerPage={materialsPerPage} totalItems={materials.length} paginate={paginate}/>
+            {currentMaterials?.map((material, i) => 
                 <Material 
                 key={material._id}
                 id={material._id}
