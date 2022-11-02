@@ -18,7 +18,7 @@ export default function MaterialsList() {
             .catch((err) => {
                 console.log("error: " + err)
             });
-        setLoading(false)
+        // setLoading(false)
     }, [])
     console.log(materials)
 
