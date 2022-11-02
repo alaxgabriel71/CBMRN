@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 export default function StatusMessage({message, status}){
     const [visible, setVisible] = useState(true)
     
-    console.log(`Visible = ${visible}; message = ${message}`)
+    // console.log(`Visible = ${visible}; message = ${message}`)
     
     useEffect(() => { 
         if(!message){
@@ -14,7 +14,7 @@ export default function StatusMessage({message, status}){
 
             const timer = setTimeout(() => {
                 setVisible(false)
-                window.location.reload()
+                window.location.reload(false)
             }, 1500)
     
             return () => clearTimeout(timer)
