@@ -11,6 +11,10 @@ export default function MaterialsList() {
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [materialsPerPage] = useState(5)
+    const [search, setSearch] = useState('')
+    // const [items, setItems] = useState([])
+
+    const items = []
 
     useEffect(() => {
         setLoading(true)
@@ -24,11 +28,19 @@ export default function MaterialsList() {
         setLoading(false)
     }, [])
     // console.log(materials)
-
+    
     const indexOfLastMaterial = currentPage * materialsPerPage
     const indexOfFirstMaterial = indexOfLastMaterial - materialsPerPage
     const currentMaterials = materials.slice(indexOfFirstMaterial, indexOfLastMaterial)
     
+    const lowerCaseSearch = search.toLowerCase()
+    currentMaterials?.forEach(material => {
+        if (material.name.toLowerCase().includes(lowerCaseSearch)) {
+            items.push(material)
+        }
+    })
+
+
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber)
     }
@@ -39,13 +51,17 @@ export default function MaterialsList() {
             <Link to="/new-materials">Adicionar materiais</Link >
             <Link to="/return-materials">Devolver materiais</Link >
             <Loading loading={loading} />
-            <Pagination itemsPerPage={materialsPerPage} totalItems={materials.length} paginate={paginate}/>
-            {currentMaterials?.map((material, i) => 
-                <Material 
-                key={material._id}
-                id={material._id}
-                name={material.name} 
-                quantity={material.quantity}
+            <Pagination itemsPerPage={materialsPerPage} totalItems={materials.length} paginate={paginate} />
+            <label>
+                Busca
+                <input placeholder="Buscar nessa página..." type="text" value={search} onChange={e => setSearch(e.target.value)} />
+            </label>
+            {items?.map((material, i) =>
+                <Material
+                    key={material._id}
+                    id={material._id}
+                    name={material.name}
+                    quantity={material.quantity}
                 />
             )}
         </div>
