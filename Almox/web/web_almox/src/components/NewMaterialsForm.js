@@ -11,8 +11,9 @@ export default function NewMaterialsForm() {
     const [status, setStatus] = useState();
     
     var dateObject = new Date()
-    const today = dateObject.getDate()+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
-    const date = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+dateObject.getDate()
+    const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
+    // const today = formatedDate+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
+    const date = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+formatedDate
 
     function cancelSubmit(event) {
         event.preventDefault();
@@ -61,7 +62,7 @@ export default function NewMaterialsForm() {
             api.put(`/materials/${currentMaterialID}`, newMaterial)
                 .then((response) => {
                     console.log("Update status: "+response.status)
-                    description = `A quantidade do material: ${newName} passou de ${currentQuantity} para ${newQuantity} em ${today}`
+                    description = `A quantidade do material: ${newName} passou de ${currentQuantity} para ${newQuantity}`
                     api.post('/movements', {
                         operation: "Atualização",
                         date,
@@ -85,7 +86,7 @@ export default function NewMaterialsForm() {
             .then(response => {
                 console.log("STATUS: "+response.status)
 
-                description = `${newQuantity}x ${newName} foi(foram) adicionados ao almoxarifado em ${today}`
+                description = `${newQuantity}x ${newName} foi(foram) adicionados ao almoxarifado`
                 api.post('/movements', {
                     operation: "Recebimento",
                     date,

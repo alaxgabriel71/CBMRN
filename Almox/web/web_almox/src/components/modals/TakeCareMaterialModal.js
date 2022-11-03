@@ -7,7 +7,8 @@ import StatusMessage from '../StatusMessage'
 export default function TakeCareMaterialModal({show, onClose, materialId, materialName, materialQuantity}){
     
     var dateObject = new Date()
-    const today = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+dateObject.getDate()
+    const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
+    const today = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+formatedDate
     
     const [takeCareQuantity, setTakeCareQuantity] = useState(1)
     const [options, setOptions] = useState([])

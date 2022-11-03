@@ -12,8 +12,9 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
     const [status, setStatus] = useState();
 
     var dateObject = new Date()
-    const today = dateObject.getDate()+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
-    const date = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+dateObject.getDate()
+    const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
+    const today = formatedDate+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
+    const date = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+formatedDate
 
     useEffect(() => {
         api.get("/materials")

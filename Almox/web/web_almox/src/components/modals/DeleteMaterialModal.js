@@ -6,7 +6,9 @@ import StatusMessage from '../StatusMessage'
 
 export default function DeleteMaterialModal({show, onClose, materialId, materialName, materialQuantity}){
     var dateObject = new Date()
-    const today = dateObject.getDate()+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
+    const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
+    // const today = formatedDate+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
+    const date = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
 
     const [message, setMessage] = useState(false)
     const [status, setStatus] = useState()
@@ -18,11 +20,11 @@ export default function DeleteMaterialModal({show, onClose, materialId, material
         api.delete(`/materials/${materialId}`)
             .then(response => console.log(response.status))
             .then(() => {
-                const description = `${materialQuantity}x ${materialName} foi(foram) excluídos do almoxarifado em ${today}`
+                const description = `${materialQuantity}x ${materialName} foi(foram) excluídos do almoxarifado.`
                 
                 api.post('/movements', {
                     operation: "Exclusão",
-                    date: today,
+                    date,
                     description 
                 })
                     .then(response => {
