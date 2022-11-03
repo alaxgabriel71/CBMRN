@@ -10,12 +10,12 @@ export default function MovimentHistory() {
     var dateObject = new Date()
     const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
     const today = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
-    
+
     const [movements, setMovements] = useState([])
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
-    const [movesPerPage] = useState(5)
+    const [movesPerPage, setMovesPerPage] = useState(10)
     const [search, setSearch] = useState('')
     const [operation, setOperation] = useState('')
     const [date, setDate] = useState('')
@@ -44,21 +44,21 @@ export default function MovimentHistory() {
         }
     })
 
-    if(!operation){
+    if (!operation) {
         operationFilteredItems = searchFilteredItems
     } else {
         searchFilteredItems.forEach(move => {
-            if(move.operation.includes(operation)){
+            if (move.operation.includes(operation)) {
                 operationFilteredItems.push(move)
             }
         })
     }
 
-    if(!date){
+    if (!date) {
         dateFilteredItems = operationFilteredItems
     } else {
         operationFilteredItems.forEach(move => {
-            if(move.date.includes(date)){
+            if (move.date.includes(date)) {
                 dateFilteredItems.push(move)
             }
         })
@@ -73,8 +73,6 @@ export default function MovimentHistory() {
     return (
         <div>
             <h2>Histórico de Movimentações</h2>
-            <button onClick={() => setShow(true)}>Apagar Histórico</button>
-            <Pagination itemsPerPage={movesPerPage} totalItems={movements.length} paginate={paginate} />
             <fieldset>
                 <legend>Filtros</legend>
                 <label>
@@ -93,9 +91,23 @@ export default function MovimentHistory() {
                 </label>
                 <label>
                     Data da movimentação
-                    <input type="date" defaultValue={date} max={today} onChange={e => setDate(e.target.value)}/>
+                    <input type="date" defaultValue={date} max={today} onChange={e => setDate(e.target.value)} />
                 </label>
             </fieldset>
+            <div>
+                <label>
+                    Itens por página:
+                    <select value={movesPerPage} onChange={e => setMovesPerPage(e.target.value)}>
+                        <option value="">-- Itens por página --</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </label>
+                <Pagination itemsPerPage={movesPerPage} totalItems={movements.length} paginate={paginate} />
+            </div>
+            <button onClick={() => setShow(true)}>Apagar Histórico</button>
             <Loading loading={loading} />
             {filteredItems?.map(movement => (
                 // <h4 key={movement._id}>{movement.description}</h4>
