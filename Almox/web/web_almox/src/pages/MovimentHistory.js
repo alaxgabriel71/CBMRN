@@ -109,10 +109,11 @@ export default function MovimentHistory() {
             </div>
             <button onClick={() => setShow(true)}>Apagar Histórico</button>
             <Loading loading={loading} />
-            {filteredItems?.map(movement => (
-                // <h4 key={movement._id}>{movement.description}</h4>
-                <Movement key={movement._id} operation={movement.operation} description={movement.description} date={movement.date} />
-            ))}
+            <ul>
+                {filteredItems?.map(movement => (
+                    <Movement key={movement._id} operation={movement.operation} description={movement.description} date={movement.date} />
+                ))}
+            </ul>
             <DeleteHistoryModal show={show} onClose={() => setShow(false)} />
         </div>
     )

@@ -50,7 +50,10 @@ export default function MaterialsList() {
             <h2>Lista de Materiais</h2>
             <Link to="/new-materials">Adicionar materiais</Link >
             <Link to="/return-materials">Devolver materiais</Link >
-            <Loading loading={loading} />
+            <label>
+                Busca
+                <input placeholder="Buscar nessa página..." type="text" value={search} onChange={e => setSearch(e.target.value)} />
+            </label>
             <div>
                 <label>
                     Itens por página:
@@ -64,18 +67,17 @@ export default function MaterialsList() {
                 </label>
                 <Pagination itemsPerPage={materialsPerPage} totalItems={materials.length} paginate={paginate} />
             </div>
-            <label>
-                Busca
-                <input placeholder="Buscar nessa página..." type="text" value={search} onChange={e => setSearch(e.target.value)} />
-            </label>
-            {items?.map((material, i) =>
-                <Material
-                    key={material._id}
-                    id={material._id}
-                    name={material.name}
-                    quantity={material.quantity}
-                />
-            )}
+            <Loading loading={loading} />
+            <ul>
+                {items?.map((material, i) =>
+                    <Material
+                        key={material._id}
+                        id={material._id}
+                        name={material.name}
+                        quantity={material.quantity}
+                    />
+                )}
+            </ul>
         </div>
     )
 }

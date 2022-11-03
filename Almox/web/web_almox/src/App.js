@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 
 import './App.css';
 import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 import Home from './pages/Home'
 import MaterialsList from './pages/MaterialsList'
 import MovimentHistory from './pages/MovimentHistory'
@@ -24,6 +25,7 @@ function App() {
         <Route path="/return-materials" element={<ReturnMaterials />}/>
         <Route path="/new-military" element={<NewMilitary />}/>
       </Routes>
+      <Footer />
     </>
   );
 }

@@ -9,7 +9,7 @@ export default function Military({ id, name, rank, handleClick }) {
         setRank(milRank + 1)
         api.put(`/military/${id}`, {
             name: name,
-            rank: rank+1
+            rank: rank + 1
         })
             .then(response => {
                 console.log(response.status)
@@ -22,7 +22,7 @@ export default function Military({ id, name, rank, handleClick }) {
         setRank(milRank - 1)
         api.put(`/military/${id}`, {
             name: name,
-            rank: rank-1
+            rank: rank - 1
         })
             .then(response => {
                 console.log(response.status)
@@ -31,7 +31,7 @@ export default function Military({ id, name, rank, handleClick }) {
             .catch(err => console.error(err))
     }
 
-    const handleClickDel =  () => {
+    const handleClickDel = () => {
         api.delete(`/military/${id}`)
             .then(response => {
                 console.log(response.status)
@@ -41,16 +41,18 @@ export default function Military({ id, name, rank, handleClick }) {
     }
 
     return (
-        <li onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}> 
-            <h3>{name}</h3>
+        <ul>
+            <li onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
+                <h3>{name}</h3>
 
-            {isHovering && (
-                <div>
-                    <button onClick={handleClickInc}>^</button>
-                    <button onClick={handleClickDec}>v</button>
-                    <button onClick={handleClickDel}>x</button>
-                </div>
-            )}
-        </li>
+                {isHovering && (
+                    <div>
+                        <button onClick={handleClickInc}>^</button>
+                        <button onClick={handleClickDec}>v</button>
+                        <button onClick={handleClickDel}>x</button>
+                    </div>
+                )}
+            </li>
+        </ul>
     )
 }
