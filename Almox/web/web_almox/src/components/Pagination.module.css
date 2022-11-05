@@ -1,0 +1,8 @@
+.Navbar_item {
+    display: flex;
+    justify-content: center;
+}
+
+.Item {
+    margin: 0 .5rem;
+}

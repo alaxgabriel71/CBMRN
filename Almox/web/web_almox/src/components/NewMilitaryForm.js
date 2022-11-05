@@ -64,7 +64,7 @@ export default function NewMilitaryList(){
                     </label>
                     <label>
                         QRA:
-                        <input type="text" value={qra} onChange={e => setQra(e.target.value)} required/>
+                        <input type="text" placeholder="Escreva o nome de guerra..." value={qra} onChange={e => setQra(e.target.value)} required/>
                     </label>
                     <button type="submit" disabled={!rank || !qra}>Cadastrar Militar</button>
                 </fieldset>

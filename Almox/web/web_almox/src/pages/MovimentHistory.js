@@ -71,7 +71,7 @@ export default function MovimentHistory() {
     }
 
     return (
-        <div>
+        <article>
             <h2>Histórico de Movimentações</h2>
             <fieldset>
                 <legend>Filtros</legend>
@@ -115,6 +115,6 @@ export default function MovimentHistory() {
                 ))}
             </ul>
             <DeleteHistoryModal show={show} onClose={() => setShow(false)} />
-        </div>
+        </article>
     )
 }

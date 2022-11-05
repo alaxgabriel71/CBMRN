@@ -4,10 +4,10 @@ import NewMaterialsForm from '../components/NewMaterialsForm'
 
 export default function NewMaterials() {
     return (
-        <div>
+        <article>
             <h2>Adicionar Materiais</h2>
             <NewMaterialsForm />
             <Link to="/materials-list">Voltar</Link>
-        </div>
+        </article>
     )
 }

@@ -1,3 +1,5 @@
+import styles from './Pagination.module.css'
+
 export default function Pagination({ itemsPerPage, totalItems, paginate}){
     const pageNumbers = []
 
@@ -7,9 +9,9 @@ export default function Pagination({ itemsPerPage, totalItems, paginate}){
 
     return(
         <nav>
-            <ul>
+            <ul className={styles.Navbar_item}>
                 {pageNumbers.map(number => (
-                    <li key={number}>
+                    <li key={number} className={styles.Item}>
                         <button onClick={() => paginate(number)}>{number}</button>
                     </li>
                 ))}

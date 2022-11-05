@@ -1,5 +1,7 @@
 import { useState } from 'react'
+
 import api from '../services/api'
+import styles from './Military.module.css'
 
 export default function Military({ id, name, rank, handleClick }) {
     const [isHovering, setIsHovering] = useState(false)
@@ -41,18 +43,19 @@ export default function Military({ id, name, rank, handleClick }) {
     }
 
     return (
-        <ul>
-            <li onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
-                <h3>{name}</h3>
+        <div className={styles.Item_container} onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
+            <h3 className={styles.Title}>{name}</h3>
 
-                {isHovering && (
-                    <div>
-                        <button onClick={handleClickInc}>^</button>
-                        <button onClick={handleClickDec}>v</button>
-                        <button onClick={handleClickDel}>x</button>
+            {isHovering && (
+                <div className={styles.Options_container}>
+                    <div className={styles.Rank_container}>
+                        <button className={styles.UpButton} onClick={handleClickInc}>^</button>
+                        <button className={styles.DownButton} onClick={handleClickDec}>v</button>
                     </div>
-                )}
-            </li>
-        </ul>
+                    <button className={styles.DeleteButton} onClick={handleClickDel}>x</button>
+                </div>
+            )}
+        </div>
+
     )
 }

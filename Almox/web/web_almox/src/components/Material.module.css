@@ -1,0 +1,39 @@
+.Material_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 2rem;
+    width: 100%;
+}
+
+.Material_container:hover {
+    box-shadow: 2px
+}
+
+.Material_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem;
+}
+
+.Material_item:hover {
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    border-top: .5px solid rgba(0, 0, 0, 0.1);
+    border-left: .5px solid rgba(0, 0, 0, 0.1);
+}
+
+.Title {
+    flex: 2;
+}
+
+.Material_options {
+    flex: 1;
+    display: flex;
+    /* padding: .5rem; */
+    /* margin: 0 10px; */
+    justify-content: space-around;
+    /* align-items: center; */
+    /* background-color: red; */
+    padding-right: 2rem;
+}

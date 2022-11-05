@@ -4,10 +4,10 @@ import ReturnMaterialsForm from '../components/ReturnMaterialsForm'
 
 export default function ReturnMaterials() {
     return (
-        <div>
+        <article>
             <h2>Devolução de Materiais</h2>
             <ReturnMaterialsForm />
             <Link to="/materials-list">Voltar</Link>
-        </div>
+        </article>
     )
 }

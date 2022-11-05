@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import api from '../services/api'
 import Military from '../components/Military'
 import Loading from '../components/Loading'
+import styles from './MilitaryList.module.css'
 
 // import Modal from '../components/modals/Modal'
 
@@ -40,14 +41,18 @@ export default function Militarylist() {
     }
 
     return (
-        <div>
+        <article>
             <h2>Militares</h2>
             <Link to='/new-military'>Cadastrar Militares</Link>
             <Loading loading={loading} />
-            {military?.map(mil =>
-                <Military key={mil._id} id={mil._id} name={mil.name} rank={mil.rank} handleClick={handleClick} />
-            )}
+            <ul className={styles.Military_list}>
+                {military?.map(mil => (
+                    <li key={mil._id}>
+                        <Military key={mil._id} id={mil._id} name={mil.name} rank={mil.rank} handleClick={handleClick} />
+                    </li>
+                ))}
+            </ul>
 
-        </div>
+        </article>
     )
 }
