@@ -12,28 +12,29 @@ import { FloatingLabel, Form } from 'react-bootstrap'
 
 
 
-export default function MaterialsList() {
+export default function MaterialsList() {    
+    console.log(`materials list current page: ${localStorage.getItem('active')}`)
+    
     const [materials, setMaterials] = useState([])
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(localStorage.getItem('active') || 1)
     const [materialsPerPage, setMaterialsPerPage] = useState(localStorage.getItem('itemsPerPage') || 100)
     const [search, setSearch] = useState('')
     // const [items, setItems] = useState([])
-
+    
     const items = []
-
+    
     useEffect(() => {
         setLoading(true)
         api.get("/materials")
-            .then(({ data }) => {
-                setMaterials(data.materials)
-            })
-            .catch((err) => {
-                console.log("error: " + err)
-            });
+        .then(({ data }) => {
+            setMaterials(data.materials)
+        })
+        .catch((err) => {
+            console.log("error: " + err)
+        });
         setLoading(false)
     }, [])
-    // console.log(materials)
 
     const indexOfLastMaterial = currentPage * materialsPerPage
     const indexOfFirstMaterial = indexOfLastMaterial - materialsPerPage

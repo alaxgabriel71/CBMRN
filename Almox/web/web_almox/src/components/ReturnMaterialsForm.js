@@ -131,7 +131,7 @@ export default function ReturnMaterialsForm() {
     }
 
     return (
-        <div>
+        <div className={styles.FormContainer}>
             <StatusMessage message={message} status={status} />
             <form id="new-material-form" method="get" onSubmit={insertNewMaterial}>
                 <fieldset>
