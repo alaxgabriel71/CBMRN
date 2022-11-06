@@ -1,7 +1,7 @@
 @import "../index.css";
 
 .nav-link {
-    /* color: #212529; */
+    color: #212529;
     color: var(--purple);
 }
 
@@ -14,9 +14,14 @@
 }
 
 .nav-tabs .nav-link.active:hover {
-    /* color: #212529; */
+    color: #212529;
     color: var(--purple);
 
+}
+
+.nav-tabs {
+    width: 100%;
+    margin-left: .5rem;
 }
 
 

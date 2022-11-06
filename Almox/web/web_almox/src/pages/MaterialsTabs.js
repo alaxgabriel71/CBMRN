@@ -16,6 +16,8 @@ export default function MaterialsTabs() {
                 activeKey={key}
                 onSelect={(k) => setKey(k)}
                 className="mb-3"
+                fill
+                // justify
             >
                 <Tab eventKey="materials-list" title="Lista de Materiais">
                     <MaterialsList />
