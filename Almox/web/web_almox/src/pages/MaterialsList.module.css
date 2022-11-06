@@ -8,9 +8,14 @@
 .subheader_container {
     display: flex;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: space-between;
     padding: .5rem;
     flex-wrap: wrap;
+}
+
+.floatingLabel {
+    display: flex;
+    justify-content: center;
 }
 
 .Search_container {

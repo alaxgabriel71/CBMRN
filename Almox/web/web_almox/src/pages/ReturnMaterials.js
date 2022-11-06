@@ -7,7 +7,6 @@ export default function ReturnMaterials() {
         <article>
             <h2>Devolução de Materiais</h2>
             <ReturnMaterialsForm />
-            <Link to="/materials-list">Voltar</Link>
         </article>
     )
 }

@@ -41,17 +41,17 @@ export default function Material({ name, quantity, id }) {
                 <p className={styles.Title}>{quantity} | {name}</p>
                 {isHovering && (
                     <div className={styles.Material_options}>
-                        <span data-toggle="popover" data-trigger="hover" title="Cautelar material">
+                        <span className={styles.span_button} data-toggle="popover" data-trigger="hover" title="Cautelar material">
                             <Button className="btn btn-light btn-sm" onClick={() => takeCareMaterial()}>
                                 <FaBoxOpen icon="fa-solid fa-box-open" className={styles.MaterialOptionsIcons} />
                             </Button>
                         </span>
-                        <span data-toggle="popover" data-trigger="hover" title="Editar material">
+                        <span className={styles.span_button} data-toggle="popover" data-trigger="hover" title="Editar material">
                             <Button className="btn btn-light btn-sm" onClick={() => updateMaterial()}>
                                 <FaPen icon="fa-solid fa-pencil" className={styles.MaterialOptionsIcons} />
                             </Button>
                         </span>
-                        <span data-toggle="popover" data-trigger="hover" title="Deletar material" >
+                        <span className={styles.span_button} data-toggle="popover" data-trigger="hover" title="Deletar material" >
                             <Button className="btn btn-light btn-sm" onClick={() => deleteMaterial()}>
                                 <FaTrash icon="fa-solid fa-trash" className={styles.MaterialOptionsIcons} />
                             </Button>
