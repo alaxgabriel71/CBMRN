@@ -16,16 +16,8 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setMate
             })
         }        
         localStorage.setItem('totalPages', `${pageNumbers.length}`)
-
         const defaultCurrentPage = Number(localStorage.getItem('active')) <= Number(localStorage.getItem('totalPages')) ? localStorage.getItem('active') : '1'
         localStorage.setItem(`active`, `${defaultCurrentPage}`)
-
-        console.log(localStorage.getItem(`totalPages`))
-        console.log(localStorage.getItem(`active`))
-        console.log(`----`)
-
-        console.log(defaultCurrentPage)
-        console.log(`----`)
         paginate(defaultCurrentPage)
 
     }
