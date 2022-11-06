@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react'
 import api from '../services/api'
 import StatusMessage from '../components/StatusMessage'
 
+import styles from './ReturnMaterialsForm.module.css'
+import { Button, FloatingLabel, Form } from 'react-bootstrap'
+
 export default function ReturnMaterialsForm() {
     var dateObject = new Date()
     const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
@@ -132,45 +135,65 @@ export default function ReturnMaterialsForm() {
             <StatusMessage message={message} status={status} />
             <form id="new-material-form" method="get" onSubmit={insertNewMaterial}>
                 <fieldset>
-                    <legend>Material a ser devolvido</legend>
-                    <label>
-                        Nome do material -
-                        <input
-                            type="text"
-                            value={newName}
-                            onChange={event => setNewName(event.target.value)}
-                        />
-                    </label>
-                    <label>
-                        Quantidade -
-                        <input
-                            type="number"
-                            min="1"
-                            value={newQuantity}
-                            onChange={event => setNewQuantity(event.target.value)}
-                        />
-                    </label>
-                    <label>
-                        Devolvido por:
-                        <select name="military" value={military} onChange={event => setMilitary(event.target.value)} required>
+                    <h5 className={styles.FieldsetTitle}>Material a ser devolvido</h5>
+                    <FloatingLabel
+                        label="Nome do Material"
+                        className="mb-3"
+                        value={newName}
+                        onChange={event => setNewName(event.target.value)}
+                    >
+                        <Form.Control type="text" />
+                    </FloatingLabel>
+                    <FloatingLabel
+                        label="Quantidade do Material"
+                        className="mb-3"
+                        value={newQuantity}
+                        onChange={event => setNewQuantity(event.target.value)}
+                    >
+                        <Form.Control type="number" min="1" />
+                    </FloatingLabel>
+                    <FloatingLabel className={styles.FloatingLabel} controlId="floatingSelect" label="Devolvido por:">
+                        <Form.Select
+                            aria-label="Floating label select example"
+                            className="mb-3"
+                            name="military"
+                            value={military}
+                            onChange={event => setMilitary(event.target.value)}
+                            required
+                        >
                             <option value="" key="0">-- Selecione um militar --</option>
                             {options?.map(option =>
                                 <option key={option._id} value={option.name}>{option.name}</option>
                             )}
-                        </select>
-                    </label>
-                    <label>
-                        Em:
-                        <input type="date" defaultValue={date} max={today} onChange={(e) => setDate(e.target.value)} />
-                    </label>
-                    <button onClick={cancelSubmit}>Cancelar</button>
-                    <button
+                        </Form.Select>
+                    </FloatingLabel>
+                    <FloatingLabel label="Em:" >
+                        <Form.Control
+                            type="date"
+                            className="mb-3"
+                            defaultValue={date}
+                            max={today}
+                            onChange={(e) => setDate(e.target.value)}
+                        />
+                    </FloatingLabel>
+                    <Button
+                        id="cancel"
+                        className="btn btn-secondary"
+                        type="reset"
+                        onClick={() => {
+                            cancelSubmit()
+                        }}
+                    >
+                        Limpar
+                    </Button>
+                    <Button
+                        id="confirm"
+                        className="btn btn-danger"
                         type="submmit"
-                        form="new-material-form"
                         disabled={!newName || !newQuantity || !military}
                     >
                         Confirmar Retorno de Material
-                    </button>
+                    </Button>
                 </fieldset>
             </form>
         </div>

@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom'
-
 import NewMaterialsForm from '../components/NewMaterialsForm'
 
 export default function NewMaterials() {

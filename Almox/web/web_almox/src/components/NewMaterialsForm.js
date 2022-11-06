@@ -123,7 +123,7 @@ export default function NewMaterialsForm() {
                 cancelSubmit();
             }}>
                 <fieldset>
-                    <h5>Cadastrar Novo Material</h5>
+                    <h5 className={styles.FieldsetTitle}>Cadastrar Novo Material</h5>
                     <FloatingLabel
                         label="Nome do Material"
                         className="mb-3"
