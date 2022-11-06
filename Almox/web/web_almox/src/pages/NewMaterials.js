@@ -7,7 +7,6 @@ export default function NewMaterials() {
         <article>
             <h2>Adicionar Materiais</h2>
             <NewMaterialsForm />
-            <Link to="/materials-list">Voltar</Link>
         </article>
     )
 }

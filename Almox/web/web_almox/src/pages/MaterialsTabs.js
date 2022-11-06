@@ -8,16 +8,18 @@ import NewMaterials from './NewMaterials'
 import ReturnMaterials from './ReturnMaterials'
 
 export default function MaterialsTabs() {
-    const [key, setKey] = useState('materials-list')
+    const [key, setKey] = useState(localStorage.getItem('key') || 'materials-list')
 
     return (
         <article>
             <Tabs
                 activeKey={key}
-                onSelect={(k) => setKey(k)}
+                onSelect={(k) => {
+                    setKey(k)
+                    localStorage.setItem('key', `${k}`)
+                }}
                 className="mb-3"
                 fill
-                // justify
             >
                 <Tab eventKey="materials-list" title="Lista de Materiais">
                     <MaterialsList />

@@ -4,7 +4,7 @@ import { ToggleButton, FloatingLabel, Form } from 'react-bootstrap'
 import styles from './Pagination.module.css'
 
 export default function Pagination({ itemsPerPage, totalItems, paginate, setMaterialsPerPage }) {
-    const [active, setActive] = useState('1')
+    const [active, setActive] = useState(localStorage.getItem('active') || '1')
     
     const pageNumbers = []
 
@@ -23,7 +23,10 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setMate
                 <Form.Select 
                     aria-label="Floating label select example" 
                     defaultValue={itemsPerPage}
-                    onChange={e => setMaterialsPerPage(e.target.value)}
+                    onChange={e => {
+                        setMaterialsPerPage(e.target.value)
+                        localStorage.setItem('itemsPerPage', `${e.target.value}`)
+                    }}
                     className={styles.FormSelect}                
                 >
                     <option disabled>-- Quantidade --</option>

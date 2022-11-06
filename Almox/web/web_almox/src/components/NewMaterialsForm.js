@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, FloatingLabel, Form } from 'react-bootstrap'
 
-// import styles from './NewMaterialsForm.module.css'
+import styles from './NewMaterialsForm.module.css'
 
 import api from '../services/api'
 import StatusMessage from './StatusMessage'
@@ -12,14 +12,14 @@ export default function NewMaterialsForm() {
     const [newQuantity, setNewQuantity] = useState();
     const [message, setMessage] = useState(false);
     const [status, setStatus] = useState();
-    
+
     var dateObject = new Date()
     const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
     // const today = formatedDate+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
-    const date = dateObject.getFullYear()+'-'+(dateObject.getMonth()+1)+'-'+formatedDate
+    const date = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
 
-    function cancelSubmit(event) {
-        event.preventDefault();
+    function cancelSubmit() {
+        // event.preventDefault();
         setNewName('')
         setNewQuantity('')
     }
@@ -27,25 +27,25 @@ export default function NewMaterialsForm() {
     useEffect(() => {
 
         api.get('/materials')
-        .then(({data}) => {
-            setMaterials(data.materials)
-        })
-        .catch(err => console.error(err))
-        
+            .then(({ data }) => {
+                setMaterials(data.materials)
+            })
+            .catch(err => console.error(err))
+
     }, [])
 
 
-    function insertNewMaterial(event){
+    function insertNewMaterial(event) {
         event.preventDefault();
         var materialExists = false;
         var currentName = ''
         var currentQuantity = 0;
         var currentMaterialID = '';
         var description = '';
-   
+
 
         materials.forEach(material => {
-            if(material.name.toLowerCase() === newName.toLowerCase()) {
+            if (material.name.toLowerCase() === newName.toLowerCase()) {
                 materialExists = true
                 currentName = material.name
                 currentQuantity = material.quantity
@@ -54,8 +54,8 @@ export default function NewMaterialsForm() {
             }
         })
 
-        
-        if(materialExists){
+
+        if (materialExists) {
             const totalQuantity = Number(currentQuantity) + Number(newQuantity)
             console.log(totalQuantity)
             const newMaterial = {
@@ -64,7 +64,7 @@ export default function NewMaterialsForm() {
             }
             api.put(`/materials/${currentMaterialID}`, newMaterial)
                 .then((response) => {
-                    console.log("Update status: "+response.status)
+                    console.log("Update status: " + response.status)
                     description = `A quantidade do material: ${newName} passou de ${currentQuantity} para ${newQuantity}`
                     api.post('/movements', {
                         operation: "Atualização",
@@ -86,66 +86,77 @@ export default function NewMaterialsForm() {
                 quantity: newQuantity
             }
             api.post('/materials', newMaterial)
-            .then(response => {
-                console.log("STATUS: "+response.status)
+                .then(response => {
+                    console.log("STATUS: " + response.status)
 
-                description = `${newQuantity}x ${newName} foi(foram) adicionados ao almoxarifado`
-                api.post('/movements', {
-                    operation: "Recebimento",
-                    date,
-                    description
+                    description = `${newQuantity}x ${newName} foi(foram) adicionados ao almoxarifado`
+                    api.post('/movements', {
+                        operation: "Recebimento",
+                        date,
+                        description
+                    })
+                        .then(response => {
+                            console.log(response.status)
+                            setStatus('Sucesso')
+                            setMessage(true)
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            setStatus('Falha')
+                            setMessage(true)
+                        })
                 })
-                    .then(response => {
-                        console.log(response.status)
-                        setStatus('Sucesso')
-                        setMessage(true)
-                    })
-                    .catch(err => {
-                        console.error(err)
-                        setStatus('Falha')
-                        setMessage(true)
-                    })
-            })
-            .catch(err => {
-                console.log("error: "+err)
-                setStatus('Falha')
-                setMessage(true)
-            })
+                .catch(err => {
+                    console.log("error: " + err)
+                    setStatus('Falha')
+                    setMessage(true)
+                })
         }
         setMessage(false)
     }
 
     return (
         <>
-            <StatusMessage message={message} status={status}/>
-            <form id="new-material-form" method="get" onSubmit={insertNewMaterial}>
+            <StatusMessage message={message} status={status} />
+            <form id="new-material-form" method="get" onSubmit={(e) => {
+                insertNewMaterial(e);
+                cancelSubmit();
+            }}>
                 <fieldset>
-                    <legend>Novo material</legend>
-                    <label>
-                        Nome do material -
-                        <input
-                            type="text"
-                            value={newName}
-                            onChange={event => setNewName(event.target.value)}
-                        />
-                    </label>
-                    <label>
-                        Quantidade -
-                        <input
-                            type="number"
-                            min="1"
-                            value={newQuantity}
-                            onChange={event => setNewQuantity(event.target.value)}
-                        />
-                    </label>
-                    <Button className="btn btn-secondary" onClick={cancelSubmit}>Cancelar</Button>
+                    <h5>Cadastrar Novo Material</h5>
+                    <FloatingLabel
+                        label="Nome do Material"
+                        className="mb-3"
+                        value={newName}
+                        onChange={event => setNewName(event.target.value)}
+                    >
+                        <Form.Control type="text" />
+                    </FloatingLabel>
+                    <FloatingLabel
+                        label="Quantidade do Material"
+                        className="mb-3"
+                        value={newQuantity}
+                        onChange={event => setNewQuantity(event.target.value)}
+                    >
+                        <Form.Control type="number" min="1" />
+                    </FloatingLabel>
+                    <Button
+                        id="cancel" 
+                        className="btn btn-secondary" 
+                        type="reset"
+                        onClick={() => {
+                            cancelSubmit()
+                        }}
+                    >
+                        Limpar
+                    </Button>
                     <Button
                         type="submmit"
-                        form="new-material-form"
                         disabled={!newName || !newQuantity}
                         className="btn btn-danger"
+                        id="confirm"
                     >
-                        Adicionar Material
+                        Cadastrar Material
                     </Button>
                 </fieldset>
             </form>

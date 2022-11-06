@@ -15,8 +15,8 @@ import { FloatingLabel, Form } from 'react-bootstrap'
 export default function MaterialsList() {
     const [materials, setMaterials] = useState([])
     const [loading, setLoading] = useState(false)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [materialsPerPage, setMaterialsPerPage] = useState(100)
+    const [currentPage, setCurrentPage] = useState(localStorage.getItem('active') || 1)
+    const [materialsPerPage, setMaterialsPerPage] = useState(localStorage.getItem('itemsPerPage') || 100)
     const [search, setSearch] = useState('')
     // const [items, setItems] = useState([])
 
@@ -48,21 +48,24 @@ export default function MaterialsList() {
 
 
     const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber)
+        setCurrentPage(pageNumber)        
+        localStorage.setItem('active', `${pageNumber}`)
     }
 
     return (
         <article>
             <div className={styles.subheader_container}>
-                <h2>Lista de Materiais</h2>
-                <FloatingLabel
-                    label="Buscar nessa página..."
-                    className="mb-3"
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                >
-                    <Form.Control type="text" placeholder="Buscar" />
-                </FloatingLabel>
+                <h2 className={styles.subheaderTitle}>Lista de Materiais</h2>
+                <div className={styles.floatingLabel}>
+                    <FloatingLabel
+                        label="Buscar nessa página..."
+                        className="mb-3"
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                    >
+                        <Form.Control type="text" placeholder="Buscar" />
+                    </FloatingLabel>
+                </div>
             </div>
             <Pagination
                 setMaterialsPerPage={setMaterialsPerPage}
