@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
+
+// import { Tab, Tabs } from 'react-bootstrap'
+import styles from './MaterialsList.module.css'
 
 import api from '../services/api'
 import Material from '../components/Material'
 import Loading from '../components/Loading'
 import Pagination from '../components/Pagination'
-import styles from './MaterialsList.module.css'
+import { FloatingLabel, Form } from 'react-bootstrap'
+
 
 
 export default function MaterialsList() {
@@ -49,33 +53,23 @@ export default function MaterialsList() {
 
     return (
         <article>
-            <div className={styles.SubHeader_container}>
+            <div className={styles.subheader_container}>
                 <h2>Lista de Materiais</h2>
-                <Link to="/new-materials">Adicionar materiais</Link >
-                <Link to="/return-materials">Devolver materiais</Link >
+                <FloatingLabel
+                    label="Buscar nessa página..."
+                    className="mb-3"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                >
+                    <Form.Control type="text" placeholder="Buscar" />
+                </FloatingLabel>
             </div>
-            <div className={styles.Search_container}>
-                <label>
-                    Busca
-                    <input placeholder="Buscar nessa página..." type="text" value={search} onChange={e => setSearch(e.target.value)} />
-                </label>
-                <div>
-                    <label>
-                        Itens por página:
-                        <select value={materialsPerPage} onChange={e => setMaterialsPerPage(e.target.value)}>
-                            <option value="">-- Itens por página --</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                    </label>
-                </div>
-            </div>
-            <div className={styles.Pagination}>
-                <Pagination itemsPerPage={materialsPerPage} totalItems={materials.length} paginate={paginate} />
-            </div>
+            <Pagination
+                setMaterialsPerPage={setMaterialsPerPage}
+                itemsPerPage={materialsPerPage}
+                totalItems={materials.length}
+                paginate={paginate}
+            />
             <Loading loading={loading} />
             <ul className={styles.Materials_list}>
                 {items?.map((material, i) => (

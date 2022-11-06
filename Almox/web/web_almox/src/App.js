@@ -10,6 +10,7 @@ import MilitaryList from './pages/MilitaryList'
 import NewMaterials from './pages/NewMaterials'
 import ReturnMaterials from './pages/ReturnMaterials'
 import NewMilitary from './pages/NewMilitary'
+import MaterialsTabs from './pages/MaterialsTabs'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/new-materials" element={<NewMaterials />} />
         <Route path="/return-materials" element={<ReturnMaterials />} />
         <Route path="/new-military" element={<NewMilitary />} />
+        <Route path="/materials-tabs" element={<MaterialsTabs />}/>
       </Routes>
       <Footer className="App-footer"/>
     </>

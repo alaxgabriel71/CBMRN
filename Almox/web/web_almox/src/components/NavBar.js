@@ -32,31 +32,40 @@ import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 function NavBar() {
-    const expand = 'xxl'
-    return (
+  const expand = false
+  return (
     <>
       {/* [false, 'sm', 'md', 'lg', 'xl', 'xxl'] */}
-        <Navbar key={expand} bg="danger" expand={expand} className="mb-3">
-          <Container fluid>
-            <Navbar.Brand href="/">2º SGB/1ºGBM</Navbar.Brand>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-            <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-${expand}`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-              placement="end"
-            >
-              <Offcanvas.Header closeButton>
-                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                  Menu
-                </Offcanvas.Title>
-              </Offcanvas.Header>
-              <Offcanvas.Body>
-                <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="/">Página Inicial</Nav.Link>
-                  <Nav.Link href="/materials-list">Lista de materiais</Nav.Link>
-                  <Nav.Link href="/moviment-history">Histórico de movimentações</Nav.Link>
-                  <Nav.Link href="/military-list">Militares</Nav.Link>
-                  {/* <NavDropdown
+      <Navbar key={expand} bg="danger" expand={expand} className="mb-3">
+        <Container fluid>
+          <Navbar.Brand href="/">
+            <img
+              alt="Logo CBMRN"
+              src="/cbmrn.svg"
+              width="30"
+              height="30"
+              // className="d-inline-block align-top" 
+            />{' '}
+            2º SGB/1ºGBM
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+          <Navbar.Offcanvas
+            id={`offcanvasNavbar-expand-${expand}`}
+            aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+                Menu
+              </Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="justify-content-end flex-grow-1 pe-3">
+                <Nav.Link href="/">Página Inicial</Nav.Link>
+                <Nav.Link href="/materials-tabs">Materiais</Nav.Link>
+                <Nav.Link href="/moviment-history">Histórico de movimentações</Nav.Link>
+                <Nav.Link href="/military-list">Militares</Nav.Link>
+                {/* <NavDropdown
                     title="Dropdown"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
@@ -69,8 +78,8 @@ function NavBar() {
                       Something else here
                     </NavDropdown.Item>
                   </NavDropdown> */}
-                </Nav>
-                {/* <Form className="d-flex">
+              </Nav>
+              {/* <Form className="d-flex">
                   <Form.Control
                     type="search"
                     placeholder="Search"
@@ -79,10 +88,10 @@ function NavBar() {
                   />
                   <Button variant="outline-success">Search</Button>
                 </Form> */}
-              </Offcanvas.Body>
-            </Navbar.Offcanvas>
-          </Container>
-        </Navbar>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
+        </Container>
+      </Navbar>
     </>
   );
 }

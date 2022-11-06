@@ -1,14 +1,16 @@
+@import '../global.css';
+
 .Materials_list {
-    width: 100%
+    width: 100%;
+    padding: 0 .5rem;
 }
 
-.SubHeader_container {
+.subheader_container {
     display: flex;
-    padding: .5rem;
-    justify-content: space-between;
-    align-items: center;
     width: 100%;
-    color: rgba(var(--bs-danger-rgb), var(--bs-bg-opacity)) !important;
+    justify-content: space-evenly;
+    padding: .5rem;
+    flex-wrap: wrap;
 }
 
 .Search_container {
@@ -16,12 +18,18 @@
     display: flex;
     justify-content: space-evenly;
     padding: .5rem;
+    border-bottom: 1px solid var(--theme-light-gray)
 }
 
 .Pagination {
+    flex: 4;
     width: 100%;
     display: flex;
     justify-content: center;
-    /* padding: .5rem; */
-    border: .5px solid rgba(0, 0, 0, 0.1);
+    /* border: .5px solid rgba(0, 0, 0, 0.1); */
+}
+
+.itensperpage {
+    flex: 1;
+    display: flex;
 }

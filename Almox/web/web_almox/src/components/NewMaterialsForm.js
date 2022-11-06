@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import { Button } from 'react-bootstrap'
+
+// import styles from './NewMaterialsForm.module.css'
 
 import api from '../services/api'
 import StatusMessage from './StatusMessage'
@@ -135,14 +138,15 @@ export default function NewMaterialsForm() {
                             onChange={event => setNewQuantity(event.target.value)}
                         />
                     </label>
-                    <button onClick={cancelSubmit}>Cancelar</button>
-                    <button
+                    <Button className="btn btn-secondary" onClick={cancelSubmit}>Cancelar</Button>
+                    <Button
                         type="submmit"
                         form="new-material-form"
                         disabled={!newName || !newQuantity}
+                        className="btn btn-danger"
                     >
                         Adicionar Material
-                    </button>
+                    </Button>
                 </fieldset>
             </form>
         </>

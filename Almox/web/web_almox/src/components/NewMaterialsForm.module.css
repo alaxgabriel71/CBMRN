@@ -1,0 +1,13 @@
+@import '../global.css';
+
+.cancel {
+    background-color: var(--theme-gray);
+    /* color: var(--theme-dark); */
+    border: 1px solid var(--theme-dark);
+}
+
+.cancel:hover {
+    background-color: var(--theme-danger);
+    color: var(--theme-light);
+    border: none;
+}

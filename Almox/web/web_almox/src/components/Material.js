@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { Button } from 'react-bootstrap'
+import { FaTrash, FaPen, FaBoxOpen } from 'react-icons/fa'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import styles from './Material.module.css'
 
@@ -33,14 +36,26 @@ export default function Material({ name, quantity, id }) {
     }
 
     return (
-        <div /* className={styles.Material_container} */ onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+        <div className={styles.Material_container} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
             <div className={styles.Material_item}>
-                <h3 className={styles.Title}>{quantity}x {name}</h3>
+                <p className={styles.Title}>{quantity} | {name}</p>
                 {isHovering && (
                     <div className={styles.Material_options}>
-                        <button onClick={() => takeCareMaterial()}>Cautelar</button>
-                        <button onClick={() => updateMaterial()}>Editar</button>
-                        <button onClick={() => deleteMaterial()}>Deletar</button>
+                        <span data-toggle="popover" data-trigger="hover" title="Cautelar material">
+                            <Button className="btn btn-light btn-sm" onClick={() => takeCareMaterial()}>
+                                <FaBoxOpen icon="fa-solid fa-box-open" className={styles.MaterialOptionsIcons} />
+                            </Button>
+                        </span>
+                        <span data-toggle="popover" data-trigger="hover" title="Editar material">
+                            <Button className="btn btn-light btn-sm" onClick={() => updateMaterial()}>
+                                <FaPen icon="fa-solid fa-pencil" className={styles.MaterialOptionsIcons} />
+                            </Button>
+                        </span>
+                        <span data-toggle="popover" data-trigger="hover" title="Deletar material" >
+                            <Button className="btn btn-light btn-sm" onClick={() => deleteMaterial()}>
+                                <FaTrash icon="fa-solid fa-trash" className={styles.MaterialOptionsIcons} />
+                            </Button>
+                        </span>
                     </div>
                 )}
             </div>
