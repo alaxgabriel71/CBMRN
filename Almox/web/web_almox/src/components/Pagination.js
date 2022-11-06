@@ -1,13 +1,21 @@
-import { Button, FloatingLabel, Form } from 'react-bootstrap'
+import { useState } from 'react'
+import { ToggleButton, FloatingLabel, Form } from 'react-bootstrap'
 
 import styles from './Pagination.module.css'
 
 export default function Pagination({ itemsPerPage, totalItems, paginate, setMaterialsPerPage }) {
+    const [active, setActive] = useState('1')
+    
     const pageNumbers = []
 
     for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-        pageNumbers.push(i)
+        pageNumbers.push({
+            name: `${i}`,
+            value: `${i}`
+        })
     }
+
+    console.log(active)
 
     return (
         <nav>
@@ -29,13 +37,21 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setMate
             </FloatingLabel>
             <ul className={styles.Navbar_item}>
                 {pageNumbers.map(number => (
-                    <li key={number} className={styles.Item}>
-                        <Button
+                    <li key={number.value} className={styles.Item}>
+                        <ToggleButton
+                            key={number.name}
                             className="btn btn-danger btn-sm"
-                            onClick={() => paginate(number)}
+                            value={number.value}
+                            onClick={() => {
+                                paginate(number.value)
+                                setActive(number.value)
+                            }}
+                            type="radio"
+                            name="radio"
+                            checked={active === number.value}
                         >
-                            {number}
-                        </Button>
+                            {number.name}
+                        </ToggleButton>
                     </li>
                 ))}
             </ul>

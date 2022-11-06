@@ -19,11 +19,6 @@ nav {
     flex-wrap: wrap;
 }
 
-.Item {
-    /* margin: 0 .5rem; */
-}
-
-
 .FloatingLabel {
     display: 1;
     flex-grow: 1;
