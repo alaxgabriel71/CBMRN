@@ -130,7 +130,7 @@ export default function NewMaterialsForm() {
                         value={newName}
                         onChange={event => setNewName(event.target.value)}
                     >
-                        <Form.Control type="text" />
+                        <Form.Control type="text" placeholder="Informe o nome do material" />
                     </FloatingLabel>
                     <FloatingLabel
                         label="Quantidade do Material"
@@ -138,7 +138,7 @@ export default function NewMaterialsForm() {
                         value={newQuantity}
                         onChange={event => setNewQuantity(event.target.value)}
                     >
-                        <Form.Control type="number" min="1" />
+                        <Form.Control type="number" min="1" placeholder="Informe a quantidade do material" />
                     </FloatingLabel>
                     <Button
                         id="cancel" 

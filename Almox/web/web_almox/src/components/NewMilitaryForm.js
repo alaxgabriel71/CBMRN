@@ -2,6 +2,9 @@ import { useState } from 'react'
 
 import api from '../services/api'
 import StatusMessage from '../components/StatusMessage'
+import { Button, FloatingLabel, Form } from 'react-bootstrap'
+
+import styles from './NewMilitaryForm.module.css'
 
 export default function NewMilitaryList(){
     const options = [
@@ -52,21 +55,38 @@ export default function NewMilitaryList(){
             <StatusMessage message={message} status={status}/>
             <form onSubmit={registerMilitary}>
                 <fieldset>
-                    <legend>Cadastro de Militar</legend>
-                    <label>
-                        Patente:                        
-                        <select value={rank} onChange={e => setRank(e.target.value)} required>
+                    <h5 className={styles.Title_container} >Cadastrar Novo Militar</h5>
+                    <FloatingLabel>
+                        <Form.Select
+                            aria-label="Floating label select example"
+                            className="mb-3"
+                            name="rank"
+                            value={rank}
+                            onChange={event => setRank(event.target.value)}
+                            required
+                        >
                             <option key="0" value="">-- Informe a patente --</option>
                             {options.map(option => (
                                 <option key={option.value} value={option.rank}>{option.rank}</option>
                             ))}
-                        </select>
-                    </label>
-                    <label>
-                        QRA:
-                        <input type="text" placeholder="Escreva o nome de guerra..." value={qra} onChange={e => setQra(e.target.value)} required/>
-                    </label>
-                    <button type="submit" disabled={!rank || !qra}>Cadastrar Militar</button>
+                        </Form.Select>
+                    </FloatingLabel>
+                    <FloatingLabel
+                        label="QRA do Militar"
+                        className="mb-3"
+                        value={qra}
+                        onChange={event => setQra(event.target.value)}
+                    >
+                        <Form.Control type="Text" placeholder="Informe o QRA do militar" />
+                    </FloatingLabel>
+                    <Button 
+                        type="submit" 
+                        disabled={!rank || !qra}
+                        className="btn btn-danger"
+                        id="confirm"
+                    >
+                        Cadastrar Militar
+                    </Button>
                 </fieldset>
             </form>
         </>
