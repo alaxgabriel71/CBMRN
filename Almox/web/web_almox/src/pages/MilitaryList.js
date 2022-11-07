@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 import api from '../services/api'
 import Military from '../components/Military'
@@ -42,8 +42,7 @@ export default function Militarylist() {
 
     return (
         <article>
-            <h2>Militares</h2>
-            <Link to='/new-military'>Cadastrar Militares</Link>
+            <h2 className={styles.Title_container} >Lista de Militares</h2>
             <Loading loading={loading} />
             <ul className={styles.Military_list}>
                 {military?.map(mil => (

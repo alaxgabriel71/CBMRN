@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Button } from 'react-bootstrap'
+import { FaChevronUp, FaChevronDown, FaTrash } from 'react-icons/fa'
 
 import api from '../services/api'
 import styles from './Military.module.css'
@@ -44,15 +46,24 @@ export default function Military({ id, name, rank, handleClick }) {
 
     return (
         <div className={styles.Item_container} onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
-            <h3 className={styles.Title}>{name}</h3>
+            <h5 className={styles.Title}>{name}</h5>
 
             {isHovering && (
                 <div className={styles.Options_container}>
                     <div className={styles.Rank_container}>
-                        <button className={styles.UpButton} onClick={handleClickInc}>^</button>
-                        <button className={styles.DownButton} onClick={handleClickDec}>v</button>
+                        <Button className="btn btn-light btn-sm" onClick={handleClickInc}
+                        >
+                            <FaChevronUp icon="fa-solid fa-chevron-up" />
+                        </Button>
+                        <Button className="btn btn-light btn-sm" onClick={handleClickDec}
+                        >
+                            <FaChevronDown icon="fa-solid fa-chevron-down" />
+                        </Button>
                     </div>
-                    <button className={styles.DeleteButton} onClick={handleClickDel}>x</button>
+                    <Button className="btn btn-light btn-sm" onClick={handleClickDel}
+                    >
+                        <FaTrash icon="fa-solid fa-trash" />
+                    </Button>
                 </div>
             )}
         </div>
