@@ -27,5 +27,6 @@ form {
 fieldset {
     border: 1px solid var(--theme-light-gray);
     border-radius: .3rem;
-    padding: .5rem; 
+    padding: .5rem;
+    min-width: 75%;
 }
