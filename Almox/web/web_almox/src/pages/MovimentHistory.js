@@ -5,6 +5,7 @@ import DeleteHistoryModal from '../components/modals/DeleteHistoryModal'
 import Loading from '../components/Loading'
 import Pagination from '../components/Pagination'
 import Movement from '../components/Movement'
+import { Table } from 'react-bootstrap'
 
 export default function MovimentHistory() {
     var dateObject = new Date()
@@ -112,11 +113,29 @@ export default function MovimentHistory() {
             </div>
             <button onClick={() => setShow(true)}>Apagar Histórico</button>
             <Loading loading={loading} />
-            <ul>
+            {/* <ul>
                 {filteredItems?.map(movement => (
                     <Movement key={movement._id} operation={movement.operation} description={movement.description} date={movement.date} />
                 ))}
-            </ul>
+            </ul> */}
+            <Table striped bordered hover size="sm">
+                <thead>
+                    <tr>
+                        <th>Operação</th>
+                        <th>Descrição</th>
+                        <th>Data do Registro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredItems?.map(movement => (
+                        <tr key={movement._id}>
+                            <td>{movement.operation}</td>
+                            <td>{movement.description}</td>
+                            <td>{movement.date.slice(8, 10) + '/' + movement.date.slice(5, 7) + '/' + movement.date.slice(0, 4)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
             <DeleteHistoryModal show={show} onClose={() => setShow(false)} />
         </article>
     )
