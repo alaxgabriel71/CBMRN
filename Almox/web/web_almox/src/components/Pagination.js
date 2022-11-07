@@ -1,10 +1,10 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { ToggleButton, FloatingLabel, Form } from 'react-bootstrap'
 
 import styles from './Pagination.module.css'
 
-export default function Pagination({ itemsPerPage, totalItems, paginate, setMaterialsPerPage }) {
-    const [active, setActive] = useState(localStorage.getItem('active') || '1')
+export default function Pagination({ itemsPerPage, totalItems, paginate, setItemsPerPage }) {
+    // const [active, setActive] = useState(localStorage.getItem('active') || '1')
 
     const pageNumbers = []
 
@@ -32,7 +32,7 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setMate
                     aria-label="Floating label select example"
                     defaultValue={itemsPerPage}
                     onChange={e => {
-                        setMaterialsPerPage(e.target.value)
+                        setItemsPerPage(e.target.value)
                         localStorage.setItem('itemsPerPage', `${e.target.value}`)
                     }}
                     className={styles.FormSelect}
@@ -55,7 +55,7 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setMate
                             value={number.value}
                             onClick={() => {
                                 paginate(number.value)
-                                setActive(number.value)
+                                // setActive(number.value)
                             }}
                             type="radio"
                             name="radio"

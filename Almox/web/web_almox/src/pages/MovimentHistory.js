@@ -14,8 +14,8 @@ export default function MovimentHistory() {
     const [movements, setMovements] = useState([])
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [movesPerPage, setMovesPerPage] = useState(10)
+    const [currentPage, setCurrentPage] = useState(localStorage.getItem('active') || 1)
+    const [itemsPerPage, setItemsPerPage] = useState(10)
     const [search, setSearch] = useState('')
     const [operation, setOperation] = useState('')
     const [date, setDate] = useState('')
@@ -29,8 +29,8 @@ export default function MovimentHistory() {
     }, []);
     // console.log(movements)div
 
-    const indexOfLastMove = currentPage * movesPerPage
-    const indexOfFirstMove = indexOfLastMove - movesPerPage
+    const indexOfLastMove = currentPage * itemsPerPage
+    const indexOfFirstMove = indexOfLastMove - itemsPerPage
     const currentMoves = movements.slice(indexOfFirstMove, indexOfLastMove)
 
     var filteredItems = []
@@ -68,6 +68,7 @@ export default function MovimentHistory() {
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber)
+        localStorage.setItem('active', `${pageNumber}`)
     }
 
     return (
@@ -97,15 +98,17 @@ export default function MovimentHistory() {
             <div>
                 <label>
                     Itens por página:
-                    <select value={movesPerPage} onChange={e => setMovesPerPage(e.target.value)}>
+                    <select value={itemsPerPage} onChange={e => setItemsPerPage(e.target.value)}>
                         <option value="">-- Itens por página --</option>
+                        <option value="1">1</option>
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
+                        <option value="100">100</option>
                     </select>
                 </label>
-                <Pagination itemsPerPage={movesPerPage} totalItems={movements.length} paginate={paginate} />
+                <Pagination setItemsPerPage={setItemsPerPage} itemsPerPage={itemsPerPage} totalItems={movements.length} paginate={paginate} />
             </div>
             <button onClick={() => setShow(true)}>Apagar Histórico</button>
             <Loading loading={loading} />

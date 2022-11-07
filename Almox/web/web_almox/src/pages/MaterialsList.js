@@ -18,7 +18,7 @@ export default function MaterialsList() {
     const [materials, setMaterials] = useState([])
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(localStorage.getItem('active') || 1)
-    const [materialsPerPage, setMaterialsPerPage] = useState(localStorage.getItem('itemsPerPage') || 100)
+    const [itemsPerPage, setItemsPerPage] = useState(localStorage.getItem('itemsPerPage') || 100)
     const [search, setSearch] = useState('')
     // const [items, setItems] = useState([])
     
@@ -36,8 +36,8 @@ export default function MaterialsList() {
         setLoading(false)
     }, [])
 
-    const indexOfLastMaterial = currentPage * materialsPerPage
-    const indexOfFirstMaterial = indexOfLastMaterial - materialsPerPage
+    const indexOfLastMaterial = currentPage * itemsPerPage
+    const indexOfFirstMaterial = indexOfLastMaterial - itemsPerPage
     const currentMaterials = materials.slice(indexOfFirstMaterial, indexOfLastMaterial)
 
     const lowerCaseSearch = search.toLowerCase()
@@ -69,8 +69,8 @@ export default function MaterialsList() {
                 </div>
             </div>
             <Pagination
-                setMaterialsPerPage={setMaterialsPerPage}
-                itemsPerPage={materialsPerPage}
+                setItemsPerPage={setItemsPerPage}
+                itemsPerPage={itemsPerPage}
                 totalItems={materials.length}
                 paginate={paginate}
             />
