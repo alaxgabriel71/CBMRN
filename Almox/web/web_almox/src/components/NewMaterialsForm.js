@@ -65,7 +65,7 @@ export default function NewMaterialsForm() {
             api.put(`/materials/${currentMaterialID}`, newMaterial)
                 .then((response) => {
                     console.log("Update status: " + response.status)
-                    description = `A quantidade do material: ${newName} passou de ${currentQuantity} para ${newQuantity}`
+                    description = `A quantidade do material: ${currentName} passou de ${currentQuantity} para ${newQuantity}`
                     api.post('/movements', {
                         operation: "Atualização",
                         date,
@@ -89,7 +89,7 @@ export default function NewMaterialsForm() {
                 .then(response => {
                     console.log("STATUS: " + response.status)
 
-                    description = `${newQuantity}x ${newName} foi(foram) adicionados ao almoxarifado`
+                    description = `${newQuantity}x ${newName[0].toUpperCase() + newName.substring(1).toLowerCase()} foi(foram) adicionados ao almoxarifado`
                     api.post('/movements', {
                         operation: "Recebimento",
                         date,

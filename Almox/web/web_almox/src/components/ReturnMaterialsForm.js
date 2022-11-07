@@ -48,6 +48,7 @@ export default function ReturnMaterialsForm() {
     function insertNewMaterial(event) {
         event.preventDefault();
         var materialExists = false;
+        var currentName = '';
         var currentQuantity = 0;
         var currentMaterialID = '';
         var description = '';
@@ -57,6 +58,7 @@ export default function ReturnMaterialsForm() {
         materials.forEach(material => {
             if (material.name.toLowerCase() === newName.toLowerCase()) {
                 materialExists = true
+                currentName = material.name
                 currentQuantity = material.quantity
                 currentMaterialID = material._id
                 console.log(`Quantidade atual = ${currentQuantity}; Nova quantidade = ${newQuantity}`)
@@ -68,13 +70,13 @@ export default function ReturnMaterialsForm() {
             const totalQuantity = Number(currentQuantity) + Number(newQuantity)
             console.log(totalQuantity)
             const newMaterial = {
-                name: newName,
+                name: currentName,
                 quantity: totalQuantity
             }
             api.put(`/materials/${currentMaterialID}`, newMaterial)
                 .then((response) => {
                     console.log("Update status: " + response.status)
-                    description = `${newQuantity}x ${newName} foi(foram) devolvido(s) ao almoxarifado pelo ${military} em ${returnDate}`
+                    description = `${newQuantity}x ${currentName} foi(foram) devolvido(s) ao almoxarifado pelo ${military} em ${returnDate}`
                     api.post('/movements', {
                         operation: "Devolução",
                         date,

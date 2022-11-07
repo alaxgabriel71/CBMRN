@@ -55,7 +55,7 @@ export default function NewMilitaryList(){
             <StatusMessage message={message} status={status}/>
             <form onSubmit={registerMilitary}>
                 <fieldset>
-                    <h5 className={styles.Title_container} >Cadastrar Novo Militar</h5>
+                    <h5 className={styles.Form_title} >Cadastrar Novo Militar</h5>
                     <FloatingLabel>
                         <Form.Select
                             aria-label="Floating label select example"
