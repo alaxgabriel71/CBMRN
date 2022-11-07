@@ -5,7 +5,7 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import MaterialsList from './pages/MaterialsList'
-import MovimentHistory from './pages/MovimentHistory'
+import MovementHistory from './pages/MovementHistory'
 import MilitaryList from './pages/MilitaryList'
 import NewMaterials from './pages/NewMaterials'
 import ReturnMaterials from './pages/ReturnMaterials'
@@ -20,7 +20,7 @@ function App() {
       <Routes className="App-main">
         <Route exact path="/" element={<Home />} />
         <Route path="/materials-list" element={<MaterialsList />} />
-        <Route path="/moviment-history" element={<MovimentHistory />} />
+        <Route path="/movement-history" element={<MovementHistory />} />
         <Route path="/military-list" element={<MilitaryList />} />
         <Route path="/new-materials" element={<NewMaterials />} />
         <Route path="/return-materials" element={<ReturnMaterials />} />

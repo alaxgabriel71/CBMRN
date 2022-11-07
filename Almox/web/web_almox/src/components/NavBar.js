@@ -64,7 +64,7 @@ function NavBar() {
               <Nav className="justify-content-end flex-grow-1 pe-3">
                 <Nav.Link href="/">Página Inicial</Nav.Link>
                 <Nav.Link href="/materials-tabs">Materiais</Nav.Link>
-                <Nav.Link href="/moviment-history">Histórico de movimentações</Nav.Link>
+                <Nav.Link href="/movement-history">Histórico de movimentações</Nav.Link>
                 <Nav.Link href="/military-tabs">Militares</Nav.Link>
                 {/* <NavDropdown
                     title="Dropdown"
