@@ -65,7 +65,7 @@ function NavBar() {
                 <Nav.Link href="/">Página Inicial</Nav.Link>
                 <Nav.Link href="/materials-tabs">Materiais</Nav.Link>
                 <Nav.Link href="/moviment-history">Histórico de movimentações</Nav.Link>
-                <Nav.Link href="/military-list">Militares</Nav.Link>
+                <Nav.Link href="/military-tabs">Militares</Nav.Link>
                 {/* <NavDropdown
                     title="Dropdown"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
