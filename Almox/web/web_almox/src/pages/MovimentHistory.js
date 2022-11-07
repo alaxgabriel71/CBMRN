@@ -4,22 +4,25 @@ import api from '../services/api'
 import DeleteHistoryModal from '../components/modals/DeleteHistoryModal'
 import Loading from '../components/Loading'
 import Pagination from '../components/Pagination'
-import Movement from '../components/Movement'
-import { Table } from 'react-bootstrap'
+// import Movement from '../components/Movement'
+import { FloatingLabel, Form, Table } from 'react-bootstrap'
 
 export default function MovimentHistory() {
-    var dateObject = new Date()
-    const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
-    const today = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
+    // var dateObject = new Date()
+    // const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
+    // const today = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
 
     const [movements, setMovements] = useState([])
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(localStorage.getItem('active') || 1)
-    const [itemsPerPage, setItemsPerPage] = useState(10)
+    const [itemsPerPage, setItemsPerPage] = useState(localStorage.getItem('itemsPerPage') || 10)
     const [search, setSearch] = useState('')
     const [operation, setOperation] = useState('')
-    const [date, setDate] = useState('')
+    // const [date, setDate] = useState('')
+    const [day, setDay] = useState('')
+    const [month, setMonth] = useState('')
+    const [year, setYear] = useState('')
 
     useEffect(() => {
         setLoading(true)
@@ -30,6 +33,30 @@ export default function MovimentHistory() {
     }, []);
     // console.log(movements)div
 
+    const dayOptions = []
+    for(let i = 1; i <= 31; i++){
+        if(i<10)
+            dayOptions.push(`0${i}`)
+        else
+            dayOptions.push(`${i}`)
+    }
+
+    const monthOptions = [
+        {name: '-- Selecione o mês --', value: ''},
+        {name: 'Janeiro', value: '01'},
+        {name: 'Fevereiro', value: '02'},
+        {name: 'Março', value: '03'},
+        {name: 'Abril', value: '04'},
+        {name: 'Maio', value: '05'},
+        {name: 'Junho', value: '06'},
+        {name: 'Julho', value: '07'},
+        {name: 'Agosto', value: '08'},
+        {name: 'Setembro', value: '09'},
+        {name: 'Outubro', value: '10'},
+        {name: 'Novembro', value: '11'},
+        {name: 'Dezembro', value: '12'},
+    ]
+
     const indexOfLastMove = currentPage * itemsPerPage
     const indexOfFirstMove = indexOfLastMove - itemsPerPage
     const currentMoves = movements.slice(indexOfFirstMove, indexOfLastMove)
@@ -37,7 +64,10 @@ export default function MovimentHistory() {
     var filteredItems = []
     var searchFilteredItems = []
     var operationFilteredItems = []
-    var dateFilteredItems = []
+    var dayFilteredItems = []
+    var monthFilteredItems = []
+    var yearFilteredItems = []
+
     const lowerCaseSearch = search.toLowerCase()
     currentMoves.forEach(move => {
         if (move.description.toLowerCase().includes(lowerCaseSearch)) {
@@ -55,17 +85,37 @@ export default function MovimentHistory() {
         })
     }
 
-    if (!date) {
-        dateFilteredItems = operationFilteredItems
+    if (!day) {
+        dayFilteredItems = operationFilteredItems
     } else {
         operationFilteredItems.forEach(move => {
-            if (move.date.includes(date)) {
-                dateFilteredItems.push(move)
+            if (move.date.slice(8, 10).includes(day)) {
+                dayFilteredItems.push(move)
             }
         })
     }
 
-    filteredItems = dateFilteredItems
+    if (!month) {
+        monthFilteredItems = dayFilteredItems
+    } else {
+        dayFilteredItems.forEach(move => {
+            if (move.date.slice(5, 7).includes(month)) {
+                monthFilteredItems.push(move)
+            }
+        })
+    }
+
+    if (!year) {
+        yearFilteredItems = monthFilteredItems
+    } else {
+        monthFilteredItems.forEach(move => {
+            if (move.date.slice(0, 4).includes(year)) {
+                yearFilteredItems.push(move)
+            }
+        })
+    }
+
+    filteredItems = yearFilteredItems
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber)
@@ -91,24 +141,42 @@ export default function MovimentHistory() {
                     Descrição
                     <input type="text" placeholder="Buscar nessa página..." value={search} onChange={e => setSearch(e.target.value)} />
                 </label>
-                <label>
+                {/* <label>
                     Data da movimentação
                     <input type="date" defaultValue={date} max={today} onChange={e => setDate(e.target.value)} />
-                </label>
+                </label> */}
+                <FloatingLabel
+                    label="Dia"
+                    value={day}
+                    onChange={e => setDay(e.target.value)}
+                >
+                    <Form.Select>
+                        <option value='' >-- Selecione o dia --</option>
+                        {dayOptions.map(d => (
+                            <option key={d} value={d} >{d}</option>
+                        ))}
+                    </Form.Select>
+                </FloatingLabel>
+                <FloatingLabel
+                    label="Mês"
+                    value={month}
+                    onChange={e => setMonth(e.target.value)}
+                >
+                    <Form.Select>
+                        {monthOptions.map(m => (
+                            <option key={m.value} value={m.value} >{m.name}</option>
+                        ))}
+                    </Form.Select>
+                </FloatingLabel>
+                <FloatingLabel
+                    label="Ano"
+                    value={year}
+                    onChange={e => setYear(e.target.value)}
+                >
+                    <Form.Control type="number" length={4} placeholder="Informe o ano" min={2022} />
+                </FloatingLabel>
             </fieldset>
             <div>
-                <label>
-                    Itens por página:
-                    <select value={itemsPerPage} onChange={e => setItemsPerPage(e.target.value)}>
-                        <option value="">-- Itens por página --</option>
-                        <option value="1">1</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                </label>
                 <Pagination setItemsPerPage={setItemsPerPage} itemsPerPage={itemsPerPage} totalItems={movements.length} paginate={paginate} />
             </div>
             <button onClick={() => setShow(true)}>Apagar Histórico</button>
