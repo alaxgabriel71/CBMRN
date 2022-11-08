@@ -14,6 +14,8 @@ import { FloatingLabel, Form } from 'react-bootstrap'
 
 export default function MaterialsList() {    
     console.log(`materials list current page: ${localStorage.getItem('active')}`)
+    // const miliseconds = new Date()
+    // console.log(miliseconds.getTime())
     
     const [materials, setMaterials] = useState([])
     const [loading, setLoading] = useState(false)

@@ -4,7 +4,7 @@ const { v4: uuid } = require('uuid');
 module.exports = {
     async show(request, response){
         try{
-            const movements = await Movement.find().sort({_id: -1});
+            const movements = await Movement.find().sort({mili: -1});
             return response.status(200).json({ movements });
         } catch(err){
             return response.status(500).json({ error: err.message });
@@ -12,7 +12,7 @@ module.exports = {
     },
 
     async store(request, response){
-        const { operation, date, description } = request.body;
+        const { operation, date, mili, description } = request.body;
 
         if(!operation || !date || !description)
             return response.status(400).json({ message: "Movement operation, date or description not informed." });
@@ -21,6 +21,7 @@ module.exports = {
             _id: uuid(),
             operation,
             date,
+            mili,
             description
         });
 

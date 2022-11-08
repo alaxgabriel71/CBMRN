@@ -34,6 +34,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
         e.preventDefault()
         const finalQuantity = Number(materialQuantity) - Number(takeCareQuantity);
         const takeCareDate = date.slice(8, 10) + '/' + date.slice(5, 7) + '/' + date.slice(0, 4)
+        const mili = dateObject.getTime()
 
         if (finalQuantity === 0) {
             api.delete(`/materials/${materialId}`)
@@ -44,6 +45,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
                     api.post('/movements', {
                         operation: "Cautela",
                         date: today,
+                        mili,
                         description
                     })
                         .then(response => {
@@ -75,6 +77,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
                     api.post('/movements', {
                         operation: "Cautela",
                         date: today,
+                        mili,
                         description
                     })
                         .then(response => {

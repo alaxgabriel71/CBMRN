@@ -18,6 +18,7 @@ export default function DeleteMaterialModal({show, onClose, materialId, material
 
     const deleteMaterial = () => {
         console.log("tentando deletar...")
+        const mili = dateObject.getTime()
         api.delete(`/materials/${materialId}`)
             .then(response => console.log(response.status))
             .then(() => {
@@ -26,6 +27,7 @@ export default function DeleteMaterialModal({show, onClose, materialId, material
                 api.post('/movements', {
                     operation: "Exclusão",
                     date,
+                    mili,
                     description 
                 })
                     .then(response => {

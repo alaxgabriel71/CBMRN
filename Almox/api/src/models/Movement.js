@@ -13,6 +13,10 @@ const movementsSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    mili: {
+        type: Number,
+        required: true
+    },
     description: {
         type: String,
         required: true

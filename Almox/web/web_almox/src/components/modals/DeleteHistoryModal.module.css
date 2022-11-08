@@ -24,3 +24,8 @@
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
 }
+
+.modal_footer {
+    display: flex;
+    justify-content: flex-end;
+}

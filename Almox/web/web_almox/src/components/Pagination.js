@@ -7,6 +7,7 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
     // const [active, setActive] = useState(localStorage.getItem('active') || '1')
 
     const pageNumbers = []
+    var defaultCurrentPage = 1;
 
     function updatePageNumber() {
         for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
@@ -16,10 +17,9 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
             })
         }        
         localStorage.setItem('totalPages', `${pageNumbers.length}`)
-        const defaultCurrentPage = Number(localStorage.getItem('active')) <= Number(localStorage.getItem('totalPages')) ? localStorage.getItem('active') : '1'
+        defaultCurrentPage = Number(localStorage.getItem('active')) <= Number(localStorage.getItem('totalPages')) ? localStorage.getItem('active') : '1'
         localStorage.setItem(`active`, `${defaultCurrentPage}`)
         paginate(defaultCurrentPage)
-
     }
 
     updatePageNumber()

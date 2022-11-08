@@ -34,6 +34,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
 
     const updateMaterial = (event) => {
         event.preventDefault()
+        const mili = dateObject.getTime()
         var materialExists = false;
         var currentMaterial = {
             id: '',
@@ -73,6 +74,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
                 api.post('/movements', {
                     operation: "Atualização",
                     date,
+                    mili,
                     description
                 })
                     .then(response => {

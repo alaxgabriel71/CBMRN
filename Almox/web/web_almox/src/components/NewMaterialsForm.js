@@ -37,6 +37,7 @@ export default function NewMaterialsForm() {
 
     function insertNewMaterial(event) {
         event.preventDefault();
+        const mili = dateObject.getTime()
         var materialExists = false;
         var currentName = ''
         var currentQuantity = 0;
@@ -69,6 +70,7 @@ export default function NewMaterialsForm() {
                     api.post('/movements', {
                         operation: "Atualização",
                         date,
+                        mili,
                         description
                     })
                         .then(response => {
@@ -93,6 +95,7 @@ export default function NewMaterialsForm() {
                     api.post('/movements', {
                         operation: "Recebimento",
                         date,
+                        mili,
                         description
                     })
                         .then(response => {
