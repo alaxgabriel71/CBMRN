@@ -11,7 +11,8 @@
 }
 
 .modal_content {
-    width: 500px;
+    max-width: 90%;
+    min-width: 60%;
     background-color: #fff;
 }
 
@@ -19,8 +20,40 @@
     padding: 10px;
 }
 
-.modal_body {
+.modal_footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal_body form {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
     padding: 10px;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+}
+
+.modal_body h3{
+    margin: .5rem;
+}
+
+.DateFloatingLabel {
+    flex-grow: 1;
+    min-width: 150px;
+}
+
+.MilitaryFloatingLabel {
+    flex-grow: 1;
+    flex: 3;
+    min-width: 300px;
+}
+
+.QuantityFloatingLabel {
+    flex-grow: 1;
+    flex: 1;
+    min-width: 150px;
 }
