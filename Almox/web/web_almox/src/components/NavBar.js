@@ -38,13 +38,13 @@ function NavBar() {
       {/* [false, 'sm', 'md', 'lg', 'xl', 'xxl'] */}
       <Navbar key={expand} bg="danger" expand={expand} className="mb-3">
         <Container fluid>
-          <Navbar.Brand href="/">
+          <Navbar.Brand href="/" className="Nav-Brand">
             <img
               alt="Logo CBMRN"
               src="/cbmrn.svg"
               width="30"
               height="30"
-              // className="d-inline-block align-top" 
+              id="logoCbmrn"
             />{' '}
             2º SGB/1ºGBM
           </Navbar.Brand>
