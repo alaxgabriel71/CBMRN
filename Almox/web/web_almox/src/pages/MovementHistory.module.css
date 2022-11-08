@@ -33,8 +33,9 @@
     min-width: 25vw;
 }
 
-fieldset {
+.FieldsetContainer {
     display: flex;
     gap: .5rem;
     flex-wrap: wrap;
+    border: none;
 }

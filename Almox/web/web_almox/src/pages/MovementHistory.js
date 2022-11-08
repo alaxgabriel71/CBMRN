@@ -124,6 +124,14 @@ export default function MovimentHistory() {
         localStorage.setItem('active', `${pageNumber}`)
     }
 
+    function clearFilter() {
+        setOperation('');
+        setSearch('');
+        setDay('');
+        setMonth('');
+        setYear('');
+    }
+
     return (
         <article className={styles.MainContainer}>
             <h2>Histórico de Movimentações</h2>
@@ -132,67 +140,79 @@ export default function MovimentHistory() {
                     <Accordion.Item eventKey="1">
                         <Accordion.Header>Filtros</Accordion.Header>
                         <Accordion.Body>
-                            <fieldset>
-                                <div className={styles.DescriptionContainer}>
-                                    <FloatingLabel
-                                        label="Operação"
-                                        value={operation}
-                                        onChange={e => setOperation(e.target.value)}
-                                        className={styles.FloatingLabel}
+                            <form>
+                                <fieldset className={styles.FieldsetContainer}>
+                                    <div className={styles.DescriptionContainer}>
+                                        <FloatingLabel
+                                            label="Operação"
+                                            value={operation}
+                                            onChange={event => setOperation(event.target.value)}
+                                            className={styles.FloatingLabel}
+                                        >
+                                            <Form.Select>
+                                                <option value="">-- Escolha a operação --</option>
+                                                <option value="Recebimento">Recebimento</option>
+                                                <option value="Atualização">Atualização</option>
+                                                <option value="Devolução">Devolução</option>
+                                                <option value="Exclusão">Exclusão</option>
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                        <FloatingLabel
+                                            label="Buscar na descrição por..."
+                                            value={search}
+                                            onChange={event => setSearch(event.target.value)}
+                                            className={styles.FloatingLabel}
+                                        >
+                                            <Form.Control type="text" placehoder="Buscar na descrição por..." />
+                                        </FloatingLabel>
+                                    </div>
+                                    <div className={styles.DateContainer}>
+                                        <FloatingLabel
+                                            label="Dia"
+                                            value={day}
+                                            onChange={event => setDay(event.target.value)}
+                                            className={styles.FloatingLabel}
+                                        >
+                                            <Form.Select>
+                                                <option value='' >-- Selecione o dia --</option>
+                                                {dayOptions.map(d => (
+                                                    <option key={d} value={d} >{d}</option>
+                                                ))}
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                        <FloatingLabel
+                                            label="Mês"
+                                            value={month}
+                                            onChange={event => setMonth(event.target.value)}
+                                            className={styles.FloatingLabel}
+                                        >
+                                            <Form.Select>
+                                                {monthOptions.map(m => (
+                                                    <option key={m.value} value={m.value} >{m.name}</option>
+                                                ))}
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                        <FloatingLabel
+                                            label="Ano"
+                                            value={year}
+                                            onChange={event => setYear(event.target.value)}
+                                            className={styles.FloatingLabel}
+                                        >
+                                            <Form.Control type="number" length={4} placeholder="Informe o ano" min={2022} />
+                                        </FloatingLabel>
+                                    </div>
+                                    <Button
+                                        id="cancel"
+                                        className="btn btn-secondary"
+                                        type="reset"
+                                        onClick={() => {
+                                            clearFilter()
+                                        }}
                                     >
-                                        <Form.Select>
-                                            <option value="">-- Escolha a operação --</option>
-                                            <option value="Recebimento">Recebimento</option>
-                                            <option value="Atualização">Atualização</option>
-                                            <option value="Devolução">Devolução</option>
-                                            <option value="Exclusão">Exclusão</option>
-                                        </Form.Select>
-                                    </FloatingLabel>
-                                    <FloatingLabel
-                                        label="Buscar na descrição por..."
-                                        value={search}
-                                        onChange={e => setSearch(e.target.value)}
-                                        className={styles.FloatingLabel}
-                                    >
-                                        <Form.Control type="text" placehoder="Buscar na descrição por..." />
-                                    </FloatingLabel>
-                                </div>
-                                <div className={styles.DateContainer}>
-                                    <FloatingLabel
-                                        label="Dia"
-                                        value={day}
-                                        onChange={e => setDay(e.target.value)}
-                                        className={styles.FloatingLabel}
-                                    >
-                                        <Form.Select>
-                                            <option value='' >-- Selecione o dia --</option>
-                                            {dayOptions.map(d => (
-                                                <option key={d} value={d} >{d}</option>
-                                            ))}
-                                        </Form.Select>
-                                    </FloatingLabel>
-                                    <FloatingLabel
-                                        label="Mês"
-                                        value={month}
-                                        onChange={e => setMonth(e.target.value)}
-                                        className={styles.FloatingLabel}
-                                    >
-                                        <Form.Select>
-                                            {monthOptions.map(m => (
-                                                <option key={m.value} value={m.value} >{m.name}</option>
-                                            ))}
-                                        </Form.Select>
-                                    </FloatingLabel>
-                                    <FloatingLabel
-                                        label="Ano"
-                                        value={year}
-                                        onChange={e => setYear(e.target.value)}
-                                        className={styles.FloatingLabel}
-                                    >
-                                        <Form.Control type="number" length={4} placeholder="Informe o ano" min={2022} />
-                                    </FloatingLabel>
-                                </div>
-                            </fieldset>
+                                        Limpar Filtros
+                                    </Button>
+                                </fieldset>
+                            </form>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

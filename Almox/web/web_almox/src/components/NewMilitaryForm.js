@@ -81,8 +81,8 @@ export default function NewMilitaryList(){
                     </FloatingLabel>
                     <Button
                         type="reset"
-                        className="btn btn-secondary"
                         id="cancel"
+                        className="btn btn-secondary"
                         onClick={() => {
                             setRank('')
                             setQra('')
