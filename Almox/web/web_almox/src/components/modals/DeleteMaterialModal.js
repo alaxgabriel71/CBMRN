@@ -3,6 +3,7 @@ import { useState } from 'react'
 import styles from './DeleteMaterialModal.module.css'
 import api from '../../services/api'
 import StatusMessage from '../StatusMessage'
+import { Button } from 'react-bootstrap'
 
 export default function DeleteMaterialModal({show, onClose, materialId, materialName, materialQuantity}){
     var dateObject = new Date()
@@ -57,8 +58,8 @@ export default function DeleteMaterialModal({show, onClose, materialId, material
                     <p>Deseja excluir definitivamente da lista o material: {materialName}?</p>
                 </div>
                 <div className={styles.modal_footer}>
-                    <button onClick={onClose} className={styles.button}>Cancelar</button>
-                    <button onClick={deleteMaterial}>Excluir material</button>
+                    <Button id="cancel" variant="secondary" onClick={onClose} className={styles.button}>Cancelar</Button>
+                    <Button id="confirm" variant="danger" onClick={deleteMaterial}>Excluir material</Button>
                 </div>
             </div>
         </div>

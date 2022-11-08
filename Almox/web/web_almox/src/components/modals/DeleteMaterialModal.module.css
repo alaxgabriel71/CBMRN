@@ -19,6 +19,11 @@
     padding: 10px;
 }
 
+.modal_footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .modal_body {
     padding: 10px;
     border-top: 1px solid #eee;
