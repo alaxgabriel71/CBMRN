@@ -1,3 +1,5 @@
+@import '../../global.css';
+
 .modal {
     position: fixed;
     left: 0;
@@ -11,7 +13,7 @@
 }
 
 .modal_content {
-    width: 500px;
+    width: 90%;
     background-color: #fff;
 }
 
@@ -19,8 +21,30 @@
     padding: 10px;
 }
 
-.modal_body {
+.modal_footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal_body form {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
     padding: 10px;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+}
+
+.NameFloatingLabel {
+    flex-grow: 1;
+    flex: 3;
+    min-width: 300px;
+}
+
+.QuantityFloatingLabel {
+    flex-grow: 1;
+    flex: 1;
+    min-width: 150px;
 }
