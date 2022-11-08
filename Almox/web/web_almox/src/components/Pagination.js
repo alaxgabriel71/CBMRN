@@ -8,7 +8,7 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
 
     const pageNumbers = []
 
-    function setPageNumber() {
+    function updatePageNumber() {
         for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
             pageNumbers.push({
                 name: `${i}`,
@@ -22,7 +22,7 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
 
     }
 
-    setPageNumber()
+    updatePageNumber()
     // console.log(active)
 
     return (
