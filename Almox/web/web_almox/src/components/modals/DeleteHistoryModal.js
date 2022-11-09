@@ -8,7 +8,7 @@ import { Button } from 'react-bootstrap'
 export default function DeleteHistoryModal({ show, onClose }) {
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState('')
-    const [visible, setVisible] = useState(true)
+    const [visible, setVisible] = useState(false)
     const [variant, setVariant] = useState('')
 
     if (!show) return null

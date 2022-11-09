@@ -85,25 +85,27 @@ export default function NewMilitaryList() {
                     >
                         <Form.Control type="Text" placeholder="Informe o QRA do militar" />
                     </FloatingLabel>
-                    <Button
-                        type="reset"
-                        id="cancel"
-                        className="btn btn-secondary"
-                        onClick={() => {
-                            setRank('')
-                            setQra('')
-                        }}
-                    >
-                        Limpar
-                    </Button>
-                    <Button
-                        type="submit"
-                        disabled={!rank || !qra}
-                        className="btn btn-danger"
-                        id="confirm"
-                    >
-                        Cadastrar Militar
-                    </Button>
+                    <div className="form-btn-area">
+                        <Button
+                            type="reset"
+                            id="cancel"
+                            className="btn btn-secondary"
+                            onClick={() => {
+                                setRank('')
+                                setQra('')
+                            }}
+                        >
+                            Limpar
+                        </Button>
+                        <Button
+                            type="submit"
+                            disabled={!rank || !qra}
+                            className="btn btn-danger"
+                            id="confirm"
+                        >
+                            Cadastrar Militar
+                        </Button>
+                    </div>
                 </fieldset>
             </form>
         </>

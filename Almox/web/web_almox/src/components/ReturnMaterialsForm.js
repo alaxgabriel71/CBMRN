@@ -197,24 +197,28 @@ export default function ReturnMaterialsForm() {
                             onChange={(e) => setDate(e.target.value)}
                         />
                     </FloatingLabel>
-                    <Button
-                        id="cancel"
-                        className="btn btn-secondary"
-                        type="reset"
-                        onClick={() => {
-                            cancelSubmit()
-                        }}
-                    >
-                        Limpar
-                    </Button>
-                    <Button
-                        id="confirm"
-                        className="btn btn-danger"
-                        type="submmit"
-                        disabled={!newName || !newQuantity || !military}
-                    >
-                        Confirmar Retorno de Material
-                    </Button>
+                    <div className="form-btn-area">
+                        <Button
+                            id="cancel"
+                            className="form-btn"
+                            variant="secondary"
+                            type="reset"
+                            onClick={() => {
+                                cancelSubmit()
+                            }}
+                        >
+                            Limpar
+                        </Button>
+                        <Button
+                            id="confirm"
+                            className="form-btn"
+                            variant="danger"
+                            type="submmit"
+                            disabled={!newName || !newQuantity || !military}
+                        >
+                            Confirmar Retorno de Material
+                        </Button>
+                    </div>
                 </fieldset>
             </form>
         </div>

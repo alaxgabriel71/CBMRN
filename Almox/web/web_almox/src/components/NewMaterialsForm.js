@@ -165,24 +165,28 @@ export default function NewMaterialsForm() {
                     >
                         <Form.Control type="number" min="1" placeholder="Informe a quantidade do material" />
                     </FloatingLabel>
-                    <Button
-                        id="cancel"
-                        className="btn btn-secondary"
-                        type="reset"
-                        onClick={() => {
-                            cancelSubmit()
-                        }}
-                    >
-                        Limpar
-                    </Button>
-                    <Button
-                        type="submmit"
-                        disabled={!newName || !newQuantity}
-                        className="btn btn-danger"
-                        id="confirm"
-                    >
-                        Cadastrar Material
-                    </Button>
+                    <div className="form-btn-area">
+                        <Button
+                            id="cancel"
+                            className="form-btn"
+                            variant="secondary"
+                            type="reset"
+                            onClick={() => {
+                                cancelSubmit()
+                            }}
+                        >
+                            Limpar
+                        </Button>
+                        <Button
+                            type="submmit"
+                            disabled={!newName || !newQuantity}
+                            className="form-btn"
+                            variant="danger"
+                            id="confirm"
+                        >
+                            Cadastrar Material
+                        </Button>
+                    </div>
                 </fieldset>
             </form>
         </>

@@ -103,3 +103,8 @@ li label:focus {
     transition-duration: .05s;
     transition-delay: .05s;
 }
+
+.form-btn-area {
+    display: flex;
+    justify-content: flex-end;
+}
