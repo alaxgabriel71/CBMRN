@@ -5,9 +5,10 @@ import api from '../../services/api'
 import StatusMessage from '../StatusMessage'
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 
-export default function UpdateMaterialModal({ show, onClose, materialName, materialId, materialQuantity }) {
+export default function UpdateMaterialModal({ show, onClose, materialName, materialId, materialQuantity, materialRemark }) {
     const [newName, setNewName] = useState(materialName);
     const [newQuantity, setNewQuantity] = useState(materialQuantity);
+    const [newRemark, setNewRemark] = useState(materialRemark);
     const [materials, setMaterials] = useState([]);
     const [message, setMessage] = useState('');
     const [status, setStatus] = useState('');
@@ -41,12 +42,14 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
         var currentMaterial = {
             id: '',
             name: '',
-            quantity: 0
+            quantity: 0,
+            remark: ''
         }
 
         var updatedMaterial = {
             name: '',
-            quantity: ''
+            quantity: '',
+            remark: ''
         };
 
         materials.forEach(material => {
@@ -55,6 +58,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
                 currentMaterial.quantity = material.quantity
                 currentMaterial.id = material._id
                 currentMaterial.name = material.name
+                currentMaterial.remark = material.remark
             }
         })
 
@@ -67,7 +71,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
             return console.log(`Não foi possível concluir a edição, pois o material ${newName} já existe na lista de materiais.`)
         }
 
-        if (materialExists && currentMaterial.quantity === newQuantity) {
+        if (materialExists && currentMaterial.quantity === newQuantity && currentMaterial.remark === newRemark) {
             setStatus('Alerta')
             setMessage(`A atualização não foi concluída, pois as características informadas já são as existentes.`)
             setVariant('warning')
@@ -77,7 +81,8 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
 
         updatedMaterial = {
             name: newName[0].toUpperCase() + newName.substring(1).toLowerCase(),
-            quantity: newQuantity
+            quantity: newQuantity,
+            remark: newRemark
         }
 
         api.put(`/materials/${materialId}`, updatedMaterial)
@@ -89,7 +94,8 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
                     operation: "Atualização",
                     date,
                     mili,
-                    description
+                    description,
+                    remark: newRemark
                 })
                     .then(response => {
                         console.log(response.status)
@@ -143,6 +149,14 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
                                 className={styles.NameFloatingLabel}
                             >
                                 <Form.Control type="text" defaultValue={materialName} />
+                            </FloatingLabel>
+                            <FloatingLabel
+                                label="Observações"
+                                value={newRemark}
+                                onChange={e => setNewRemark(e.target.value)}
+                                className={styles.NameFloatingLabel}
+                            >
+                                <Form.Control type="text-area" defaultValue={materialRemark} />
                             </FloatingLabel>
                         </form>
                     </div>

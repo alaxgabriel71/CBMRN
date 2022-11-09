@@ -10,6 +10,7 @@ export default function NewMaterialsForm() {
     const [materials, setMaterials] = useState([]);
     const [newName, setNewName] = useState();
     const [newQuantity, setNewQuantity] = useState();
+    const [newRemark, setNewRemark] = useState('');
     const [message, setMessage] = useState('');
     const [status, setStatus] = useState('');
     const [variant, setVariant] = useState('');
@@ -44,6 +45,7 @@ export default function NewMaterialsForm() {
         var currentName = ''
         var currentQuantity = 0;
         var currentMaterialID = '';
+        var currentRemark = '';
         var description = '';
 
 
@@ -52,6 +54,7 @@ export default function NewMaterialsForm() {
                 materialExists = true
                 currentName = material.name
                 currentQuantity = material.quantity
+                currentRemark = material.remark
                 currentMaterialID = material._id
                 console.log(`Quantidade atual = ${currentQuantity}; Nova quantidade = ${newQuantity}`)
             }
@@ -60,10 +63,14 @@ export default function NewMaterialsForm() {
 
         if (materialExists) {
             const totalQuantity = Number(currentQuantity) + Number(newQuantity)
-            console.log(totalQuantity)
+            var finalRemark = ''
+            if(newRemark) finalRemark = newRemark
+            else finalRemark = currentRemark
+            console.log(`finalRemark = ${finalRemark}`)
             const newMaterial = {
                 name: currentName,
-                quantity: totalQuantity
+                quantity: totalQuantity,
+                remark: finalRemark
             }
             api.put(`/materials/${currentMaterialID}`, newMaterial)
                 .then((response) => {
@@ -73,7 +80,8 @@ export default function NewMaterialsForm() {
                         operation: "Atualização",
                         date,
                         mili,
-                        description
+                        description,
+                        remark: finalRemark
                     })
                         .then(response => {
                             console.log(response.status)
@@ -99,9 +107,11 @@ export default function NewMaterialsForm() {
                 })
         }
         else {
+            console.log(newRemark)
             const newMaterial = {
                 name: newName[0].toUpperCase() + newName.substring(1).toLowerCase(),
-                quantity: newQuantity
+                quantity: newQuantity,
+                remark: newRemark
             }
             api.post('/materials', newMaterial)
                 .then(response => {
@@ -112,7 +122,8 @@ export default function NewMaterialsForm() {
                         operation: "Recebimento",
                         date,
                         mili,
-                        description
+                        description,
+                        remark: newRemark
                     })
                         .then(response => {
                             console.log(response.status)
@@ -165,6 +176,14 @@ export default function NewMaterialsForm() {
                     >
                         <Form.Control type="number" min="1" placeholder="Informe a quantidade do material" />
                     </FloatingLabel>
+                    <FloatingLabel
+                        label="Obeservações"
+                        className="mb-3"
+                        value={newRemark}
+                        onChange={e => setNewRemark(e.target.value)}
+                    >
+                        <Form.Control type="text-area" placeholder="Se houverem observações, escreva aqui." />
+                    </FloatingLabel>
                     <div className="form-btn-area">
                         <Button
                             id="cancel"
@@ -179,7 +198,7 @@ export default function NewMaterialsForm() {
                         </Button>
                         <Button
                             type="submmit"
-                            disabled={!newName || !newQuantity}
+                            disabled={!newName || !newQuantity || !newRemark}
                             className="form-btn"
                             variant="danger"
                             id="confirm"

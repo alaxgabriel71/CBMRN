@@ -14,6 +14,7 @@ export default function ReturnMaterialsForm() {
     const [materials, setMaterials] = useState([]);
     const [newName, setNewName] = useState();
     const [newQuantity, setNewQuantity] = useState();
+    const [newRemark, setNewRemark] = useState('')
     const [options, setOptions] = useState([])
     const [military, setMilitary] = useState()
     const [date, setDate] = useState(today)
@@ -54,6 +55,7 @@ export default function ReturnMaterialsForm() {
         var currentName = '';
         var currentQuantity = 0;
         var currentMaterialID = '';
+        var currentRemark = '';
         var description = '';
         const returnDate = date.slice(8, 10) + '/' + date.slice(5, 7) + '/' + date.slice(0, 4)
 
@@ -63,6 +65,7 @@ export default function ReturnMaterialsForm() {
                 materialExists = true
                 currentName = material.name
                 currentQuantity = material.quantity
+                currentRemark = material.remark
                 currentMaterialID = material._id
                 console.log(`Quantidade atual = ${currentQuantity}; Nova quantidade = ${newQuantity}`)
             }
@@ -72,9 +75,13 @@ export default function ReturnMaterialsForm() {
         if (materialExists) {
             const totalQuantity = Number(currentQuantity) + Number(newQuantity)
             console.log(totalQuantity)
+            var finalRemark = ''
+            if(!newRemark) finalRemark = currentRemark
+            else finalRemark = currentRemark + ' Obs.2: ' + newRemark
             const newMaterial = {
                 name: currentName,
-                quantity: totalQuantity
+                quantity: totalQuantity,
+                remark: finalRemark
             }
             api.put(`/materials/${currentMaterialID}`, newMaterial)
                 .then((response) => {
@@ -84,7 +91,8 @@ export default function ReturnMaterialsForm() {
                         operation: "Devolução",
                         date,
                         mili,
-                        description
+                        description,
+                        remark: finalRemark
                     })
                         .then(response => {
                             console.log(response.status)
@@ -112,7 +120,8 @@ export default function ReturnMaterialsForm() {
         else {
             const newMaterial = {
                 name: newName[0].toUpperCase() + newName.substring(1).toLowerCase(),
-                quantity: newQuantity
+                quantity: newQuantity,
+                remark: newRemark
             }
             api.post('/materials', newMaterial)
                 .then(response => {
@@ -123,7 +132,8 @@ export default function ReturnMaterialsForm() {
                         operation: "Devolução",
                         date,
                         mili,
-                        description
+                        description,
+                        remark: newRemark
                     })
                         .then(response => {
                             console.log(response.status)
@@ -195,6 +205,17 @@ export default function ReturnMaterialsForm() {
                             defaultValue={date}
                             max={today}
                             onChange={(e) => setDate(e.target.value)}
+                        />
+                    </FloatingLabel>
+                    <FloatingLabel
+                        label="Observações"
+                        value={newRemark}
+                        onChange={e => setNewRemark(e.target.value)}
+                        className="mb-3"
+                    >
+                        <Form.Control 
+                            type="text-area" 
+                            placeholder="Se houverem observações, escreva aqui."
                         />
                     </FloatingLabel>
                     <div className="form-btn-area">

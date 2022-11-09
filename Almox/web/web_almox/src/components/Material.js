@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { FaTrash, FaPen, FaBoxOpen } from 'react-icons/fa'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,11 +9,17 @@ import UpdateMaterialModal from './modals/UpdateMaterialModal'
 import DeleteMaterialModal from './modals/DeleteMaterialModal'
 import TakeCareMaterialModal from './modals/TakeCareMaterialModal'
 
-export default function Material({ name, quantity, id }) {
+export default function Material({ name, quantity, remark, id }) {
     const [isHovering, setIsHovering] = useState(false)
     const [showUpdate, setShowUpdate] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [showTakeCare, setShowTakeCare] = useState(false);
+    const [remarkExists, setRemarkExists] = useState(false);
+
+    console.log(remark)
+    useEffect(()=>{
+        if(remark !== '') setRemarkExists(true)
+    }, [remark])
 
     const handleMouseOver = () => {
         setIsHovering(true)
@@ -38,7 +44,7 @@ export default function Material({ name, quantity, id }) {
     return (
         <div className={styles.Material_container} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
             <div className={styles.Material_item}>
-                <p className={styles.Title}>{quantity} | {name}</p>
+                <p className={styles.Title}>{quantity} | {name} {(isHovering && remarkExists) && (`| Obs.: ${remark}`)}</p>
                 {isHovering && (
                     <div className={styles.Material_options}>
                         <span className={styles.span_button} data-toggle="popover" data-trigger="hover" title="Cautelar material">
@@ -65,6 +71,7 @@ export default function Material({ name, quantity, id }) {
                 materialName={name}
                 materialId={id}
                 materialQuantity={quantity}
+                materialRemark={remark}
             />
             <DeleteMaterialModal
                 onClose={() => setShowDelete(false)}

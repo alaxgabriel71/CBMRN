@@ -34,6 +34,10 @@ export default function MovimentHistory() {
         setLoading(false)
     }, []);
     // console.log(movements)div
+    movements.forEach(move => {
+        if(move.remark)
+            move.description = move.description + " *" + move.remark
+    })
 
     const dayOptions = []
     for (let i = 1; i <= 31; i++) {

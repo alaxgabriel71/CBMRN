@@ -38,6 +38,8 @@ export default function MaterialsList() {
         setLoading(false)
     }, [])
 
+    console.log(materials)
+
     const indexOfLastMaterial = currentPage * itemsPerPage
     const indexOfFirstMaterial = indexOfLastMaterial - itemsPerPage
     const currentMaterials = materials.slice(indexOfFirstMaterial, indexOfLastMaterial)
@@ -85,6 +87,7 @@ export default function MaterialsList() {
                             id={material._id}
                             name={material.name}
                             quantity={material.quantity}
+                            remark={material.remark}
                         />
                     </li>
                 ))}
