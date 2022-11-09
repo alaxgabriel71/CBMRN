@@ -17,9 +17,10 @@
     border-left: .5px solid rgba(0, 0, 0, 0.1);
     background-color: var(--theme-light-danger);
     color: var(--theme-light);
-    transition-property: background-color;
-    transition-duration: .07s;
-    transition-delay: .07s;
+    transition: var(--theme-transition);
+    transition-duration: var(--theme-transition-duration);
+    transition-delay: var(--theme-transition-delay);
+    transition-property: var(--theme-transition-property);
 }
 
 .Title {

@@ -7,6 +7,11 @@
     --theme-gray: #6c757d;
     --theme-dark: #212529;
     --theme-danger-shadow: 0 0 0 0.25rem rgb(220 53 69/25%);
+    --theme-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    --theme-transition-duration: 0.15s, 0.15s, 0.15s;
+    --theme-transition-timing-function: ease-in-out, ease-in-out, ease-in-out;
+    --theme-transition-delay: 0s, 0s, 0s;
+    --theme-transitin-property: color, background-color, border-color, box-shadow;
 }
 
 div,
@@ -99,9 +104,10 @@ li label:focus {
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
     border-radius: .3rem;
     color: var(--theme-light);
-    transition-property: color;
-    transition-duration: .05s;
-    transition-delay: .05s;
+    transition: var(--theme-transition);
+    transition-duration: var(--theme-transition-duration);
+    transition-delay: var(--theme-transition-delay);
+    transition-property: var(--theme-transition-property);
 }
 
 .form-btn-area {
