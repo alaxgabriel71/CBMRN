@@ -1,7 +1,7 @@
 :root {
     --theme-danger: #dc3545;
     --theme-dark-danger: #b02a37;
-    --theme-light-danger: #fff1e7;
+    --theme-light-danger: #dc3546b2;
     --theme-light: #f8f9fa;
     --theme-light-gray: #dee2e6;
     --theme-gray: #6c757d;
@@ -66,7 +66,7 @@ li label:focus {
 
 .accordion-button[aria-expanded="true"] {
     background-color: var(--theme-light-danger);
-    color: var(--theme-dark);
+    color: var(--theme-light);
 }
 
 /* .accordion-button[aria-expanded="true"]::after {
@@ -91,7 +91,7 @@ li label:focus {
 
 .Nav-Brand {
     padding: .5rem;
-    color: var(--theme-light-danger);
+    color: var(--theme-light-gray);
 }
 
 .Nav-Brand:hover {
@@ -101,5 +101,5 @@ li label:focus {
     color: var(--theme-light);
     transition-property: color;
     transition-duration: .05s;
-    transition-delay: .03s;
+    transition-delay: .05s;
 }
