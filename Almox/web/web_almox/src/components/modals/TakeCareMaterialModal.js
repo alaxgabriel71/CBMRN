@@ -15,8 +15,10 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
     const [options, setOptions] = useState([])
     const [military, setMilitary] = useState()
     const [date, setDate] = useState(today)
-    const [message, setMessage] = useState(false)
-    const [status, setStatus] = useState()
+    const [message, setMessage] = useState('')
+    const [status, setStatus] = useState('')
+    const [variant, setVariant] = useState('')
+    const [visible, setVisible] = useState(false)
 
     useEffect(() => {
         api.get('/military')
@@ -51,18 +53,24 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
                         .then(response => {
                             console.log(response.status)
                             setStatus('Sucesso')
-                            setMessage(true)
+                            setMessage('A cautela foi registrada.')
+                            setVariant('success')
+                            setVisible(true)
                         })
                         .catch(err => {
                             console.error(err)
                             setStatus('Falha')
-                            setMessage(true)
+                            setMessage('Não foi possível realizar a operação.')
+                            setVariant('dark')
+                            setVisible(true)
                         })
                 })
                 .catch(err => {
                     console.error(err)
                     setStatus('Falha')
-                    setMessage(true)
+                    setMessage('Não foi possível realizar a operação.')
+                    setVariant('dark')
+                    setVisible(true)
                 })
         }
         else {
@@ -83,14 +91,24 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
                         .then(response => {
                             console.log(response.status)
                             setStatus('Sucesso')
-                            setMessage(true)
+                            setMessage('A cautela foi registrada.')
+                            setVariant('success')
+                            setVisible(true)
                         })
-                        .catch(err => console.error(err))
+                        .catch(err => {
+                            console.error(err)
+                            setStatus('Falha')
+                            setMessage('Não foi possível realizar a operação.')
+                            setVariant('dark')
+                            setVisible(true)
+                        })
                 })
                 .catch(err => {
                     console.error(err)
-                    setStatus('Sucesso')
-                    setMessage(true)
+                    setStatus('Falha')
+                    setMessage('Não foi possível realizar a operação.')
+                    setVariant('dark')
+                    setVisible(true)
                 })
             setMessage(false)
         }
@@ -101,7 +119,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
         <div className={styles.modal}>
             <div className={styles.modal_content}>
                 <div className={styles.modal_header}>
-                    <StatusMessage message={message} status={status} />
+                    <StatusMessage show={visible} variant={variant} message={message} status={status} />
                     <h4 className={styles.modal_title}>Cautelar Material</h4>
                 </div>
                 <div className={styles.modal_body}>

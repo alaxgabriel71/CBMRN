@@ -17,8 +17,10 @@ export default function ReturnMaterialsForm() {
     const [options, setOptions] = useState([])
     const [military, setMilitary] = useState()
     const [date, setDate] = useState(today)
-    const [message, setMessage] = useState(false)
+    const [message, setMessage] = useState('')
     const [status, setStatus] = useState('')
+    const [variant, setVariant] = useState('')
+    const [visible, setVisible] = useState(false)
 
     console.log(date)
 
@@ -87,27 +89,36 @@ export default function ReturnMaterialsForm() {
                         .then(response => {
                             console.log(response.status)
                             setStatus('Sucesso')
-                            setMessage(true)
+                            setMessage('A devolução foi registrada.')
+                            setVariant('success')
+                            setVisible(true)
                         })
                         .catch(err => {
                             setStatus('Falha')
-                            setMessage(true)
+                            setMessage('Não foi possível realizar a operação.')
+                            setVariant('dark')
+                            setVisible(true)
                             console.error(err)
                         })
-                    setMessage(false)
                 })
-                .catch(err => console.error(err))
+                .catch(err => {
+                    console.error(err)
+                    setStatus('Falha')
+                    setMessage('Não foi possível realizar a operação.')
+                    setVariant('dark')
+                    setVisible(true)
+                })
         }
         else {
             const newMaterial = {
-                name: newName,
+                name: newName[0].toUpperCase() + newName.substring(1).toLowerCase(),
                 quantity: newQuantity
             }
             api.post('/materials', newMaterial)
                 .then(response => {
                     console.log("STATUS: " + response.status)
 
-                    description = `${newQuantity}x ${newName} foi(foram) devolvido(s) ao almoxarifado pelo ${military} em ${today}`
+                    description = `${newQuantity}x ${newName[0].toUpperCase() + newName.substring(1).toLowerCase()} foi(foram) devolvido(s) ao almoxarifado pelo ${military} em ${returnDate}`
                     api.post('/movements', {
                         operation: "Devolução",
                         date,
@@ -117,29 +128,34 @@ export default function ReturnMaterialsForm() {
                         .then(response => {
                             console.log(response.status)
                             setStatus('Sucesso')
-                            setMessage(true)
+                            setMessage('A devolução foi registrada.')
+                            setVariant('success')
+                            setVisible(true)
                         })
                         .catch(err => {
                             setStatus('Falha')
-                            setMessage(true)
+                            setMessage('Não foi possível realizar a operação.')
+                            setVariant('dark')
+                            setVisible(true)
                             console.error(err)
                         })
-                    setMessage(false)
                 })
                 .catch(err => {
                     console.log("error: " + err)
                     setStatus('Falha')
-                    setMessage(true)
+                    setMessage('Não foi possível realizar a operação.')
+                    setVariant('dark')
+                    setVisible(true)
                 })
-            setMessage(false)
         }
+        setVisible(false)
     }
 
     return (
         <div className={styles.FormContainer}>
-            <StatusMessage message={message} status={status} />
             <form id="new-material-form" method="get" onSubmit={insertNewMaterial}>
                 <fieldset>
+                    <StatusMessage show={visible} variant={variant} message={message} status={status} />
                     <h5 className={styles.FieldsetTitle}>Material a ser devolvido</h5>
                     <FloatingLabel
                         label="Nome do Material"

@@ -6,8 +6,10 @@ import StatusMessage from '../StatusMessage'
 import { Button } from 'react-bootstrap'
 
 export default function DeleteHistoryModal({ show, onClose }) {
-    const [message, setMessage] = useState(false)
-    const [status, setStatus] = useState()
+    const [message, setMessage] = useState('')
+    const [status, setStatus] = useState('')
+    const [visible, setVisible] = useState(true)
+    const [variant, setVariant] = useState('')
 
     if (!show) return null
 
@@ -16,20 +18,24 @@ export default function DeleteHistoryModal({ show, onClose }) {
             .then(response => {
                 console.log(response.status)
                 setStatus('Sucesso')
-                setMessage(true)
+                setMessage('Histórico de movimentações foi apagado.')
+                setVariant('success')
+                setVisible(true)
             })
             .catch(err => {
                 console.error(err)
                 setStatus('Falha')
-                setMessage(true)
+                setMessage('Não foi possível apagar o histórico. Tente novamente.')
+                setVariant('dark')
+                setVisible(true)
             })
-        setMessage(false)
+        setVisible(false)
     }
     return (
         <div className={styles.modal}>
             <div className={styles.modal_content}>
                 <div className={styles.modal_header}>
-                    <StatusMessage message={message} status={status} />
+                    <StatusMessage show={visible} variant={variant} message={message} status={status} />
                     <h4 className={styles.modal_title}>Apagar histórico de movimentações</h4>
                 </div>
                 <div className={styles.modal_body}>

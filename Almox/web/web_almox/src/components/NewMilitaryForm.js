@@ -6,28 +6,30 @@ import { Button, FloatingLabel, Form } from 'react-bootstrap'
 
 import styles from './NewMilitaryForm.module.css'
 
-export default function NewMilitaryList(){
+export default function NewMilitaryList() {
     const options = [
-        {value: 1, rank: "SD"},
-        {value: 2, rank: "CB"},
-        {value: 3, rank: "3º SGT"},
-        {value: 4, rank: "2º SGT"},
-        {value: 5, rank: "1º SGT"},
-        {value: 6, rank: "ST"},
-        {value: 7, rank: "ST"},
-        {value: 8, rank: "CAD"},
-        {value: 9, rank: "1º TEN"},
-        {value: 10, rank: "2º TEN"},
-        {value: 11, rank: "CAP"},
-        {value: 12, rank: "MAJ"},
-        {value: 13, rank: "TEN CEL"},
-        {value: 14, rank: "CEL"},
+        { value: 1, rank: "SD" },
+        { value: 2, rank: "CB" },
+        { value: 3, rank: "3º SGT" },
+        { value: 4, rank: "2º SGT" },
+        { value: 5, rank: "1º SGT" },
+        { value: 6, rank: "ST" },
+        { value: 7, rank: "ST" },
+        { value: 8, rank: "CAD" },
+        { value: 9, rank: "1º TEN" },
+        { value: 10, rank: "2º TEN" },
+        { value: 11, rank: "CAP" },
+        { value: 12, rank: "MAJ" },
+        { value: 13, rank: "TEN CEL" },
+        { value: 14, rank: "CEL" },
     ]
 
     const [rank, setRank] = useState()
     const [qra, setQra] = useState()
-    const [message, setMessage] = useState(false)
-    const [status, setStatus] = useState()
+    const [message, setMessage] = useState('')
+    const [status, setStatus] = useState('')
+    const [variant, setVariant] = useState('')
+    const [visible, setVisible] = useState(false)
 
     const registerMilitary = (e) => {
         e.preventDefault()
@@ -39,22 +41,26 @@ export default function NewMilitaryList(){
         })
             .then(response => {
                 setStatus('Sucesso')
-                setMessage(true)
+                setMessage('O militar foi registrado.')
+                setVariant('success')
+                setVisible(true)
                 return response.status
             })
             .catch(err => {
                 console.error(err)
                 setStatus('Falha')
-                setMessage(true)
+                setMessage('Não foi possível realizar a operação.')
+                setVariant('dark')
+                setVisible(true)
             })
-        setMessage(false)
+        setVisible(false)
     }
-    
-    return(
+
+    return (
         <>
-            <StatusMessage message={message} status={status}/>
             <form onSubmit={registerMilitary}>
                 <fieldset>
+                    <StatusMessage show={visible} variant={variant} message={message} status={status} />
                     <h5 className={styles.Form_title} >Cadastrar Novo Militar</h5>
                     <FloatingLabel>
                         <Form.Select
@@ -90,8 +96,8 @@ export default function NewMilitaryList(){
                     >
                         Limpar
                     </Button>
-                    <Button 
-                        type="submit" 
+                    <Button
+                        type="submit"
                         disabled={!rank || !qra}
                         className="btn btn-danger"
                         id="confirm"

@@ -1,32 +1,39 @@
 import { useState, useEffect } from 'react'
+import { Alert } from 'react-bootstrap'
 
-export default function StatusMessage({message, status}){
-    const [visible, setVisible] = useState(true)
-    
+export default function StatusMessage({ message, status, variant, show }) {
+    const [visible, setVisible] = useState(false)
+
     // console.log(`Visible = ${visible}; message = ${message}`)
-    
-    useEffect(() => { 
-        if(!message){
+
+    useEffect(() => {
+        if (!show) {
             setVisible(false)
             return
         } else {
             setVisible(true)
 
-            const timer = setTimeout(() => {
-                setVisible(false)
-                window.location.reload(false)
-            }, 1500)
-    
-            return () => clearTimeout(timer)
+            if (status === 'Sucesso') {
+                const timer = setTimeout(() => {
+                    setVisible(false)
+                    window.location.reload(false)
+                }, 1500)
+
+                return () => clearTimeout(timer)
+            }
         }
 
 
-    }, [message])
-    
-    return(
+    }, [show, status])
+
+
+    return (
         <>
             {visible && (
-                <h4>{status} na operação</h4>
+                <Alert variant={variant}>
+                    <Alert.Heading>{status}</Alert.Heading>
+                    <p>{message}</p>
+                </Alert>
             )}
         </>
     )

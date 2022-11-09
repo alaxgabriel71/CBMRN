@@ -9,8 +9,10 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
     const [newName, setNewName] = useState(materialName);
     const [newQuantity, setNewQuantity] = useState(materialQuantity);
     const [materials, setMaterials] = useState([]);
-    const [message, setMessage] = useState(false);
-    const [status, setStatus] = useState();
+    const [message, setMessage] = useState('');
+    const [status, setStatus] = useState('');
+    const [variant, setVariant] = useState('');
+    const [visible, setVisible] = useState(false);
 
     var dateObject = new Date()
     const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
@@ -58,10 +60,18 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
 
         if (materialExists && (materialId !== currentMaterial.id)) {
             event.preventDefault();
+            setStatus('Alerta')
+            setMessage(`Não foi possível concluir a edição, pois o material ${newName} já existe na lista de materiais.`)
+            setVariant('warning')
+            setVisible(true)
             return console.log(`Não foi possível concluir a edição, pois o material ${newName} já existe na lista de materiais.`)
         }
 
-        if(materialExists && currentMaterial.quantity === materialQuantity){
+        if (materialExists && currentMaterial.quantity === newQuantity) {
+            setStatus('Alerta')
+            setMessage(`A atualização não foi concluída, pois as características informadas já são as existentes.`)
+            setVariant('warning')
+            setVisible(true)
             return console.log(`A atualização não foi concluída, pois as características informadas já são as existentes.`)
         }
 
@@ -84,16 +94,26 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
                     .then(response => {
                         console.log(response.status)
                         setStatus('Sucesso')
-                        setMessage(true)
+                        setMessage('A atualização foi registrada.')
+                        setVariant('success')
+                        setVisible(true)
                     })
                     .catch(err => {
                         console.error(err)
                         setStatus('Falha')
-                        setMessage(true)
+                        setMessage('Não foi possível realizar a operação.')
+                        setVariant('dark')
+                        setVisible(true)
                     })
             })
-            .catch(err => console.error(err))
-        setMessage(false)
+            .catch(err => {
+                console.error(err)
+                setStatus('Falha')
+                setMessage('Não foi possível realizar a operação.')
+                setVariant('dark')
+                setVisible(true)
+            })
+        setVisible(false)
     }
 
     return (
@@ -101,7 +121,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
             <div className={styles.modal}>
                 <div className={styles.modal_content}>
                     <div className={styles.modal_header}>
-                        <StatusMessage message={message} status={status} />
+                        <StatusMessage show={visible} variant={variant} message={message} status={status} />
                         <h4 className={styles.modal_title}>Editar Material</h4>
                     </div>
                     <div className={styles.modal_body}>

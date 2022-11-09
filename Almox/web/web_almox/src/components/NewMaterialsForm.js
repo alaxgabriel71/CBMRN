@@ -10,8 +10,10 @@ export default function NewMaterialsForm() {
     const [materials, setMaterials] = useState([]);
     const [newName, setNewName] = useState();
     const [newQuantity, setNewQuantity] = useState();
-    const [message, setMessage] = useState(false);
-    const [status, setStatus] = useState();
+    const [message, setMessage] = useState('');
+    const [status, setStatus] = useState('');
+    const [variant, setVariant] = useState('');
+    const [visible, setVisible] = useState(false);
 
     var dateObject = new Date()
     const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
@@ -76,11 +78,25 @@ export default function NewMaterialsForm() {
                         .then(response => {
                             console.log(response.status)
                             setStatus('Sucesso')
-                            setMessage(true)
+                            setMessage('O material já existia e foi atualizado e registrado com sucesso.')
+                            setVariant('success')
+                            setVisible(true)
                         })
-                        .catch(err => console.error(err))
+                        .catch(err => {
+                            console.error(err)
+                            setStatus('Falha')
+                            setMessage('Não foi possível realizar a operação.')
+                            setVariant('dark')
+                            setVisible(true)
+                        })
                 })
-                .catch(err => console.error(err))
+                .catch(err => {
+                    console.error(err)
+                    setStatus('Falha')
+                    setMessage('Não foi possível realizar a operação.')
+                    setVariant('dark')
+                    setVisible(true)
+                })
         }
         else {
             const newMaterial = {
@@ -101,31 +117,37 @@ export default function NewMaterialsForm() {
                         .then(response => {
                             console.log(response.status)
                             setStatus('Sucesso')
-                            setMessage(true)
+                            setMessage('O recebimento foi registrado.')
+                            setVariant('success')
+                            setVisible(true)
                         })
                         .catch(err => {
                             console.error(err)
                             setStatus('Falha')
-                            setMessage(true)
+                            setMessage('Não foi possível realizar a operação.')
+                            setVariant('dark')
+                            setVisible(true)
                         })
                 })
                 .catch(err => {
                     console.log("error: " + err)
                     setStatus('Falha')
-                    setMessage(true)
+                    setMessage('Não foi possível realizar a operação.')
+                    setVariant('dark')
+                    setVisible(true)
                 })
         }
-        setMessage(false)
+        setVisible(false)
     }
 
     return (
         <>
-            <StatusMessage message={message} status={status} />
             <form id="new-material-form" method="get" onSubmit={(e) => {
                 insertNewMaterial(e);
                 cancelSubmit();
             }}>
                 <fieldset>
+                    <StatusMessage show={visible} variant={variant} message={message} status={status} />
                     <h5 className={styles.FieldsetTitle}>Cadastrar Novo Material</h5>
                     <FloatingLabel
                         label="Nome do Material"
@@ -144,8 +166,8 @@ export default function NewMaterialsForm() {
                         <Form.Control type="number" min="1" placeholder="Informe a quantidade do material" />
                     </FloatingLabel>
                     <Button
-                        id="cancel" 
-                        className="btn btn-secondary" 
+                        id="cancel"
+                        className="btn btn-secondary"
                         type="reset"
                         onClick={() => {
                             cancelSubmit()
