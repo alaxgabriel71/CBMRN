@@ -50,7 +50,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
         materials.forEach(material => {
             if (material.name.toLowerCase() === newName.toLowerCase()) {
                 materialExists = true
-                currentMaterial.name = material.name
+                currentMaterial.quantity = material.quantity
                 currentMaterial.id = material._id
                 currentMaterial.name = material.name
             }
@@ -59,6 +59,10 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
         if (materialExists && (materialId !== currentMaterial.id)) {
             event.preventDefault();
             return console.log(`Não foi possível concluir a edição, pois o material ${newName} já existe na lista de materiais.`)
+        }
+
+        if(materialExists && currentMaterial.quantity === materialQuantity){
+            return console.log(`A atualização não foi concluída, pois as características informadas já são as existentes.`)
         }
 
         updatedMaterial = {
