@@ -45,7 +45,7 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
                     <option value="25">25</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
-                    <option value={totalItems}>Todos</option>
+                    <option value={totalItems}>{`Todos (${totalItems})`}</option>
                 </Form.Select>
             </FloatingLabel>
             <ul className={styles.Navbar_item}>
