@@ -15,11 +15,11 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
                 name: `${i}`,
                 value: `${i}`
             })
-        }        
+        }
         localStorage.setItem('totalPages', `${pageNumbers.length}`)
-        defaultCurrentPage = Number(localStorage.getItem('active')) <= Number(localStorage.getItem('totalPages')) ? localStorage.getItem('active') : '1'
-        localStorage.setItem(`active`, `${defaultCurrentPage}`)
-        paginate(defaultCurrentPage)
+        // defaultCurrentPage = Number(localStorage.getItem('active')) <= Number(localStorage.getItem('totalPages')) ? localStorage.getItem('active') : '1'
+        // localStorage.setItem(`active`, `${defaultCurrentPage}`)
+        // return defaultCurrentPage
     }
 
     updatePageNumber()
@@ -33,7 +33,9 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
                     defaultValue={itemsPerPage}
                     onChange={e => {
                         setItemsPerPage(e.target.value)
-                        localStorage.setItem('itemsPerPage', `${e.target.value}`)
+                        localStorage.setItem('itemsPerPage', `${e.target.value}`)                        
+                        paginate(1)
+                        console.log('opa!')
                     }}
                     className={styles.FormSelect}
                 >
@@ -55,7 +57,7 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
                             value={number.value}
                             onClick={() => {
                                 paginate(number.value)
-                                // setActive(number.value)
+                                localStorage.setItem('active', `${number.value}`)
                             }}
                             type="radio"
                             name="radio"
