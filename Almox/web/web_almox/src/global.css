@@ -114,3 +114,8 @@ li label:focus {
     display: flex;
     justify-content: flex-end;
 }
+
+.loading-area {
+    display: flex;
+    gap: .3rem;
+}
