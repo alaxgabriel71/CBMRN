@@ -12,7 +12,7 @@ module.exports = {
     },
 
     async store(request, response){
-        const { operation, date, mili, description } = request.body;
+        const { operation, date, mili, description, remark } = request.body;
 
         if(!operation || !date || !description)
             return response.status(400).json({ message: "Movement operation, date or description not informed." });
@@ -22,7 +22,8 @@ module.exports = {
             operation,
             date,
             mili,
-            description
+            description,
+            remark
         });
 
         try{

@@ -12,6 +12,11 @@ const materialSchema = new mongoose.Schema({
     quantity: {
         type: Number,
         default: 1,
+    },
+    remark: {
+        type: String,
+        required: false,
+        default: '',
     }
 });
 

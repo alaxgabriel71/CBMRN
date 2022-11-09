@@ -20,6 +20,11 @@ const movementsSchema = mongoose.Schema({
     description: {
         type: String,
         required: true
+    },
+    remark: {
+        type: String,
+        required: false,
+        default: ''
     }
 });
 

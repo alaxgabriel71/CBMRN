@@ -12,7 +12,7 @@ module.exports = {
     },
 
     async store(request, response){
-        const { name } = request.body;
+        const { name, remark } = request.body;
         var { quantity } = request.body;
 
         if(!name) {
@@ -26,7 +26,8 @@ module.exports = {
         const material = new Material({
             _id: uuid(),
             name,
-            quantity, 
+            quantity,
+            remark 
         });
 
         try{
@@ -39,13 +40,14 @@ module.exports = {
     },
 
     async update(request, response){
-        const { name, quantity } = request.body;
+        const { name, quantity, remark } = request.body;
 
-        if(!name && !quantity) 
-            return response.status(400).json({ error: "New name or new quantity of material not informed!" });
+        if(!name && !quantity && !remark) 
+            return response.status(400).json({ error: "New name, new quantity or new remark of material not informed!" });
         
         if(name) response.material.name = name;
         if(quantity) response.material.quantity = quantity;
+        if(remark) response.material.remark = remark;
 
         try{
             await response.material.save();
