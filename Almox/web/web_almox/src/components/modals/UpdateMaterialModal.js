@@ -122,6 +122,7 @@ export default function UpdateMaterialModal({ show, onClose, materialName, mater
         setVisible(false)
     }
 
+    console.log(newRemark)
     return (
         <>
             <div className={styles.modal}>

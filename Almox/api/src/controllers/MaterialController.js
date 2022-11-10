@@ -47,7 +47,7 @@ module.exports = {
         
         if(name) response.material.name = name;
         if(quantity) response.material.quantity = quantity;
-        if(remark) response.material.remark = remark;
+        response.material.remark = remark;
 
         try{
             await response.material.save();
