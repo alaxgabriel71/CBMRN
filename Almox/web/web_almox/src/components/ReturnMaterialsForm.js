@@ -77,7 +77,7 @@ export default function ReturnMaterialsForm() {
             console.log(totalQuantity)
             var finalRemark = ''
             if(!newRemark) finalRemark = currentRemark
-            else finalRemark = currentRemark + ' Obs.2: ' + newRemark
+            else finalRemark = currentRemark + ' *' + newRemark
             const newMaterial = {
                 name: currentName,
                 quantity: totalQuantity,

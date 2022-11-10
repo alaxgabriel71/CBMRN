@@ -64,7 +64,7 @@ export default function NewMaterialsForm() {
         if (materialExists) {
             const totalQuantity = Number(currentQuantity) + Number(newQuantity)
             var finalRemark = ''
-            if(newRemark) finalRemark = newRemark
+            if(newRemark) finalRemark = " *" + newRemark
             else finalRemark = currentRemark
             console.log(`finalRemark = ${finalRemark}`)
             const newMaterial = {
@@ -111,7 +111,7 @@ export default function NewMaterialsForm() {
             const newMaterial = {
                 name: newName[0].toUpperCase() + newName.substring(1).toLowerCase(),
                 quantity: newQuantity,
-                remark: newRemark
+                remark: " *" + newRemark
             }
             api.post('/materials', newMaterial)
                 .then(response => {
@@ -123,7 +123,7 @@ export default function NewMaterialsForm() {
                         date,
                         mili,
                         description,
-                        remark: newRemark
+                        remark: " *" + newRemark
                     })
                         .then(response => {
                             console.log(response.status)

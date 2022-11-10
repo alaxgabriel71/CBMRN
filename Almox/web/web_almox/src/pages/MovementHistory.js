@@ -20,6 +20,7 @@ export default function MovimentHistory() {
     const [currentPage, setCurrentPage] = useState(localStorage.getItem('active') || 1)
     const [itemsPerPage, setItemsPerPage] = useState(localStorage.getItem('itemsPerPage') || 10)
     const [search, setSearch] = useState('')
+    const [remark, setRemark] = useState('')
     const [operation, setOperation] = useState('')
     // const [date, setDate] = useState('')
     const [day, setDay] = useState('')
@@ -34,10 +35,6 @@ export default function MovimentHistory() {
         setLoading(false)
     }, []);
     // console.log(movements)div
-    movements.forEach(move => {
-        if(move.remark)
-            move.description = move.description + " *" + move.remark
-    })
 
     const dayOptions = []
     for (let i = 1; i <= 31; i++) {
@@ -69,6 +66,7 @@ export default function MovimentHistory() {
 
     var filteredItems = []
     var searchFilteredItems = []
+    var remarkFilteredItems = []
     var operationFilteredItems = []
     var dayFilteredItems = []
     var monthFilteredItems = []
@@ -81,10 +79,20 @@ export default function MovimentHistory() {
         }
     })
 
-    if (!operation) {
-        operationFilteredItems = searchFilteredItems
+    if(!remark) {
+        remarkFilteredItems = searchFilteredItems
     } else {
         searchFilteredItems.forEach(move => {
+            if(move.remark.includes(remark)) {
+                remarkFilteredItems.push(move)
+            }
+        })
+    }
+
+    if (!operation) {
+        operationFilteredItems = remarkFilteredItems
+    } else {
+        remarkFilteredItems.forEach(move => {
             if (move.operation.includes(operation)) {
                 operationFilteredItems.push(move)
             }
@@ -130,6 +138,7 @@ export default function MovimentHistory() {
 
     function clearFilter() {
         setOperation('');
+        setRemark('');
         setSearch('');
         setDay('');
         setMonth('');
@@ -168,6 +177,14 @@ export default function MovimentHistory() {
                                             className={styles.FloatingLabel}
                                         >
                                             <Form.Control type="text" placehoder="Buscar na descrição por..." />
+                                        </FloatingLabel>
+                                        <FloatingLabel
+                                            label="Buscar nas observações por..."
+                                            value={remark}
+                                            onChange={event => setRemark(event.target.value)}
+                                            className={styles.FloatingLabel}
+                                        >
+                                            <Form.Control type="text" placehoder="Buscar nas obeservações por..." />
                                         </FloatingLabel>
                                     </div>
                                     <div className={styles.DateContainer}>
@@ -230,16 +247,12 @@ export default function MovimentHistory() {
                 Apagar Histórico
             </Button>
             <Loading loading={loading} />
-            {/* <ul>
-                {filteredItems?.map(movement => (
-                    <Movement key={movement._id} operation={movement.operation} description={movement.description} date={movement.date} />
-                ))}
-            </ul> */}
             <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
                         <th>Operação</th>
                         <th>Descrição</th>
+                        <th>Observações</th>
                         <th>Data do Registro</th>
                     </tr>
                 </thead>
@@ -248,6 +261,7 @@ export default function MovimentHistory() {
                         <tr key={movement._id}>
                             <td>{movement.operation}</td>
                             <td>{movement.description}</td>
+                            <td>{movement.remark}</td>
                             <td>{movement.date.slice(8, 10) + '/' + movement.date.slice(5, 7) + '/' + movement.date.slice(0, 4)}</td>
                         </tr>
                     ))}
