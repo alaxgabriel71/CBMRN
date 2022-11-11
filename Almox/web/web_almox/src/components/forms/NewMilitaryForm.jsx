@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import api from '../services/api'
-import StatusMessage from '../components/StatusMessage'
+import api from '../../services/api'
+import StatusMessage from '../StatusMessage'
 import { Button, FloatingLabel, Form } from 'react-bootstrap'
 
 import styles from './NewMilitaryForm.module.css'

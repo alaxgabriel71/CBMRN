@@ -3,8 +3,8 @@ import { Button, FloatingLabel, Form } from 'react-bootstrap'
 
 import styles from './NewMaterialsForm.module.css'
 
-import api from '../services/api'
-import StatusMessage from './StatusMessage'
+import api from '../../services/api'
+import StatusMessage from '../StatusMessage'
 
 export default function NewMaterialsForm() {
     const [materials, setMaterials] = useState([]);

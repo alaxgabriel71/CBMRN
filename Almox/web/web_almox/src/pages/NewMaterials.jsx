@@ -1,4 +1,4 @@
-import NewMaterialsForm from '../components/NewMaterialsForm'
+import NewMaterialsForm from '../components/forms/NewMaterialsForm'
 
 export default function NewMaterials() {
     return (

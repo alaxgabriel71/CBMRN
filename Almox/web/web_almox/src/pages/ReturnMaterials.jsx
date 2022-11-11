@@ -1,4 +1,4 @@
-import ReturnMaterialsForm from '../components/ReturnMaterialsForm'
+import ReturnMaterialsForm from '../components/forms/ReturnMaterialsForm'
 
 export default function ReturnMaterials() {
     return (

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
-import api from '../services/api'
-import StatusMessage from '../components/StatusMessage'
+import api from '../../services/api'
+import StatusMessage from '../StatusMessage'
 
 import styles from './ReturnMaterialsForm.module.css'
 import { Button, FloatingLabel, Form } from 'react-bootstrap'

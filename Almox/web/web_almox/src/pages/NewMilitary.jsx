@@ -1,7 +1,7 @@
 // import { Link } from 'react-router-dom'
 import styles from './NewMilitary.module.css'
 
-import NewMilitaryForm from '../components/NewMilitaryForm'
+import NewMilitaryForm from '../components/forms/NewMilitaryForm'
 
 export default function NewMilitary(){
     return(
