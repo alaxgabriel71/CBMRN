@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
+
+import { UserContext } from './components/contexts/UserContext'
 
 import './App.css';
 import NavBar from './components/NavBar'
@@ -11,24 +14,31 @@ import NewMaterials from './pages/NewMaterials'
 import ReturnMaterials from './pages/ReturnMaterials'
 import NewMilitary from './pages/NewMilitary'
 import MaterialsTabs from './pages/MaterialsTabs'
-import MilitaryTabs from './pages/MilitaryTabs';
+import MilitaryTabs from './pages/MilitaryTabs'
+import Login from './pages/Login'
 
 function App() {
+  const [email] = useState('')
+  const [password] = useState('')
+
   return (
     <>
-      <NavBar className="App-header"/>
-      <Routes className="App-main">
-        <Route exact path="/" element={<Home />} />
-        <Route path="/materials-list" element={<MaterialsList />} />
-        <Route path="/movement-history" element={<MovementHistory />} />
-        <Route path="/military-list" element={<MilitaryList />} />
-        <Route path="/new-materials" element={<NewMaterials />} />
-        <Route path="/return-materials" element={<ReturnMaterials />} />
-        <Route path="/new-military" element={<NewMilitary />} />
-        <Route path="/materials-tabs" element={<MaterialsTabs />} />
-        <Route path="/military-tabs" element={<MilitaryTabs/>} />
-      </Routes>
-      <Footer className="App-footer"/>
+      <UserContext.Provider value={{email, password}}>
+        <NavBar className="App-header" />
+        <Routes className="App-main">
+          <Route exact path="/" element={<Home />} />
+          <Route path="/materials-list" element={<MaterialsList />} />
+          <Route path="/movement-history" element={<MovementHistory />} />
+          <Route path="/military-list" element={<MilitaryList />} />
+          <Route path="/new-materials" element={<NewMaterials />} />
+          <Route path="/return-materials" element={<ReturnMaterials />} />
+          <Route path="/new-military" element={<NewMilitary />} />
+          <Route path="/materials-tabs" element={<MaterialsTabs />} />
+          <Route path="/military-tabs" element={<MilitaryTabs />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+        <Footer className="App-footer" />
+      </UserContext.Provider>
     </>
   );
 }

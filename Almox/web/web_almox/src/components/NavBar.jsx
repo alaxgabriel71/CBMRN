@@ -31,8 +31,16 @@ import Navbar from 'react-bootstrap/Navbar';
 // import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
+// import { useContext } from 'react'
+// import { UserContext } from './contexts/UserContext'
+
+// import './NavBar.css'
+
 function NavBar() {
   const expand = false
+
+  // const { email, password } = useContext(UserContext)
+
   return (
     <>
       {/* [false, 'sm', 'md', 'lg', 'xl', 'xxl'] */}
@@ -48,6 +56,9 @@ function NavBar() {
             />{' '}
             2º SGB/1ºGBM
           </Navbar.Brand>
+          {/* <div className="navbar-user">
+            {email + ' ' + password}
+          </div> */}
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${expand}`}
