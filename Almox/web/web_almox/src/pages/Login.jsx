@@ -1,16 +1,21 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { Button, FloatingLabel, Form } from "react-bootstrap"
 import { UserContext } from '../components/contexts/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 import "./Login.css"
 
 export default function Login() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    // const [email, setEmail] = useState('')
+    // const [password, setPassword] = useState('')
+    const { email, setEmail, password, setPassword } = useContext(UserContext)
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log('user', { email, password })
+        localStorage.setItem('user', JSON.stringify({email, password}))
+        navigate('/')
     }
 
     return (

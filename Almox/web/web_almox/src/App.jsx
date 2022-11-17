@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import { UserContext } from './components/contexts/UserContext'
+import { UserProvider } from './components/contexts/UserContext'
 
 import './App.css';
 import NavBar from './components/NavBar'
@@ -18,12 +17,10 @@ import MilitaryTabs from './pages/MilitaryTabs'
 import Login from './pages/Login'
 
 function App() {
-  const [email] = useState('')
-  const [password] = useState('')
 
   return (
     <>
-      <UserContext.Provider value={{email, password}}>
+      <UserProvider>
         <NavBar className="App-header" />
         <Routes className="App-main">
           <Route exact path="/" element={<Home />} />
@@ -38,7 +35,7 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
         <Footer className="App-footer" />
-      </UserContext.Provider>
+      </UserProvider>
     </>
   );
 }
