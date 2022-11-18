@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button, FloatingLabel, Form } from "react-bootstrap"
 import { UserContext } from '../components/contexts/UserContext'
 import { useNavigate } from 'react-router-dom'
@@ -6,9 +6,11 @@ import { useNavigate } from 'react-router-dom'
 import "./Login.css"
 
 export default function Login() {
-    // const [loading, setLoading] = useState(true)
-    // const [password, setPassword] = useState('')
-    const { email, setEmail, password, setPassword, setLogin, saveLoggedUser } = useContext(UserContext)
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
+
+    const { setLogin, saveLoggedUser } = useContext(UserContext)
+    
     const navigate = useNavigate()
 
     setLogin(true)

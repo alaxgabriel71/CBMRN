@@ -1,14 +1,13 @@
-import { createContext, useState, useEffect } from 'react'
-
-import Loading from '../Loading'
+import { createContext, useState } from 'react'
 
 export const UserContext = createContext()
 
 export const UserProvider = ({children}) => {
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
-    const [userLoading, setUserLoading] = useState(false)
+    var loggedUser
+    if(!localStorage.getItem('user')) loggedUser = ''
+    else loggedUser = JSON.parse(localStorage.getItem('user'))
+    
+    const [user, setUser] = useState(loggedUser)
     const [login, setLogin] = useState(false)
     
     function saveLoggedUser(loggedUser) {
@@ -16,13 +15,9 @@ export const UserProvider = ({children}) => {
         setUser(loggedUser)
     }
 
-    if(userLoading){
-        return <Loading loading={true} />
-    }
-
     return(
         <UserContext.Provider 
-            value={{ email, setEmail, password, setPassword, userLoading, setUserLoading, login, setLogin, user, saveLoggedUser }}
+            value={{ login, setLogin, user, saveLoggedUser }}
         >
             {children}
         </UserContext.Provider>

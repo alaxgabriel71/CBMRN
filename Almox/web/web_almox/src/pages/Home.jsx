@@ -13,8 +13,8 @@ export default function Home(){
     console.log('user home', user)
 
     useEffect(() => {
-        if(user === '""') navigate('/login')
-    }, [navigate])
+        if(!user) navigate('/login')
+    }, [navigate, user])
 
     return (
         <article>

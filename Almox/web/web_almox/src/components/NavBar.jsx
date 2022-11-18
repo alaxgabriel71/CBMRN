@@ -5,16 +5,15 @@ import Navbar from 'react-bootstrap/Navbar';
 // import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-import { useState, useEffect, useContext } from 'react'
+import { useContext } from 'react'
 import { UserContext } from './contexts/UserContext'
 
 // import './NavBar.css'
 
 function NavBar() {
   const expand = false
-  const { login, userLoading, setUserLoading, user } = useContext(UserContext)
+  const { login, user } = useContext(UserContext)
 
-  setUserLoading(false)
   console.log('user nav', user)
 
   return (
@@ -32,11 +31,9 @@ function NavBar() {
               />{' '}
               2º SGB/1ºGBM
             </Navbar.Brand>
-            {(!userLoading) && (
-              <div className="navbar-user">
-                {user.email}
-              </div>
-            )}
+            <div className="navbar-user">
+              {user.email}
+            </div>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
