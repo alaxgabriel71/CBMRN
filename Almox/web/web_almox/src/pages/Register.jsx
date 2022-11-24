@@ -40,7 +40,7 @@ export default function Register() {
                             </FloatingLabel>
                             <FloatingLabel
                                 label="QRA"
-                                className="mb-3"
+                                className="mb-3 qra"
                             >
                                 <Form.Control type="text" placeholder="Informe seu QRA" required />
                             </FloatingLabel>
@@ -66,7 +66,7 @@ export default function Register() {
                         <div className="password-area">
                             <FloatingLabel
                                 label="Senha"
-                                className="mb-3"
+                                className="mb-3 password"
                             >
                                 <Form.Control 
                                     type="password" 
@@ -76,7 +76,7 @@ export default function Register() {
                             </FloatingLabel>
                             <FloatingLabel
                                 label="Confirme a senha"
-                                className="mb-3"
+                                className="mb-3 password"
                             >
                                 <Form.Control 
                                     type="password" 

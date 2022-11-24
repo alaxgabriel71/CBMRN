@@ -11,6 +11,7 @@
     max-width: 500px;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 }
 
 .military-area {
@@ -28,4 +29,9 @@
 .button-area {
     display: flex;
     justify-content: flex-end;
+}
+
+.password,
+.qra {
+    flex-grow: 1;
 }
