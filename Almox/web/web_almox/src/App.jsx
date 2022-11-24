@@ -15,6 +15,7 @@ import NewMilitary from './pages/NewMilitary'
 import MaterialsTabs from './pages/MaterialsTabs'
 import MilitaryTabs from './pages/MilitaryTabs'
 import Login from './pages/Login'
+import Register from './pages/Register';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/materials-tabs" element={<MaterialsTabs />} />
           <Route path="/military-tabs" element={<MilitaryTabs />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
         <Footer className="App-footer" />
       </UserProvider>
