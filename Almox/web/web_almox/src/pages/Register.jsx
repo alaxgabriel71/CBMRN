@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Button, FloatingLabel, Form } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
@@ -21,10 +22,24 @@ export default function Register() {
         { value: 14, rank: "CEL" },
     ]
 
+    // const [adim, setAdmin] = useState(false)
+    const [rank, setRank] = useState('')
+    const [qra, setQra] = useState('')
+    const [registration, setRegistration] = useState('')
+    const [email, setEmail] = useState('')
+    const [confirmEmail, setConfirmEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        console.log('new user', {rank, qra, registration, email, password})
+    }
+
     return (
         <article>
             <div className="register-form-area">
-                <form className="register-form">
+                <form className="register-form" onSubmit={handleSubmit}>
                     <h3>Cadastro no Sistema</h3>
                     <fieldset>
                         <div className="military-area">
@@ -32,10 +47,14 @@ export default function Register() {
                                 label="Patente"
                                 className="mb-3"
                             >
-                                <Form.Select required>
+                                <Form.Select
+                                    value={rank}
+                                    onChange={e => setRank(e.target.value)} 
+                                    required
+                                >
                                     <option key="0" value="">-- Informe sua patente --</option>
                                     {options.map(option => (
-                                        <option key={option.value} value={option.value}>{option.rank}</option>
+                                        <option key={option.value} value={option.rank}>{option.rank}</option>
                                     ))}
                                 </Form.Select>
                             </FloatingLabel>
@@ -43,26 +62,50 @@ export default function Register() {
                                 label="QRA"
                                 className="mb-3 qra"
                             >
-                                <Form.Control type="text" placeholder="Informe seu QRA" required />
+                                <Form.Control 
+                                    type="text" 
+                                    placeholder="Informe seu QRA"
+                                    value={qra}
+                                    onChange={e => setQra(e.target.value)} 
+                                    required 
+                                />
                             </FloatingLabel>
                             <FloatingLabel
                                 label="Matrícula"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Informe sua matrícula" required />
+                                <Form.Control 
+                                    type="text" 
+                                    placeholder="Informe sua matrícula"
+                                    value={registration}
+                                    onChange={e => setRegistration(e.target.value)} 
+                                    required 
+                                />
                             </FloatingLabel>
                         </div>
                         <FloatingLabel
                             label="Email"
                             className="mb-3"
                         >
-                            <Form.Control type="email" placeholder="Informe seu email" required />
+                            <Form.Control                                
+                                type="email" 
+                                placeholder="Informe seu email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)} 
+                                required 
+                            />
                         </FloatingLabel>
                         <FloatingLabel
                             label="Confirme o email"
                             className="mb-3"
                         >
-                            <Form.Control type="email" placeholder="Confirme seu email" required />
+                            <Form.Control 
+                                type="email" 
+                                placeholder="Confirme seu email" 
+                                value={confirmEmail}
+                                onChange={e => setConfirmEmail(e.target.value)}
+                                required 
+                            />
                         </FloatingLabel>
                         <div className="password-area">
                             <FloatingLabel
@@ -72,6 +115,8 @@ export default function Register() {
                                 <Form.Control
                                     type="password"
                                     placeholder="Informe sua senha"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
                                     required
                                 />
                             </FloatingLabel>
@@ -82,6 +127,8 @@ export default function Register() {
                                 <Form.Control
                                     type="password"
                                     placeholder="Confirme sua senha"
+                                    value={confirmPassword}
+                                    onChange={e => setConfirmPassword(e.target.value)}
                                     required
                                 />
                             </FloatingLabel>
