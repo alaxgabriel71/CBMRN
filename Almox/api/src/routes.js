@@ -9,6 +9,8 @@ const MilitaryMiddleware = require("./middlewares/MilitaryMiddleware");
 
 const MovementController = require("./controllers/MovementController");
 
+const UserController = require("./controllers/UserController");
+
 routes.get("/", (request, response) => { response.send("Hello, World!") });
 routes.get("/materials", MaterialController.index);
 routes.post("/materials", MaterialController.store);
@@ -23,5 +25,8 @@ routes.delete("/military/:id", MilitaryMiddleware.validateId, MilitaryController
 routes.get("/movements", MovementController.show);
 routes.post("/movements", MovementController.store);
 routes.delete("/movements", MovementController.removeAll);
+
+routes.get("/users", UserController.show);
+routes.post("/users", UserController.store);
 
 module.exports = routes;
