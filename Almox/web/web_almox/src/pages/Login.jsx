@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { Button, FloatingLabel, Form } from "react-bootstrap"
 import { UserContext } from '../components/contexts/UserContext'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import "./Login.css"
 
@@ -10,7 +10,7 @@ export default function Login() {
     const [password, setPassword] = useState()
 
     const { setLogin, saveLoggedUser } = useContext(UserContext)
-    
+
     const navigate = useNavigate()
 
     setLogin(true)
@@ -36,7 +36,7 @@ export default function Login() {
                 <form className="login-form" onSubmit={handleSubmit}>
                     <h3>Login</h3>
                     <fieldset>
-                        <UserContext.Provider value={{email, password}}>
+                        <UserContext.Provider value={{ email, password }}>
                             <FloatingLabel label="Email" className="mb-3" value={email} onChange={e => setEmail(e.target.value)} >
                                 <Form.Control type="email" placeholder="Digite seu email" required />
                             </FloatingLabel>
@@ -49,6 +49,9 @@ export default function Login() {
                             <Button type="submit" id="confirm" variant="danger">Entrar</Button>
                         </div>
                     </fieldset>
+                    <div className="link-area">
+                        <Link to="/register">Realizar cadastro</Link>
+                    </div>
                 </form>
             </div>
         </article>

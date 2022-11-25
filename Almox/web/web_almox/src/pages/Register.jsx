@@ -1,4 +1,5 @@
 import { Button, FloatingLabel, Form } from "react-bootstrap"
+import { Link } from "react-router-dom"
 
 import './Register.css'
 
@@ -68,20 +69,20 @@ export default function Register() {
                                 label="Senha"
                                 className="mb-3 password"
                             >
-                                <Form.Control 
-                                    type="password" 
+                                <Form.Control
+                                    type="password"
                                     placeholder="Informe sua senha"
-                                    required 
+                                    required
                                 />
                             </FloatingLabel>
                             <FloatingLabel
                                 label="Confirme a senha"
                                 className="mb-3 password"
                             >
-                                <Form.Control 
-                                    type="password" 
+                                <Form.Control
+                                    type="password"
                                     placeholder="Confirme sua senha"
-                                    required 
+                                    required
                                 />
                             </FloatingLabel>
                         </div>
@@ -90,6 +91,9 @@ export default function Register() {
                             <Button type="submit" id="confirm" variant="danger">Finalizar o Cadastro</Button>
                         </div>
                     </fieldset>
+                    <div className="link-area">
+                        <Link to="/login">Voltar</Link>
+                    </div>
                 </form>
             </div>
         </article >

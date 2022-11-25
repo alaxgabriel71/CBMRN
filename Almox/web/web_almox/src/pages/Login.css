@@ -17,4 +17,12 @@
     justify-content: center;
     height: 100%;
     width: 60%;
+    max-width: 550px;
 }
+
+/* .link-area {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5rem;
+} */
