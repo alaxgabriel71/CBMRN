@@ -13,11 +13,11 @@ export default function Login() {
 
     const navigate = useNavigate()
 
-    setLogin(true)
-
+    
     useEffect(() => {
         saveLoggedUser('')
-    }, [saveLoggedUser])
+        setLogin(true)
+    }, [saveLoggedUser, setLogin])
 
     const handleSubmit = (e) => {
         e.preventDefault()
