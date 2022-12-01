@@ -1,8 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { Button, FloatingLabel, Form } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
+import MaskedFormControl from 'react-bootstrap-maskedinput'
 
 import StatusMessage from '../components/StatusMessage'
+import { UserContext } from '../components/contexts/UserContext'
 
 import './Register.css'
 
@@ -24,6 +26,8 @@ export default function Register() {
         { value: 14, rank: "CEL" },
     ]
 
+    const { setLogin } = useContext(UserContext)
+
     const componentReference = useRef(null)
 
     const navigate = useNavigate()
@@ -41,18 +45,22 @@ export default function Register() {
     const [message, setMessage] = useState('')
     const [variant, setVariant] = useState('')
 
+    useEffect(() => {
+        setLogin(true)
+    }, [setLogin])
+
     const handleSubmit = (event) => {
         event.preventDefault()
         setShow(false)
-        console.log('new user', {rank, qra, registration, email, password})
+        console.log('new user', { rank, qra, registration, email, password })
 
-        if(email !== confirmEmail) {
+        if (email !== confirmEmail) {
             setShow(true)
             setStatus('Atenção')
             setMessage('Os emails informados não são iguais.')
             setVariant('warning')
             componentReference.current.focus()
-        } else if(password !== confirmPassword) {
+        } else if (password !== confirmPassword) {
             setShow(true)
             setStatus('Atenção')
             setMessage('As senhas informadas não são iguais.')
@@ -87,7 +95,7 @@ export default function Register() {
                             >
                                 <Form.Select
                                     value={rank}
-                                    onChange={e => setRank(e.target.value)} 
+                                    onChange={e => setRank(e.target.value)}
                                     required
                                 >
                                     <option key="0" value="">-- Informe sua patente --</option>
@@ -100,26 +108,24 @@ export default function Register() {
                                 label="QRA"
                                 className="mb-3 qra"
                             >
-                                <Form.Control 
-                                    type="text" 
+                                <Form.Control
+                                    type="text"
                                     placeholder="Informe seu QRA"
                                     value={qra}
-                                    onChange={e => setQra(e.target.value)} 
-                                    required 
+                                    onChange={e => setQra(e.target.value)}
+                                    required
                                 />
                             </FloatingLabel>
                             <FloatingLabel
                                 label="Matrícula"
                                 className="mb-3"
                             >
-                                <Form.Control 
+                                <MaskedFormControl 
                                     type="text" 
-                                    placeholder="Informe sua matrícula"
-                                    minlength="7"
-                                    maxlength="7"
+                                    mask="111.111-1"
+                                    placeholder="Informe sua matrícula" 
                                     value={registration}
-                                    onChange={e => setRegistration(e.target.value)} 
-                                    required 
+                                    onChange={e => setRegistration(e.target.value)}
                                 />
                             </FloatingLabel>
                         </div>
@@ -127,25 +133,25 @@ export default function Register() {
                             label="Email"
                             className="mb-3"
                         >
-                            <Form.Control                                
-                                type="email" 
+                            <Form.Control
+                                type="email"
                                 placeholder="Informe seu email"
                                 value={email}
-                                onChange={e => setEmail(e.target.value)} 
-                                required 
+                                onChange={e => setEmail(e.target.value)}
+                                required
                             />
                         </FloatingLabel>
                         <FloatingLabel
                             label="Confirme o email"
                             className="mb-3"
                         >
-                            <Form.Control 
-                                type="email" 
-                                placeholder="Confirme seu email" 
+                            <Form.Control
+                                type="email"
+                                placeholder="Confirme seu email"
                                 value={confirmEmail}
                                 ref={componentReference}
                                 onChange={e => setConfirmEmail(e.target.value)}
-                                required 
+                                required
                             />
                         </FloatingLabel>
                         <div className="password-area">
@@ -156,8 +162,8 @@ export default function Register() {
                                 <Form.Control
                                     type="password"
                                     placeholder="Informe sua senha"
-                                    minlength="6"
-                                    maxlength="12"
+                                    minLength="6"
+                                    maxLength="12"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
                                     required
@@ -170,8 +176,8 @@ export default function Register() {
                                 <Form.Control
                                     type="password"
                                     placeholder="Confirme sua senha"
-                                    minlength="6"
-                                    maxlength="12"
+                                    minLength="6"
+                                    maxLength="12"
                                     value={confirmPassword}
                                     ref={componentReference}
                                     onChange={e => setConfirmPassword(e.target.value)}

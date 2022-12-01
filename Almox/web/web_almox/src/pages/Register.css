@@ -1,9 +1,15 @@
 @import '../global.css';
 
+article {
+    padding: 0;
+    height: 100%;
+}
 .register-form-area {
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .register-form {
