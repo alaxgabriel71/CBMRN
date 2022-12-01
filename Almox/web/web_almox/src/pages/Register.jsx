@@ -123,9 +123,11 @@ export default function Register() {
                                 <MaskedFormControl 
                                     type="text" 
                                     mask="111.111-1"
+                                    pattern="[0-9]{3,}\+?.+[0-9]{3,}\+?-+[0-9]{1,}"
                                     placeholder="Informe sua matrícula" 
                                     value={registration}
                                     onChange={e => setRegistration(e.target.value)}
+                                    required
                                 />
                             </FloatingLabel>
                         </div>
