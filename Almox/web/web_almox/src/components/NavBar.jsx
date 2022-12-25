@@ -7,6 +7,8 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import { useContext } from 'react'
 import { UserContext } from './contexts/UserContext'
+import { Button, Dropdown } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 
 // import './NavBar.css'
 
@@ -32,7 +34,14 @@ function NavBar() {
               2º SGB/1ºGBM
             </Navbar.Brand>
             <div className="navbar-user">
-              {user.email}
+              <Dropdown>
+                <Dropdown.Toggle variant="danger">
+                  {user.name}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item><NavLink to="/login">Sair</NavLink></Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
