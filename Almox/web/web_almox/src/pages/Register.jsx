@@ -5,6 +5,7 @@ import MaskedFormControl from 'react-bootstrap-maskedinput'
 
 import StatusMessage from '../components/StatusMessage'
 import { UserContext } from '../components/contexts/UserContext'
+import api from '../services/api'
 
 import './Register.css'
 
@@ -44,15 +45,33 @@ export default function Register() {
     const [status, setStatus] = useState('')
     const [message, setMessage] = useState('')
     const [variant, setVariant] = useState('')
+    const [users, setUsers] = useState([])
 
     useEffect(() => {
         setLogin(true)
-    }, [setLogin])
+
+        api.get('/users')
+            .then(({ data }) => setUsers(data.users))
+            .catch(err => console.error(err))
+
+    }, [setLogin, setUsers])
+
+    useEffect(() => {
+        console.log('users', users)
+    }, [users])
+
 
     const handleSubmit = (event) => {
         event.preventDefault()
         setShow(false)
         console.log('new user', { rank, qra, registration, email, password })
+
+        var userExists = false
+
+        users.forEach(user => {
+            if (user.email === email || user.registration === registration)
+                userExists = true
+        })
 
         if (email !== confirmEmail) {
             setShow(true)
@@ -66,8 +85,12 @@ export default function Register() {
             setMessage('As senhas informadas não são iguais.')
             setVariant('warning')
             componentReference.current.focus()
-        } else {
+        } else if (userExists) {
             setShow(true)
+            setStatus('Atenção')
+            setMessage('Já existe um usuário com esse email ou com essa matrícula!')
+            setVariant('warning')
+            /* setShow(true)
             setStatus("Sucesso")
             setMessage("Cadastro realizado.")
             setVariant("success")
@@ -75,7 +98,28 @@ export default function Register() {
                 navigate('/login')
             }, 1500)
 
-            return () => clearTimeout(timer)
+            return () => clearTimeout(timer) */
+        } else {
+            api.post("/users", {
+                admin: false,
+                name: `${rank} ${qra}`,
+                registration,
+                email,
+                password
+            })
+                .then(response => {
+                    console.log(response.status)
+                    setShow(true)
+                    setStatus("Sucesso")
+                    setMessage("Cadastro realizado.")
+                    setVariant("success")
+                    const timer = setTimeout(() => {
+                        navigate('/login')
+                    }, 1500)
+
+                    return () => clearTimeout(timer)
+                })
+                .catch(err => console.error(err))
         }
 
 
@@ -91,7 +135,7 @@ export default function Register() {
                         <div className="military-area">
                             <FloatingLabel
                                 label="Patente"
-                                className="mb-3"
+                                className="mb-3 rank"
                             >
                                 <Form.Select
                                     value={rank}
@@ -118,13 +162,13 @@ export default function Register() {
                             </FloatingLabel>
                             <FloatingLabel
                                 label="Matrícula"
-                                className="mb-3"
+                                className="mb-3 registration"
                             >
-                                <MaskedFormControl 
-                                    type="text" 
+                                <MaskedFormControl
+                                    type="text"
                                     mask="111.111-1"
                                     pattern="[0-9]{3,}\+?.+[0-9]{3,}\+?-+[0-9]{1,}"
-                                    placeholder="Informe sua matrícula" 
+                                    placeholder="Informe sua matrícula"
                                     value={registration}
                                     onChange={e => setRegistration(e.target.value)}
                                     required
