@@ -3,11 +3,19 @@ import { Button, FloatingLabel, Form } from "react-bootstrap"
 import { UserContext } from '../components/contexts/UserContext'
 import { Link, useNavigate } from 'react-router-dom'
 
+import api from '../services/api'
+import StatusMessage from '../components/StatusMessage'
+
 import "./Login.css"
 
 export default function Login() {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const [users, setUsers] = useState([])
+    const [show, setShow] = useState(false)
+    const [status, setStatus] = useState('')
+    const [message, setMessage] = useState('')
+    const [variant, setVariant] = useState('')
 
     const { setLogin, saveLoggedUser } = useContext(UserContext)
 
@@ -21,13 +29,34 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('user login', { email, password })
-        saveLoggedUser({
-            email,
-            password
+        var userMatches = false
+        var name = ''
+
+        api.get("/users")
+            .then(({data}) => setUsers(data.users))
+            .catch(err => console.error(err))
+
+        users.forEach(user => {
+            if(user.email === email && user.password === password)
+                userMatches = true
+                name = user.name
         })
-        navigate('/')
-        setLogin(false)
+
+        if(userMatches){
+            setShow(false)
+            console.log('user login', { email, password })
+            saveLoggedUser({
+                name,
+                password
+            })
+            navigate('/')
+            setLogin(false)
+        } else {
+            setShow(true)
+            setStatus('Atenção')
+            setMessage('Corrija email e/ou senha.')
+            setVariant('warning')
+        }
     }
 
     return (
@@ -36,6 +65,7 @@ export default function Login() {
                 <form className="login-form" onSubmit={handleSubmit}>
                     <h3>Login</h3>
                     <fieldset>
+                        <StatusMessage show={show} status={status} variant={variant} message={message} />
                         <UserContext.Provider value={{ email, password }}>
                             <FloatingLabel label="Email" className="mb-3" value={email} onChange={e => setEmail(e.target.value)} >
                                 <Form.Control type="email" placeholder="Digite seu email" required />
