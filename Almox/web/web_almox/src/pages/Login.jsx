@@ -21,34 +21,45 @@ export default function Login() {
 
     const navigate = useNavigate()
 
-    
+
     useEffect(() => {
         saveLoggedUser('')
         setLogin(true)
     }, [saveLoggedUser, setLogin])
+
+    useEffect(()=>{
+        api.get("/users")
+            .then(({ data }) => setUsers(data.users))
+            .catch(err => console.error(err))
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault()
         var userMatches = false
         var name = ''
 
-        api.get("/users")
-            .then(({data}) => setUsers(data.users))
-            .catch(err => console.error(err))
+        console.log('users', users)
 
         users.forEach(user => {
-            if(user.email === email && user.password === password)
+            if (user.email === email && user.password === password){
                 userMatches = true
                 name = user.name
+                console.log('User matches!!!', name)
+            }
         })
 
-        if(userMatches){
+        if (userMatches) {
             setShow(false)
-            console.log('user login', { email, password })
+            console.log('user login', { name, password })
             saveLoggedUser({
                 name,
                 password
             })
+            /* setLogin(false)
+            setTimeout(() => {
+                navigate('/')
+            }, 1500) */
+            // return () => clearTimeout(timer)
             navigate('/')
             setLogin(false)
         } else {
