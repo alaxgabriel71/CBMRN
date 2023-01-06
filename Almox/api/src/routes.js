@@ -11,6 +11,8 @@ const MovementController = require("./controllers/MovementController");
 
 const UserController = require("./controllers/UserController");
 
+const LoginController = require("./controllers/LoginController");
+
 routes.get("/", (request, response) => { response.send("Hello, World!") });
 routes.get("/materials", MaterialController.index);
 routes.post("/materials", MaterialController.store);
@@ -28,5 +30,7 @@ routes.delete("/movements", MovementController.removeAll);
 
 routes.get("/users", UserController.show);
 routes.post("/users", UserController.store);
+
+routes.get("/login", LoginController.index);
 
 module.exports = routes;
