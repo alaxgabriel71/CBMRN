@@ -57,7 +57,7 @@ html body #root article {
 html body #root footer {
   width: 100vw;
   height: 50px;
-  bottom: 0;
-  left: 0;
-  justify-content: flex-end;
+  /* bottom: 0; */
+  /* left: 0; */
+  /* justify-content: flex-end; */
 }
