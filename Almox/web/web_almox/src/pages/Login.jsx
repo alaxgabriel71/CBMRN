@@ -27,13 +27,13 @@ export default function Login() {
         setLogin(true)
     }, [saveLoggedUser, setLogin])
 
-    useEffect(()=>{
+    useEffect(() => {
         api.get("/users")
             .then(({ data }) => setUsers(data.users))
             .catch(err => console.error(err))
     }, [])
 
-    const handleSubmit = (e) => {
+    /* const handleSubmit = (e) => {
         e.preventDefault()
         var userMatches = false
         var name = ''
@@ -55,11 +55,6 @@ export default function Login() {
                 name,
                 password
             })
-            /* setLogin(false)
-            setTimeout(() => {
-                navigate('/')
-            }, 1500) */
-            // return () => clearTimeout(timer)
             navigate('/')
             setLogin(false)
         } else {
@@ -68,6 +63,41 @@ export default function Login() {
             setMessage('Corrija email e/ou senha.')
             setVariant('warning')
         }
+    } */
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        var name
+
+        api.post("/login", {
+            email,
+            password
+        })
+            .then(({ data }) => {
+                name = data.name
+                setShow(false)
+                console.log('user login', { name, password })
+                saveLoggedUser({
+                    name,
+                    password
+                })
+                navigate('/')
+                setLogin(false)
+            })
+            .catch(err => {
+                if (err.response.status === 404) {
+                    setShow(true)
+                    setStatus('Atenção')
+                    setMessage('Corrija email e/ou senha.')
+                    setVariant('warning')
+                } else {
+                    setShow(true)
+                    setStatus('Atenção')
+                    setMessage('Erro no servidor. Tente novamente mais tarde.')
+                    setVariant('warning')
+                }
+            })
+
     }
 
     return (
