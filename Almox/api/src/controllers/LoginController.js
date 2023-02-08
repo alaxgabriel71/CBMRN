@@ -11,9 +11,9 @@ module.exports = {
                 if (user.password === password)
                     return response.status(200).json({ name: user.name, token: "7171" });
                 else
-                    return response.status(404).json({ error: "Authentication failed!" });
+                    return response.status(401).json({ error: "Authentication failed!" });
             } else
-                return response.status(404).json({ error: "Authentication failed!" });
+                return response.status(401).json({ error: "Authentication failed!" });
         } catch (err) {
             return response.status(500).json({ error: err.message });
         }

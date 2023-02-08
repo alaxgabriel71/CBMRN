@@ -10,6 +10,7 @@ const MilitaryMiddleware = require("./middlewares/MilitaryMiddleware");
 const MovementController = require("./controllers/MovementController");
 
 const UserController = require("./controllers/UserController");
+const UserMiddleware = require("./middlewares/UserMiddleware");
 
 const LoginController = require("./controllers/LoginController");
 
@@ -29,7 +30,7 @@ routes.post("/movements", MovementController.store);
 routes.delete("/movements", MovementController.removeAll);
 
 routes.get("/users", UserController.show);
-routes.post("/users", UserController.store);
+routes.post("/users", UserMiddleware.validateEmail, UserController.store);
 
 routes.post("/login", LoginController.check);
 
