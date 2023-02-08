@@ -11,7 +11,6 @@ import "./Login.css"
 export default function Login() {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
-    const [users, setUsers] = useState([])
     const [show, setShow] = useState(false)
     const [status, setStatus] = useState('')
     const [message, setMessage] = useState('')
@@ -27,11 +26,11 @@ export default function Login() {
         setLogin(true)
     }, [saveLoggedUser, setLogin])
 
-    useEffect(() => {
+    /* useEffect(() => {
         api.get("/users")
             .then(({ data }) => setUsers(data.users))
             .catch(err => console.error(err))
-    }, [])
+    }, []) */
 
     /* const handleSubmit = (e) => {
         e.preventDefault()
@@ -85,7 +84,7 @@ export default function Login() {
                 setLogin(false)
             })
             .catch(err => {
-                if (err.response.status === 404) {
+                if (err.response.status === 401) {
                     setShow(true)
                     setStatus('Atenção')
                     setMessage('Corrija email e/ou senha.')

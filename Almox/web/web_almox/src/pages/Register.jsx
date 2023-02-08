@@ -45,33 +45,15 @@ export default function Register() {
     const [status, setStatus] = useState('')
     const [message, setMessage] = useState('')
     const [variant, setVariant] = useState('')
-    const [users, setUsers] = useState([])
 
     useEffect(() => {
         setLogin(true)
-
-        api.get('/users')
-            .then(({ data }) => setUsers(data.users))
-            .catch(err => console.error(err))
-
-    }, [setLogin, setUsers])
-
-    useEffect(() => {
-        console.log('users', users)
-    }, [users])
-
+    }, [setLogin])
 
     const handleSubmit = (event) => {
         event.preventDefault()
         setShow(false)
         console.log('new user', { rank, qra, registration, email, password })
-
-        var userExists = false
-
-        users.forEach(user => {
-            if (user.email === email || user.registration === registration)
-                userExists = true
-        })
 
         if (email !== confirmEmail) {
             setShow(true)
@@ -85,20 +67,6 @@ export default function Register() {
             setMessage('As senhas informadas não são iguais.')
             setVariant('warning')
             componentReference.current.focus()
-        } else if (userExists) {
-            setShow(true)
-            setStatus('Atenção')
-            setMessage('Já existe um usuário com esse email ou com essa matrícula!')
-            setVariant('warning')
-            /* setShow(true)
-            setStatus("Sucesso")
-            setMessage("Cadastro realizado.")
-            setVariant("success")
-            const timer = setTimeout(() => {
-                navigate('/login')
-            }, 1500)
-
-            return () => clearTimeout(timer) */
         } else {
             api.post("/users", {
                 admin: false,
@@ -119,7 +87,16 @@ export default function Register() {
 
                     return () => clearTimeout(timer)
                 })
-                .catch(err => console.error(err))
+                .catch(err => {
+                    if (err.response.status === 409) {
+                        setShow(true)
+                        setStatus('Atenção')
+                        setMessage('Use outro email para o cadastro.')
+                        setVariant('warning')
+                    } else {
+                        console.error(err)
+                    }
+                })
         }
 
 
@@ -177,6 +154,7 @@ export default function Register() {
                         </div>
                         <FloatingLabel
                             label="Email"
+                            id="Email"
                             className="mb-3"
                         >
                             <Form.Control
