@@ -31,6 +31,6 @@ routes.delete("/movements", MovementController.removeAll);
 routes.get("/users", UserController.show);
 routes.post("/users", UserController.store);
 
-routes.get("/login", LoginController.index);
+routes.post("/login", LoginController.check);
 
 module.exports = routes;
