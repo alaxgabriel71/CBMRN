@@ -1,5 +1,6 @@
 const { v4: uuid } = require("uuid")
 const User = require("../models/User")
+const bcrypt = require("bcrypt")
 
 module.exports = {
     async show(request, response){
@@ -19,16 +20,21 @@ module.exports = {
         if(!email) return response.status(400).json({ error: "Missing the email" })
         if(!password) return response.status(400).json({ error: "Missing the password" })
 
-        const newUser = new User({
-            _id: uuid(),
-            admin,
-            name,
-            registration,
-            email,
-            password
-        })
-
+        
+        
         try{
+            const salt = await bcrypt.genSalt(12);
+            const passwordHash = await bcrypt.hash(password, salt);
+            
+            const newUser = new User({
+                _id: uuid(),
+                admin,
+                name,
+                registration,
+                email,
+                password: passwordHash
+            })
+
             await newUser.save()
 
             return response.status(201).json({ message: "User added successfully." })
