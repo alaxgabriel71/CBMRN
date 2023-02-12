@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Button, FloatingLabel, Form } from 'react-bootstrap'
+import { useContext } from 'react'
+import { UserContext } from '../contexts/UserContext'
 
 import styles from './NewMaterialsForm.module.css'
 
@@ -15,6 +17,10 @@ export default function NewMaterialsForm() {
     const [status, setStatus] = useState('');
     const [variant, setVariant] = useState('');
     const [visible, setVisible] = useState(false);
+
+    const { user } = useContext(UserContext)
+    
+    api.defaults.headers.Authorization = `Bearer ${user.token}`
 
     var dateObject = new Date()
     const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())

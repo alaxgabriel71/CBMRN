@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useContext } from 'react'
+import { UserContext } from '../components/contexts/UserContext'
 // import { Link } from 'react-router-dom'
 
 // import { Tab, Tabs } from 'react-bootstrap'
@@ -9,7 +11,6 @@ import Material from '../components/Material'
 import Loading from '../components/Loading'
 import Pagination from '../components/Pagination'
 import { FloatingLabel, Form } from 'react-bootstrap'
-
 
 
 export default function MaterialsList() {    
@@ -25,6 +26,10 @@ export default function MaterialsList() {
     // const [items, setItems] = useState([])
     
     const items = []
+
+    const { user } = useContext(UserContext)
+    
+    api.defaults.headers.Authorization = `Bearer ${user.token}`
     
     useEffect(() => {
         setLoading(true)
@@ -36,7 +41,7 @@ export default function MaterialsList() {
             console.log("error: " + err)
         });
         setLoading(false)
-    }, [])
+    }, [user.token])
 
     console.log(materials)
 

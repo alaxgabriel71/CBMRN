@@ -67,6 +67,7 @@ export default function Login() {
     const handleSubmit = (e) => {
         e.preventDefault()
         var name
+        var token
 
         api.post("/login", {
             email,
@@ -74,12 +75,14 @@ export default function Login() {
         })
             .then(({ data }) => {
                 name = data.name
+                token = data.token
                 setShow(false)
-                console.log('user login', { name, password })
+                console.log('user login', { name, token })
                 saveLoggedUser({
                     name,
-                    password
+                    token
                 })
+                api.defaults.headers.Authorization = `Bearer ${token}`
                 navigate('/')
                 setLogin(false)
             })

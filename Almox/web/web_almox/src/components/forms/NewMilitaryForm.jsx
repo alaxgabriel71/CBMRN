@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useContext } from 'react'
+import { UserContext } from '../contexts/UserContext'
 
 import api from '../../services/api'
 import StatusMessage from '../StatusMessage'
@@ -30,6 +32,10 @@ export default function NewMilitaryList() {
     const [status, setStatus] = useState('')
     const [variant, setVariant] = useState('')
     const [visible, setVisible] = useState(false)
+
+    const { user } = useContext(UserContext)
+    
+    api.defaults.headers.Authorization = `Bearer ${user.token}`
 
     const registerMilitary = (e) => {
         e.preventDefault()

@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react'
+//import api from '../../services/api'
 
 export const UserContext = createContext()
 
@@ -13,6 +14,8 @@ export const UserProvider = ({children}) => {
     function saveLoggedUser(loggedUser) {
         localStorage.setItem('user', JSON.stringify(loggedUser))
         setUser(loggedUser)
+
+        //api.defaults.headers.Authorization = `Bearer ${user.token}`
     }
 
     return(

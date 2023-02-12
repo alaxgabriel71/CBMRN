@@ -14,23 +14,25 @@ const UserMiddleware = require("./middlewares/UserMiddleware");
 
 const LoginController = require("./controllers/LoginController");
 
-routes.get("/", (request, response) => { response.send("Hello, World!") });
-routes.get("/materials", MaterialController.index);
-routes.post("/materials", MaterialController.store);
-routes.put("/materials/:id", MaterialMiddleware.validateId, MaterialController.update);
-routes.delete("/materials/:id", MaterialMiddleware.validateId, MaterialController.remove);
+const AuthMiddleware = require("./middlewares/AuthMiddleware");
 
-routes.get("/military", MilitaryController.show);
-routes.post("/military", MilitaryController.store);
-routes.put("/military/:id", MilitaryMiddleware.validateId, MilitaryController.update);
-routes.delete("/military/:id", MilitaryMiddleware.validateId, MilitaryController.remove);
+routes.get("/", AuthMiddleware.checkToken, (request, response) => { response.send("Hello, World!") });
+routes.get("/materials", AuthMiddleware.checkToken, MaterialController.index);
+routes.post("/materials", AuthMiddleware.checkToken, MaterialController.store);
+routes.put("/materials/:id", AuthMiddleware.checkToken, MaterialMiddleware.validateId, MaterialController.update);
+routes.delete("/materials/:id", AuthMiddleware.checkToken, MaterialMiddleware.validateId, MaterialController.remove);
 
-routes.get("/movements", MovementController.show);
-routes.post("/movements", MovementController.store);
-routes.delete("/movements", MovementController.removeAll);
+routes.get("/military", AuthMiddleware.checkToken, MilitaryController.show);
+routes.post("/military", AuthMiddleware.checkToken, MilitaryController.store);
+routes.put("/military/:id", AuthMiddleware.checkToken, MilitaryMiddleware.validateId, MilitaryController.update);
+routes.delete("/military/:id", AuthMiddleware.checkToken, MilitaryMiddleware.validateId, MilitaryController.remove);
 
-routes.get("/users", UserController.show);
-routes.post("/users", UserMiddleware.validateEmail, UserController.store);
+routes.get("/movements", AuthMiddleware.checkToken, MovementController.show);
+routes.post("/movements", AuthMiddleware.checkToken, MovementController.store);
+routes.delete("/movements", AuthMiddleware.checkToken, MovementController.removeAll);
+
+routes.get("/users", AuthMiddleware.checkToken, UserController.show);
+routes.post("/users", AuthMiddleware.checkToken, UserMiddleware.validateEmail, UserController.store);
 
 routes.post("/login", LoginController.check);
 

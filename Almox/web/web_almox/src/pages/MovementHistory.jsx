@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useContext } from 'react'
+import { UserContext } from '../components/contexts/UserContext'
 
 import api from '../services/api'
 import DeleteHistoryModal from '../components/modals/DeleteHistoryModal'
@@ -26,6 +28,10 @@ export default function MovimentHistory() {
     const [day, setDay] = useState('')
     const [month, setMonth] = useState('')
     const [year, setYear] = useState('')
+
+    const { user } = useContext(UserContext)
+    
+    api.defaults.headers.Authorization = `Bearer ${user.token}`
 
     useEffect(() => {
         setLoading(true)

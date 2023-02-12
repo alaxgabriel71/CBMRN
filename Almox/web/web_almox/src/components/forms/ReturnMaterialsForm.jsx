@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useContext } from 'react'
+import { UserContext } from '../contexts/UserContext'
 
 import api from '../../services/api'
 import StatusMessage from '../StatusMessage'
@@ -22,6 +24,10 @@ export default function ReturnMaterialsForm() {
     const [status, setStatus] = useState('')
     const [variant, setVariant] = useState('')
     const [visible, setVisible] = useState(false)
+
+    const { user } = useContext(UserContext)
+    
+    api.defaults.headers.Authorization = `Bearer ${user.token}`
 
     console.log(date)
 

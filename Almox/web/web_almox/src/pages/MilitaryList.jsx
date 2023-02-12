@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useContext } from 'react'
+import { UserContext } from '../components/contexts/UserContext'
 // import { Link } from 'react-router-dom'
 
 import api from '../services/api'
@@ -12,6 +14,10 @@ export default function Militarylist() {
     // const [show, setShow] = useState(false);
     const [military, setMilitary] = useState([])
     const [loading, setLoading] = useState(false)
+
+    const { user } = useContext(UserContext)
+    
+    api.defaults.headers.Authorization = `Bearer ${user.token}`
 
     async function fetchMilitary() {
         setLoading(true)
