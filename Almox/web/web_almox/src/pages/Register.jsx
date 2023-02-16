@@ -27,7 +27,7 @@ export default function Register() {
         { value: 14, rank: "CEL" },
     ]
 
-    const { setLogin } = useContext(UserContext)
+   // const { setLogin } = useContext(UserContext)
 
     const componentReference = useRef(null)
 
@@ -47,8 +47,8 @@ export default function Register() {
     const [variant, setVariant] = useState('')
 
     useEffect(() => {
-        setLogin(true)
-    }, [setLogin])
+        //setLogin(true)
+    }, [])
 
     const handleSubmit = (event) => {
         event.preventDefault()

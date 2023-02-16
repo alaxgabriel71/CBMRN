@@ -28,8 +28,6 @@ export default function Login() {
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        var name
-        var token
         setShow(false)
 
         api.post("/login", {
@@ -37,12 +35,12 @@ export default function Login() {
             password
         })
             .then(({ data }) => {
-                name = data.name
-                token = data.token
+                const { name, token, admin } = data
                 setShow(false)
                 saveLoggedUser({
                     name,
-                    token
+                    token,
+                    admin
                 })
                 api.defaults.headers.Authorization = `Bearer ${token}`
                 setIsAuthenticated(true)
