@@ -16,58 +16,21 @@ export default function Login() {
     const [message, setMessage] = useState('')
     const [variant, setVariant] = useState('')
 
-    const { setLogin, saveLoggedUser } = useContext(UserContext)
+    const { setLogin, saveLoggedUser, setIsAuthenticated } = useContext(UserContext)
 
     const navigate = useNavigate()
 
 
     useEffect(() => {
-        saveLoggedUser('')
+        //saveLoggedUser('')
         setLogin(true)
-    }, [saveLoggedUser, setLogin])
-
-    /* useEffect(() => {
-        api.get("/users")
-            .then(({ data }) => setUsers(data.users))
-            .catch(err => console.error(err))
-    }, []) */
-
-    /* const handleSubmit = (e) => {
-        e.preventDefault()
-        var userMatches = false
-        var name = ''
-
-        console.log('users', users)
-
-        users.forEach(user => {
-            if (user.email === email && user.password === password){
-                userMatches = true
-                name = user.name
-                console.log('User matches!!!', name)
-            }
-        })
-
-        if (userMatches) {
-            setShow(false)
-            console.log('user login', { name, password })
-            saveLoggedUser({
-                name,
-                password
-            })
-            navigate('/')
-            setLogin(false)
-        } else {
-            setShow(true)
-            setStatus('Atenção')
-            setMessage('Corrija email e/ou senha.')
-            setVariant('warning')
-        }
-    } */
-
+    }, [/* saveLoggedUser, */ setLogin])
+    
     const handleSubmit = (e) => {
         e.preventDefault()
         var name
         var token
+        setShow(false)
 
         api.post("/login", {
             email,
@@ -77,12 +40,12 @@ export default function Login() {
                 name = data.name
                 token = data.token
                 setShow(false)
-                console.log('user login', { name, token })
                 saveLoggedUser({
                     name,
                     token
                 })
                 api.defaults.headers.Authorization = `Bearer ${token}`
+                setIsAuthenticated(true)
                 navigate('/')
                 setLogin(false)
             })

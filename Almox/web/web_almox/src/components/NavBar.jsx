@@ -8,18 +8,19 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useContext } from 'react'
 import { UserContext } from './contexts/UserContext'
 import { Dropdown } from 'react-bootstrap';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // import './NavBar.css'
 
 function NavBar() {
   const expand = false
-  const { login, user } = useContext(UserContext)
+  const { login, user, isAuthenticated, saveLoggedUser } = useContext(UserContext)
   const navigate = useNavigate()
 
-  console.log('user nav', user)
+  console.log('Authenticated', isAuthenticated)
 
-  const handleClick = () => {
+  const handleLogout = () => {
+    saveLoggedUser('')
     navigate('/login')
   }
 
@@ -45,7 +46,7 @@ function NavBar() {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {/* <Dropdown.Item><NavLink to="/login">Sair</NavLink></Dropdown.Item> */}
-                  <Dropdown.Item onClick={handleClick}>Sair</Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout}>Sair</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>

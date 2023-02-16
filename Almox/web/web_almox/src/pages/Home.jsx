@@ -10,7 +10,7 @@ export default function Home(){
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
 
-    console.log('user home', user)
+    //console.log('user home', user)
 
     useEffect(() => {
         if(!user) navigate('/login')

@@ -16,7 +16,7 @@ const LoginController = require("./controllers/LoginController");
 
 const AuthMiddleware = require("./middlewares/AuthMiddleware");
 
-routes.get("/", AuthMiddleware.checkToken, (request, response) => { response.send("Hello, World!") });
+routes.get("/", /* AuthMiddleware.checkToken, */ (request, response) => { response.send("Hello, World!") });
 routes.get("/materials", AuthMiddleware.checkToken, MaterialController.index);
 routes.post("/materials", AuthMiddleware.checkToken, MaterialController.store);
 routes.put("/materials/:id", AuthMiddleware.checkToken, MaterialMiddleware.validateId, MaterialController.update);
@@ -31,7 +31,7 @@ routes.get("/movements", AuthMiddleware.checkToken, MovementController.show);
 routes.post("/movements", AuthMiddleware.checkToken, MovementController.store);
 routes.delete("/movements", AuthMiddleware.checkToken, MovementController.removeAll);
 
-routes.get("/users", AuthMiddleware.checkToken, UserController.show);
+routes.get("/users", /* AuthMiddleware.checkToken, */ UserController.show);
 routes.post("/users", AuthMiddleware.checkToken, UserMiddleware.validateEmail, UserController.store);
 
 routes.post("/login", LoginController.check);
