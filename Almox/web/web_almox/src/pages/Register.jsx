@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef, useContext } from 'react'
-import { Button, FloatingLabel, Form } from "react-bootstrap"
+import { useState, useEffect, useRef } from 'react'
+import { Button, FloatingLabel, Form, FormCheck, FormLabel } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 
 import StatusMessage from '../components/StatusMessage'
-import { UserContext } from '../components/contexts/UserContext'
+//import { UserContext } from '../components/contexts/UserContext'
 import api from '../services/api'
 
 import './Register.css'
@@ -27,7 +27,7 @@ export default function Register() {
         { value: 14, rank: "CEL" },
     ]
 
-   // const { setLogin } = useContext(UserContext)
+    // const { setLogin } = useContext(UserContext)
 
     const componentReference = useRef(null)
 
@@ -208,6 +208,41 @@ export default function Register() {
                                     required
                                 />
                             </FloatingLabel>
+                        </div>
+                        <div className="mb-3 radio-area">
+                            {/* <FormLabel>
+                                Nível de administrador
+                                <Form.Check
+                                    label="Regular"
+                                    type="radio"
+                                />
+                                <Form.Check
+                                    label="Moderador"
+                                    type="radio"
+                                />
+                                <Form.Check
+                                    label="Comandante"
+                                    type="radio"
+                                />
+                            </FormLabel> */}
+                            <FormLabel > Nível de administrador
+                                <Form.Check
+                                    inline
+                                    label="1"
+                                    name="admin"
+                                    type="radio"
+                                    className="danger"
+                                //isInvalid
+                                />
+                                <Form.Check
+                                    inline
+                                    label="2"
+                                    name="admin"
+                                    type="radio"
+                                    className="danger"
+                                //isInvalid
+                                />
+                            </FormLabel>
                         </div>
                         <div className="button-area">
                             <Button type="reset" id="cancel" variant="secondary">Limpar</Button>
