@@ -23,11 +23,36 @@ import Register from './pages/Register';
 
 export default function AppRoutes() {
     
+    const { user, isAuthenticated } = useContext(UserContext)
+    
     const Private = ({ children }) => {
-        const { isAuthenticated } = useContext(UserContext)
         console.log('auth', isAuthenticated)
         if (!isAuthenticated) {
             return <Navigate to='/login' />
+        }
+
+        return children
+    }
+
+    const Regular = ({ children }) => {
+        if(!user.admin.regular && !user.admin.moderator && !user.admin.commander){
+            return <Navigate to='/' />
+        }
+
+        return children
+    }
+
+    const Moderator = ({ children }) => {
+        if(!user.admin.moderator && !user.admin.commander) {
+            return <Navigate to='/' />
+        }
+
+        return children
+    }
+
+    const Commander = ({ children }) => {
+        if(!user.admin.commander) {
+            return <Navigate to='/' />
         }
 
         return children
@@ -39,15 +64,15 @@ export default function AppRoutes() {
             <Routes className="App-main">
                 <Route exact path="/" element={<Private><Home /></Private>} />
                 <Route path="/materials-list" element={<Private><MaterialsList /></Private>} />
-                <Route path="/movement-history" element={<Private><MovementHistory /></Private>} />
-                <Route path="/military-list" element={<Private><MilitaryList /></Private>} />
+                <Route path="/movement-history" element={<Private><Moderator><MovementHistory /></Moderator></Private>} />
+                <Route path="/military-list" element={<Private><Regular><MilitaryList /></Regular></Private>} />
                 <Route path="/new-materials" element={<Private><NewMaterials /></Private>} />
                 <Route path="/return-materials" element={<Private><ReturnMaterials /></Private>} />
-                <Route path="/new-military" element={<Private><NewMilitary /></Private>} />
+                <Route path="/new-military" element={<Private><Regular><NewMilitary /></Regular></Private>} />
                 <Route path="/materials-tabs" element={<Private><MaterialsTabs /></Private>} />
-                <Route path="/military-tabs" element={<Private><MilitaryTabs /></Private>} />
+                <Route path="/military-tabs" element={<Private><Regular><MilitaryTabs /></Regular></Private>} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Private><Register /></Private>} />
+                <Route path="/register" element={<Private><Commander><Register /></Commander></Private>} />
             </Routes>
             <Footer className="App-footer" />
         </>

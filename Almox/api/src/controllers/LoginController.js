@@ -18,7 +18,7 @@ module.exports = {
             if (user) {
                 const passwordMatches = await bcrypt.compare(password, user.password);
                 if (passwordMatches)
-                    return response.status(200).json({ name: user.name, token });
+                    return response.status(200).json({ name: user.name, admin: user.admin, token });
                 else
                     return response.status(401).json({ error: "Authentication failed!" });
             } else

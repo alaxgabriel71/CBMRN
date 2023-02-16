@@ -32,7 +32,7 @@ routes.post("/movements", AuthMiddleware.checkToken, MovementController.store);
 routes.delete("/movements", AuthMiddleware.checkToken, MovementController.removeAll);
 
 routes.get("/users", /* AuthMiddleware.checkToken, */ UserController.show);
-routes.post("/users", AuthMiddleware.checkToken, UserMiddleware.validateEmail, UserController.store);
+routes.post("/users", /* AuthMiddleware.checkToken, */ UserMiddleware.validateEmail, UserController.store);
 
 routes.post("/login", LoginController.check);
 

@@ -6,9 +6,21 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     admin: {
-        type: Boolean,
-        required: true,
-        default: false
+        regular: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        moderator: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        commander: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
     },
     name: {
         type: String,
