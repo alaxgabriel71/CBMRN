@@ -1,16 +1,16 @@
-import { UserProvider } from './components/contexts/UserContext'
 import AppRoutes from './AppRoutes'
 import { BrowserRouter } from 'react-router-dom'
+import { UserProvider } from './components/contexts/UserContext'
 
 
 function App() {
 
   return (
-    <UserProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <UserProvider>
         <AppRoutes />
-      </BrowserRouter>
-    </UserProvider>
+      </UserProvider>
+    </BrowserRouter>
   );
 }
 
