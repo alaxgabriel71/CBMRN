@@ -65,10 +65,10 @@ function NavBar() {
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="/">Página Inicial</Nav.Link>
-                  <Nav.Link href="/materials-tabs">Materiais</Nav.Link>
-                  <Nav.Link href="/movement-history">Histórico de movimentações</Nav.Link>
+                  <Nav.Link hidden={!user|| !user.admin.commander && !user.admin.moderator && !user.admin.regular}href="/materials-tabs">Materiais</Nav.Link>
+                  <Nav.Link hidden={!user|| !user.admin.commander && !user.admin.moderator} href="/movement-history">Histórico de movimentações</Nav.Link>
                   <Nav.Link href="/military-tabs">Militares</Nav.Link>
-                  <Nav.Link hidden={!user.admin.commander} href="/register">Cadastrar novo usuário</Nav.Link>
+                  <Nav.Link hidden={!user|| !user.admin.commander} href="/register">Cadastrar novo usuário</Nav.Link>
                   {/* <NavDropdown
                   title="Dropdown"
                   id={`offcanvasNavbarDropdown-expand-${expand}`}
