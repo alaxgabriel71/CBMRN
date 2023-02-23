@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Button, FloatingLabel, Form, FormCheck, FormLabel } from "react-bootstrap"
+import { Button, FloatingLabel, Form, FormLabel } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 
@@ -45,15 +45,37 @@ export default function Register() {
     const [status, setStatus] = useState('')
     const [message, setMessage] = useState('')
     const [variant, setVariant] = useState('')
+    const [adminLevel, setAdminLevel] = useState('none')
 
     useEffect(() => {
-        //setLogin(true)
-    }, [])
+        console.log(adminLevel)
+    }, [adminLevel])
+
 
     const handleSubmit = (event) => {
         event.preventDefault()
         setShow(false)
         console.log('new user', { rank, qra, registration, email, password })
+
+        var commander, moderator, regular
+
+        if(adminLevel === "commander"){
+            commander = true
+            moderator = false
+            regular = false
+        } else if(adminLevel === "moderator"){
+            commander = false
+            moderator = true
+            regular = false
+        } else if(adminLevel === "regular"){
+            commander = false
+            moderator = false
+            regular = true
+        } else {
+            commander = false
+            moderator = false
+            regular = false
+        }
 
         if (email !== confirmEmail) {
             setShow(true)
@@ -69,7 +91,11 @@ export default function Register() {
             componentReference.current.focus()
         } else {
             api.post("/users", {
-                admin: false,
+                admin: {
+                    regular,
+                    moderator,
+                    commander
+                },
                 name: `${rank} ${qra}`,
                 registration,
                 email,
@@ -82,7 +108,8 @@ export default function Register() {
                     setMessage("Cadastro realizado.")
                     setVariant("success")
                     const timer = setTimeout(() => {
-                        navigate('/login')
+                        //navigate('/login')
+                        window.location.reload(false)
                     }, 1500)
 
                     return () => clearTimeout(timer)
@@ -210,36 +237,41 @@ export default function Register() {
                             </FloatingLabel>
                         </div>
                         <div className="mb-3 radio-area">
-                            {/* <FormLabel>
-                                Nível de administrador
-                                <Form.Check
-                                    label="Regular"
-                                    type="radio"
-                                />
-                                <Form.Check
-                                    label="Moderador"
-                                    type="radio"
-                                />
-                                <Form.Check
-                                    label="Comandante"
-                                    type="radio"
-                                />
-                            </FormLabel> */}
                             <FormLabel > Nível de administrador
                                 <Form.Check
                                     inline
-                                    label="1"
+                                    label="Comandante"
                                     name="admin"
                                     type="radio"
-                                    className="danger"
+                                    value={adminLevel}
+                                    onChange={e => setAdminLevel("commander")}
                                 //isInvalid
                                 />
                                 <Form.Check
                                     inline
-                                    label="2"
+                                    label="Moderador"
                                     name="admin"
                                     type="radio"
-                                    className="danger"
+                                    value={adminLevel}
+                                    onChange={e => setAdminLevel("moderator")}
+                                //isInvalid
+                                />
+                                <Form.Check
+                                    inline
+                                    label="Regular"
+                                    name="admin"
+                                    type="radio"
+                                    value={adminLevel}
+                                    onChange={e => setAdminLevel("regular")}
+                                //isInvalid
+                                />
+                                <Form.Check
+                                    inline
+                                    label="Nenhum"
+                                    name="admin"
+                                    type="radio"
+                                    value={adminLevel}
+                                    onChange={e => setAdminLevel("none")}
                                 //isInvalid
                                 />
                             </FormLabel>
@@ -249,9 +281,9 @@ export default function Register() {
                             <Button type="submit" id="confirm" variant="danger">Finalizar o Cadastro</Button>
                         </div>
                     </fieldset>
-                    <div className="link-area">
+                    {/* <div className="link-area">
                         <Link to="/login">Voltar</Link>
-                    </div>
+                    </div> */}
                 </form>
             </div>
         </article >
