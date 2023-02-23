@@ -83,9 +83,9 @@ export default function Login() {
                             <Button type="submit" id="confirm" variant="danger">Entrar</Button>
                         </div>
                     </fieldset>
-                    <div className="link-area">
+                    {/* <div className="link-area">
                         <Link to="/register">Realizar cadastro</Link>
-                    </div>
+                    </div> */}
                 </form>
             </div>
         </article>
