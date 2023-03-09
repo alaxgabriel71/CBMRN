@@ -68,6 +68,7 @@ function NavBar() {
                   <Nav.Link hidden={!user|| !user.admin.commander && !user.admin.moderator && !user.admin.regular}href="/materials-tabs">Materiais</Nav.Link>
                   <Nav.Link hidden={!user|| !user.admin.commander && !user.admin.moderator} href="/movement-history">Histórico de movimentações</Nav.Link>
                   <Nav.Link href="/military-tabs">Militares</Nav.Link>
+                  <Nav.Link hidden={!user|| !user.admin.commander} href="/users">Usuários</Nav.Link>
                   <Nav.Link hidden={!user|| !user.admin.commander} href="/register">Cadastrar novo usuário</Nav.Link>
                   {/* <NavDropdown
                   title="Dropdown"
