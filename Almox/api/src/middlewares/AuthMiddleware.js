@@ -12,7 +12,7 @@ module.exports = {
             jwt.verify(token, secret)
             next()
         } catch(err) {
-            return response.status(401).json({ error: "Access denied!" })
+            return response.status(400).json({ error: "Access denied!" })
         }
         
     }

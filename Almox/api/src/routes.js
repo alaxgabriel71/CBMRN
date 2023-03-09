@@ -33,6 +33,7 @@ routes.post("/movements", AuthMiddleware.checkToken, MovementController.store);
 routes.delete("/movements", AuthMiddleware.checkToken, MovementController.removeAll);
 
 routes.get("/auth", AuthController.verify);
+
 routes.get("/users", AuthMiddleware.checkToken, UserController.show);
 routes.post("/users", AuthMiddleware.checkToken, UserMiddleware.validateEmail, UserController.store);
 

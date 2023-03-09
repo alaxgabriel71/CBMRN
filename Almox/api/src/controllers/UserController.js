@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt")
 module.exports = {
     async show(request, response){
         try{
-            const users = await User.find()
+            const users = await User.find().select('-password')
             return response.status(200).json({ users })
         } catch(err) {
             response.status(500).json({ error: err.message })
