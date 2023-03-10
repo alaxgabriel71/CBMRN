@@ -1,0 +1,40 @@
+@import '../global.css';
+
+.Item_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem;
+    border: 1px solid var(--theme-light-gray);
+}
+
+.Item_container:hover {
+/*     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    border-top: .5px solid rgba(0, 0, 0, 0.1);
+    border-left: .5px solid rgba(0, 0, 0, 0.1); */
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    border-top: .5px solid rgba(0, 0, 0, 0.1);
+    border-left: .5px solid rgba(0, 0, 0, 0.1);
+    background-color: var(--theme-light-danger);
+    color: var(--theme-light);
+    transition: var(--theme-transition);
+    transition-duration: var(--theme-transition-duration);
+    transition-delay: var(--theme-transition-delay);
+    transition-property: var(--theme-transition-property);
+}
+
+.Title {
+    flex: 2;
+}
+
+.Options_container {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.Rank_container {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,40 @@
+@import '../global.css';
+
+.Materials_list {
+    width: 100%;
+    padding: 0 .5rem;
+}
+
+.subheader_container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: .5rem;
+    flex-wrap: wrap;
+}
+
+.floatingLabel {
+    display: flex;
+    justify-content: center;
+}
+
+.Search_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: .5rem;
+    border-bottom: 1px solid var(--theme-light-gray);
+}
+
+.Pagination {
+    flex: 4;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* border: .5px solid rgba(0, 0, 0, 0.1); */
+}
+
+.itensperpage {
+    flex: 1;
+    display: flex;
+}

@@ -1,0 +1,10 @@
+.Military_list {
+    width: 100%;
+}
+
+.Title_container {
+    border-bottom: 1px solid var(--theme-light-gray);
+    padding: .5rem;
+    margin-bottom: .5rem;
+    width: 100%;
+}

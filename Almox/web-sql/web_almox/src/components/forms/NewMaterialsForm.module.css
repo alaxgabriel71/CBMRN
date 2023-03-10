@@ -1,0 +1,32 @@
+@import '../../global.css';
+
+.cancel {
+    background-color: var(--theme-gray);
+    /* color: var(--theme-dark); */
+    border: 1px solid var(--theme-dark);
+}
+
+.cancel:hover {
+    background-color: var(--theme-danger);
+    color: var(--theme-light);
+    border: none;
+}
+
+h2 {
+    margin: .5rem;
+}
+
+form {
+    width: 100%;
+    padding: .5rem;
+    display: flex;
+    justify-content: center;
+    margin-left: .5rem;
+}
+
+fieldset {
+    border: 1px solid var(--theme-light-gray);
+    border-radius: .3rem;
+    padding: .5rem;
+    min-width: 75%;
+}

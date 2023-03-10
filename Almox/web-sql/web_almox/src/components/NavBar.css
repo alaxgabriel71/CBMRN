@@ -1,0 +1,7 @@
+@import '../global.css';
+
+.navbar-user {
+    /* width: 100%; */
+    display: flex;
+    justify-content: end;
+}

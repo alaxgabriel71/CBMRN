@@ -1,0 +1,121 @@
+:root {
+    --theme-danger: #dc3545;
+    --theme-dark-danger: #b02a37;
+    --theme-light-danger: #dc3546b2;
+    --theme-light: #f8f9fa;
+    --theme-light-gray: #dee2e6;
+    --theme-gray: #6c757d;
+    --theme-dark: #212529;
+    --theme-danger-shadow: 0 0 0 0.25rem rgb(220 53 69/25%);
+    --theme-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    --theme-transition-duration: 0.15s, 0.15s, 0.15s;
+    --theme-transition-timing-function: ease-in-out, ease-in-out, ease-in-out;
+    --theme-transition-delay: 0s, 0s, 0s;
+    --theme-transitin-property: color, background-color, border-color, box-shadow;
+}
+
+div,
+input,
+select {
+    border-radius: .3rem;
+}
+
+/* .form-control:focus{
+    border-color: var(--theme-danger);
+    box-shadow: 0 0 0 0.25rem rgb(220 53 69/25%);
+} */
+
+.form-control:focus,
+.form-select:focus,
+#confirm:focus,
+.btn-close:focus {
+    border-color: var(--theme-danger);
+    box-shadow: 0 0 0 0.25rem rgb(220 53 69/25%);
+}
+
+#cancel:focus {
+    border-color: var(--theme-gray);
+    box-shadow: 0 0 0 0.25rem rgb(108 117 125/25%);
+}
+
+button,
+li label {
+    margin: 0 .5rem .5rem 0;
+    min-width: 40px;
+}
+
+/* #confirm:active {
+    border-color: var(--theme-danger);
+    box-shadow: 0 0 0 0.25rem rgb(220 53 69/25%);
+} */
+
+li label:focus {
+    box-shadow: 0 0 0 0.25rem rgb(220 53 69/25%);
+}
+
+.offcanvas-menu {
+    max-width: 70vw;
+    background-color: var(--theme-light);
+}
+
+.accordion {
+    width: 100%;
+    margin: .5rem;
+}
+
+.accordion-button {
+    color: #adb5bd;
+    font-weight: normal;
+    /* color: var(--theme-light-gray); */
+}
+
+.accordion-button[aria-expanded="true"] {
+    background-color: var(--theme-light-danger);
+    color: var(--theme-light);
+}
+
+/* .accordion-button[aria-expanded="true"]::after {
+    transform: none;
+    transition: none;
+} */
+
+.accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-icon);
+}
+
+.accordion-button:focus {
+    box-shadow: var(--theme-danger-shadow);
+    border: 1px solid var(--theme-danger);
+}
+
+#logoCbmrn {
+    padding: .1rem;
+    background-color: white;
+    border-radius: 100%;
+}
+
+.Nav-Brand {
+    padding: .5rem;
+    color: var(--theme-light-gray);
+}
+
+.Nav-Brand:hover {
+    /* border: 1px solid var(--theme-dark-danger); */
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    border-radius: .3rem;
+    color: var(--theme-light);
+    transition: var(--theme-transition);
+    transition-duration: var(--theme-transition-duration);
+    transition-delay: var(--theme-transition-delay);
+    transition-property: var(--theme-transition-property);
+}
+
+.form-btn-area {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.loading-area {
+    display: flex;
+    gap: .3rem;
+}
