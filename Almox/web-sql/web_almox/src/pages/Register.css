@@ -43,6 +43,7 @@ article {
 
 .password,
 .qra,
-.rank {
+.rank,
+.fullname {
     flex-grow: 1;
 }

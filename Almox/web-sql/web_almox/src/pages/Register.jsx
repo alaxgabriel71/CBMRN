@@ -11,20 +11,20 @@ import './Register.css'
 
 export default function Register() {
     const options = [
-        { value: 1, rank: "SD" },
-        { value: 2, rank: "CB" },
-        { value: 3, rank: "3º SGT" },
-        { value: 4, rank: "2º SGT" },
-        { value: 5, rank: "1º SGT" },
-        { value: 6, rank: "ST" },
-        { value: 7, rank: "ST" },
-        { value: 8, rank: "CAD" },
-        { value: 9, rank: "1º TEN" },
-        { value: 10, rank: "2º TEN" },
-        { value: 11, rank: "CAP" },
-        { value: 12, rank: "MAJ" },
-        { value: 13, rank: "TEN CEL" },
         { value: 14, rank: "CEL" },
+        { value: 13, rank: "TEN CEL" },
+        { value: 12, rank: "MAJ" },
+        { value: 11, rank: "CAP" },
+        { value: 10, rank: "1º TEN" },
+        { value: 9, rank: "2º TEN" },
+        { value: 8, rank: "ASP" },
+        { value: 7, rank: "CAD" },
+        { value: 6, rank: "ST" },
+        { value: 5, rank: "1º SGT" },
+        { value: 4, rank: "2º SGT" },
+        { value: 3, rank: "3º SGT" },
+        { value: 2, rank: "CB" },
+        { value: 1, rank: "SD" },
     ]
 
     // const { setLogin } = useContext(UserContext)
@@ -34,6 +34,7 @@ export default function Register() {
     const navigate = useNavigate()
 
     // const [adim, setAdmin] = useState(false)
+    const [fullName, setFullName] = useState('')
     const [rank, setRank] = useState('')
     const [qra, setQra] = useState('')
     const [registration, setRegistration] = useState('')
@@ -92,7 +93,9 @@ export default function Register() {
         } else {
             api.post("/users", {
                 admin: adminLevel,
-                name: `${rank} ${qra}`,
+                name: fullName,
+                qra,
+                rank,
                 registration,
                 email,
                 password
@@ -142,7 +145,7 @@ export default function Register() {
                                     onChange={e => setRank(e.target.value)}
                                     required
                                 >
-                                    <option key="0" value="">-- Informe sua patente --</option>
+                                    <option key="0" value="">-- Informe a patente --</option>
                                     {options.map(option => (
                                         <option key={option.value} value={option.rank}>{option.rank}</option>
                                     ))}
@@ -154,9 +157,21 @@ export default function Register() {
                             >
                                 <Form.Control
                                     type="text"
-                                    placeholder="Informe seu QRA"
+                                    placeholder="Informe QRA"
                                     value={qra}
                                     onChange={e => setQra(e.target.value)}
+                                    required
+                                />
+                            </FloatingLabel>
+                            <FloatingLabel
+                                label="Nome completo"
+                                className="mb-3 fullname"
+                            >
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Informe nome completo"
+                                    value={fullName}
+                                    onChange={e => setFullName(e.target.value)}
                                     required
                                 />
                             </FloatingLabel>
