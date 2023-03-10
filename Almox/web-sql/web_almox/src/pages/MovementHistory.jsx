@@ -16,6 +16,7 @@ export default function MovimentHistory() {
     // const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
     // const today = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
 
+    const [users, setUsers] = useState([])
     const [movements, setMovements] = useState([])
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -28,6 +29,7 @@ export default function MovimentHistory() {
     const [day, setDay] = useState('')
     const [month, setMonth] = useState('')
     const [year, setYear] = useState('')
+    const [responsible, setResponsible] = useState('')
 
     const { user } = useContext(UserContext)
     
@@ -37,6 +39,10 @@ export default function MovimentHistory() {
         setLoading(true)
         api.get('/movements')
             .then(({ data }) => setMovements(data.movements))
+            .catch(err => console.error(err))
+
+        api.get('/users-name')
+            .then(({data}) => setUsers(data.users))
             .catch(err => console.error(err))
         setLoading(false)
     }, []);
@@ -77,6 +83,7 @@ export default function MovimentHistory() {
     var dayFilteredItems = []
     var monthFilteredItems = []
     var yearFilteredItems = []
+    var responsibleFilteredItems = []
 
     const lowerCaseSearch = search.toLowerCase()
     currentMoves.forEach(move => {
@@ -135,7 +142,17 @@ export default function MovimentHistory() {
         })
     }
 
-    filteredItems = yearFilteredItems
+    if(!responsible) {
+        responsibleFilteredItems = yearFilteredItems
+    } else {
+        yearFilteredItems.forEach(move => {
+            if(move.user_name.includes(responsible)) {
+                responsibleFilteredItems.push(move)
+            }
+        })
+    }
+
+    filteredItems = responsibleFilteredItems
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber)
@@ -174,6 +191,19 @@ export default function MovimentHistory() {
                                                 <option value="Atualização">Atualização</option>
                                                 <option value="Devolução">Devolução</option>
                                                 <option value="Exclusão">Exclusão</option>
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                        <FloatingLabel
+                                            label="Responsável"
+                                            value={responsible}
+                                            onChange={event => setResponsible(event.target.value)}
+                                            className={styles.FloatingLabel}
+                                        >
+                                            <Form.Select>
+                                                <option value="">-- Escolha o responsável --</option>
+                                                {users?.map(user => (
+                                                    <option key={user._id}>{`${user.rank} ${user.qra}`}</option>
+                                                ))}
                                             </Form.Select>
                                         </FloatingLabel>
                                         <FloatingLabel
@@ -257,6 +287,7 @@ export default function MovimentHistory() {
                 <thead>
                     <tr>
                         <th>Operação</th>
+                        <th>Responsável</th>
                         <th>Descrição</th>
                         <th>Observações</th>
                         <th>Data do Registro</th>
@@ -266,6 +297,7 @@ export default function MovimentHistory() {
                     {filteredItems?.map(movement => (
                         <tr key={movement._id}>
                             <td>{movement.operation}</td>
+                            <td>{movement.user_name}</td>
                             <td>{movement.description}</td>
                             <td>{movement.remark}</td>
                             <td>{movement.date.slice(8, 10) + '/' + movement.date.slice(5, 7) + '/' + movement.date.slice(0, 4)}</td>

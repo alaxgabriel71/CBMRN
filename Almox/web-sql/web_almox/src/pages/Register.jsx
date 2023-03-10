@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Button, FloatingLabel, Form, FormLabel } from "react-bootstrap"
-import { Link, useNavigate } from "react-router-dom"
+//import { useNavigate } from "react-router-dom"
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 
 import StatusMessage from '../components/StatusMessage'
@@ -31,7 +31,7 @@ export default function Register() {
 
     const componentReference = useRef(null)
 
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
 
     // const [adim, setAdmin] = useState(false)
     const [fullName, setFullName] = useState('')

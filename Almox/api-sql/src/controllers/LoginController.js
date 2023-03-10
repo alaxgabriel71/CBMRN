@@ -17,7 +17,7 @@ module.exports = {
             const secret = process.env.SECRET
             const token = jwt.sign({ }, secret, { expiresIn: '7d' })
 
-            return response.status(200).json({ name: `${user.rank} ${user.qra}`, admin: user.admin, token })
+            return response.status(200).json({ id: user._id, name: `${user.rank} ${user.qra}`, admin: user.admin, token })
          } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
          }

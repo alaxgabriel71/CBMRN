@@ -10,8 +10,10 @@ import { Button, FloatingLabel, Form } from 'react-bootstrap'
 
 export default function ReturnMaterialsForm() {
     var dateObject = new Date()
-    const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
-    const today = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
+    const formatedDate = dateObject.getDate() < 10 ? (`0${dateObject.getDate()}`) : (dateObject.getDate())
+    const month = dateObject.getMonth() + 1
+    const formatedMonth = month < 10 ? `0${month}` : month
+    const today = `${dateObject.getFullYear()}-${formatedMonth}-${formatedDate}`
 
     const [materials, setMaterials] = useState([]);
     const [newName, setNewName] = useState();
@@ -29,6 +31,7 @@ export default function ReturnMaterialsForm() {
     
     api.defaults.headers.Authorization = `Bearer ${user.token}`
 
+    console.log(month)
     console.log(date)
 
     function cancelSubmit(event) {

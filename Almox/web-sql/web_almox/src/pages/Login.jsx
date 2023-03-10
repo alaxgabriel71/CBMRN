@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { Button, FloatingLabel, Form } from "react-bootstrap"
 import { UserContext } from '../components/contexts/UserContext'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import api from '../services/api'
 import StatusMessage from '../components/StatusMessage'
@@ -35,9 +35,10 @@ export default function Login() {
             password
         })
             .then(({ data }) => {
-                const { name, token, admin } = data
+                const { id, name, token, admin } = data
                 setShow(false)
                 saveLoggedUser({
+                    id,
                     name,
                     token,
                     admin

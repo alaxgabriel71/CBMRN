@@ -13,6 +13,10 @@ const Movement = db.define('movement', {
         allowNull: false,
         foreignKey: true
     },
+    user_name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     operation: {
         type: Sequelize.STRING,
         allowNull: false,

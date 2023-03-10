@@ -23,9 +23,10 @@ export default function NewMaterialsForm() {
     api.defaults.headers.Authorization = `Bearer ${user.token}`
 
     var dateObject = new Date()
-    const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
-    // const today = formatedDate+'/'+(dateObject.getMonth()+1)+'/'+dateObject.getFullYear()
-    const date = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
+    const formatedDate = dateObject.getDate() < 10 ? (`0${dateObject.getDate()}`) : (dateObject.getDate())
+    const month = dateObject.getMonth() + 1
+    const formatedMonth = month < 10 ? `0${month}` : month
+    const date = `${dateObject.getFullYear()}-${formatedMonth}-${formatedDate}`
 
     function cancelSubmit() {
         // event.preventDefault();
@@ -55,7 +56,7 @@ export default function NewMaterialsForm() {
         var description = '';
 
 
-        materials.forEach(material => {
+        materials?.forEach(material => {
             if (material.name.toLowerCase() === newName.toLowerCase()) {
                 materialExists = true
                 currentName = material.name
@@ -83,6 +84,8 @@ export default function NewMaterialsForm() {
                     console.log("Update status: " + response.status)
                     description = `A quantidade do material: ${currentName} passou de ${currentQuantity} para ${newQuantity}`
                     api.post('/movements', {
+                        user_id: user.id,
+                        user_name: user.name,
                         operation: "Atualização",
                         date,
                         mili,
@@ -125,6 +128,8 @@ export default function NewMaterialsForm() {
 
                     description = `${newQuantity}x ${newName[0].toUpperCase() + newName.substring(1).toLowerCase()} foi(foram) adicionados ao almoxarifado`
                     api.post('/movements', {
+                        user_id: user.id,
+                        user_name: user.name,
                         operation: "Recebimento",
                         date,
                         mili,
@@ -172,15 +177,15 @@ export default function NewMaterialsForm() {
                         value={newName}
                         onChange={event => setNewName(event.target.value)}
                     >
-                        <Form.Control type="text" placeholder="Informe o nome do material" />
+                        <Form.Control required={true} type="text" placeholder="Informe o nome do material" />
                     </FloatingLabel>
                     <FloatingLabel
                         label="Quantidade do Material"
-                        className="mb-3"
+                        className="mb-3"                        
                         value={newQuantity}
                         onChange={event => setNewQuantity(event.target.value)}
                     >
-                        <Form.Control type="number" min="1" placeholder="Informe a quantidade do material" />
+                        <Form.Control required={true} type="number" min="1" placeholder="Informe a quantidade do material" />
                     </FloatingLabel>
                     <FloatingLabel
                         label="Obeservações"
@@ -204,7 +209,7 @@ export default function NewMaterialsForm() {
                         </Button>
                         <Button
                             type="submmit"
-                            disabled={!newName || !newQuantity || !newRemark}
+                            // disabled={!newName || !newQuantity}
                             className="form-btn"
                             variant="danger"
                             id="confirm"

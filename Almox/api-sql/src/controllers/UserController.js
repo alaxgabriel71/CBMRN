@@ -14,6 +14,17 @@ module.exports = {
             return response.status(500).json({ error: "Try again later!" })
         }
     },
+    async show(request, response) {
+        try {
+            const users = await User.findAll({
+                attributes: ['_id', 'rank', 'qra']
+            })
+
+            return response.status(200).json({ users })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
+    },
     async store(request, response) {
         const { admin, name, rank, qra, registration, email, password } = request.body
 
