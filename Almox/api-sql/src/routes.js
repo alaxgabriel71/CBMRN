@@ -31,9 +31,12 @@ routes.get("/users-name", AuthMiddleware.checkToken, UserController.show)
 
 routes.get("/materials", AuthMiddleware.checkToken, MaterialController.index)
 routes.post("/materials", AuthMiddleware.checkToken, MaterialController.store)
+routes.put("/materials/:id", AuthMiddleware.checkToken, MaterialController.update)
+routes.delete("/materials/:id", AuthMiddleware.checkToken, MaterialController.remove)
 
 routes.get("/movements", AuthMiddleware.checkToken, MovementController.index)
 routes.post("/movements", AuthMiddleware.checkToken, MovementController.store)
+routes.delete("/movements", AuthMiddleware.checkToken, MovementController.desroy)
 
 routes.get("/auth", AuthController.verify)
 

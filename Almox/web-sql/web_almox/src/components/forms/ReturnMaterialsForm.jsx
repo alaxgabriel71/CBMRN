@@ -47,9 +47,9 @@ export default function ReturnMaterialsForm() {
             })
             .catch(err => console.error(err))
 
-        api.get('/military')
+        api.get('/users-name')
             .then(({ data }) => {
-                setOptions(data.military)
+                setOptions(data.users)
             })
             .catch(err => {
                 console.error(err)
@@ -69,7 +69,7 @@ export default function ReturnMaterialsForm() {
         const returnDate = date.slice(8, 10) + '/' + date.slice(5, 7) + '/' + date.slice(0, 4)
 
 
-        materials.forEach(material => {
+        materials?.forEach(material => {
             if (material.name.toLowerCase() === newName.toLowerCase()) {
                 materialExists = true
                 currentName = material.name
@@ -95,8 +95,10 @@ export default function ReturnMaterialsForm() {
             api.put(`/materials/${currentMaterialID}`, newMaterial)
                 .then((response) => {
                     console.log("Update status: " + response.status)
-                    description = `${newQuantity}x ${currentName} foi(foram) devolvido(s) ao almoxarifado pelo ${military} em ${returnDate}`
+                    description = `Material devolvido -> ${newQuantity}x ${currentName}. Por -> ${military}. No dia ${returnDate}.`
                     api.post('/movements', {
+                        user_id: user.id,
+                        user_name: user.name,
                         operation: "Devolução",
                         date,
                         mili,
@@ -136,8 +138,10 @@ export default function ReturnMaterialsForm() {
                 .then(response => {
                     console.log("STATUS: " + response.status)
 
-                    description = `${newQuantity}x ${newName[0].toUpperCase() + newName.substring(1).toLowerCase()} foi(foram) devolvido(s) ao almoxarifado pelo ${military} em ${returnDate}`
+                    description = `Material devolvido -> ${newQuantity}x ${newName[0].toUpperCase() + newName.substring(1).toLowerCase()}. Por -> ${military}. No dia ${returnDate}.`
                     api.post('/movements', {
+                        user_id: user.id,
+                        user_name: user.name,
                         operation: "Devolução",
                         date,
                         mili,
@@ -203,7 +207,7 @@ export default function ReturnMaterialsForm() {
                         >
                             <option value="" key="0">-- Selecione um militar --</option>
                             {options?.map(option =>
-                                <option key={option._id} value={option.name}>{option.name}</option>
+                                <option key={option._id} value={`${option.rank} ${option.qra}`}>{`${option.rank} ${option.qra}`}</option>
                             )}
                         </Form.Select>
                     </FloatingLabel>

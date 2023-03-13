@@ -29,5 +29,16 @@ module.exports = {
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }
-    } 
+    },
+    async desroy(request, response) {
+        try {
+            await Movement.destroy({
+                where: {},
+                truncate: true
+            })
+            return response.status(200).json({ message: "Movements' history deleted successfully!" })
+        } catch(err) {
+            response.status(500).json({ error: "Try again later!" })
+        }
+    }
 }
