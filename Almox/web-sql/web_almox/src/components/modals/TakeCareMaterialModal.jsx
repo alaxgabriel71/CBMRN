@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
+import { UserContext } from '../contexts/UserContext'
 import styles from './TakeCareMaterialModal.module.css'
 import api from '../../services/api'
 import StatusMessage from '../StatusMessage'
@@ -7,9 +8,11 @@ import { Button, FloatingLabel, Form } from 'react-bootstrap'
 
 export default function TakeCareMaterialModal({ show, onClose, materialId, materialName, materialQuantity }) {
 
-    var dateObject = new Date()
-    const formatedDate = dateObject.getDate() < 10 ? ('0' + dateObject.getDate()) : (dateObject.getDate())
-    const today = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
+    var dateObject = new Date();
+    const formatedDate = dateObject.getDate() < 10 ? `0${dateObject.getDate()}` : dateObject.getDate();
+    const month = dateObject.getMonth() + 1;
+    const formatedMonth = month < 10 ? `0${month}` : month;
+    const today = `${dateObject.getFullYear()}-${formatedMonth}-${formatedDate}`;
 
     const [takeCareQuantity, setTakeCareQuantity] = useState(1)
     const [options, setOptions] = useState([])
@@ -20,10 +23,12 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
     const [variant, setVariant] = useState('')
     const [visible, setVisible] = useState(false)
 
+    const { user } = useContext(UserContext)
+
     useEffect(() => {
-        api.get('/military')
+        api.get('/users-name')
             .then(({ data }) => {
-                setOptions(data.military)
+                setOptions(data.users)
             })
             .catch(err => {
                 console.error(err)
@@ -42,9 +47,11 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
             api.delete(`/materials/${materialId}`)
                 .then(response => console.log(response.status))
                 .then(() => {
-                    const description = `${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military} em ${takeCareDate}`
+                    const description = `Material cautelado -> ${takeCareQuantity}x ${materialName}. Por -> ${military}. Em -> ${takeCareDate}`
 
                     api.post('/movements', {
+                        user_id: user.id,
+                        user_name: user.name,
                         operation: "Cautela",
                         date: today,
                         mili,
@@ -80,9 +87,11 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
             })
                 .then(response => console.log(response.status))
                 .then(() => {
-                    const description = `${takeCareQuantity}x ${materialName} foi(foram) cautelado(s) pelo ${military} em ${takeCareDate}`
+                    const description = `Material cautelado -> ${takeCareQuantity}x ${materialName}. Por -> ${military}. Em -> ${takeCareDate}`
 
                     api.post('/movements', {
+                        user_id: user.id,
+                        user_name: user.name,
                         operation: "Cautela",
                         date: today,
                         mili,
@@ -143,7 +152,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
                             <Form.Select value={military} onChange={e => setMilitary(e.target.value)}>
                                 <option value="" key="0">-- Selecione um militar --</option>
                                 {options?.map(option =>
-                                    <option key={option._id} value={option.name}>{option.name}</option>
+                                    <option key={option._id} value={`${option.rank} ${option.qra}`}>{`${option.rank} ${option.qra}`}</option>
                                 )}
                             </Form.Select>
                         </FloatingLabel>

@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
-import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
 import styles from "./NewMaterialsForm.module.css";
@@ -23,10 +22,7 @@ export default function NewMaterialsForm() {
   api.defaults.headers.Authorization = `Bearer ${user.token}`;
 
   var dateObject = new Date();
-  const formatedDate =
-    dateObject.getDate() < 10
-      ? `0${dateObject.getDate()}`
-      : dateObject.getDate();
+  const formatedDate = dateObject.getDate() < 10 ? `0${dateObject.getDate()}` : dateObject.getDate();
   const month = dateObject.getMonth() + 1;
   const formatedMonth = month < 10 ? `0${month}` : month;
   const date = `${dateObject.getFullYear()}-${formatedMonth}-${formatedDate}`;
