@@ -1,6 +1,7 @@
 const User = require("../models/User")
 const bcrypt = require("bcrypt")
 
+
 module.exports = {
     async index(request, response) {
         try {
@@ -17,7 +18,7 @@ module.exports = {
     async show(request, response) {
         try {
             const users = await User.findAll({
-                attributes: ['_id', 'rank', 'qra']
+                attributes: ['_id', 'rank', 'qra', 'email', 'admin']
             })
 
             return response.status(200).json({ users })
