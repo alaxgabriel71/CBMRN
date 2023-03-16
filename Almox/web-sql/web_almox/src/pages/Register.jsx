@@ -46,7 +46,7 @@ export default function Register() {
     const [status, setStatus] = useState('')
     const [message, setMessage] = useState('')
     const [variant, setVariant] = useState('')
-    const [adminLevel, setAdminLevel] = useState('none')
+    const [adminLevel, setAdminLevel] = useState(4)
 
     useEffect(() => {
         console.log(adminLevel)
@@ -255,7 +255,7 @@ export default function Register() {
                                     name="admin"
                                     type="radio"
                                     value={adminLevel}
-                                    onChange={e => setAdminLevel("commander")}
+                                    onChange={e => setAdminLevel(1)}
                                 //isInvalid
                                 />
                                 <Form.Check
@@ -264,7 +264,7 @@ export default function Register() {
                                     name="admin"
                                     type="radio"
                                     value={adminLevel}
-                                    onChange={e => setAdminLevel("moderator")}
+                                    onChange={e => setAdminLevel(2)}
                                 //isInvalid
                                 />
                                 <Form.Check
@@ -273,7 +273,7 @@ export default function Register() {
                                     name="admin"
                                     type="radio"
                                     value={adminLevel}
-                                    onChange={e => setAdminLevel("regular")}
+                                    onChange={e => setAdminLevel(3)}
                                 //isInvalid
                                 />
                                 <Form.Check
@@ -282,7 +282,7 @@ export default function Register() {
                                     name="admin"
                                     type="radio"
                                     value={adminLevel}
-                                    onChange={e => setAdminLevel("none")}
+                                    onChange={e => setAdminLevel(4)}
                                 //isInvalid
                                 />
                             </FormLabel>

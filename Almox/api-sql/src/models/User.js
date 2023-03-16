@@ -9,8 +9,10 @@ const User = db.define('user', {
         primaryKey: true
     },
     admin: {
-        type: Sequelize.STRING,
-        defaultValue: "none"        
+        type: Sequelize.INTEGER,
+        defaultValue: 4,
+        allowNull: true,
+        foreignKey: true        
     },
     name: {
         type: Sequelize.STRING,

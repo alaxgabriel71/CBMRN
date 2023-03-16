@@ -15,11 +15,17 @@ const AuthMiddleware = require("./middlewares/AuthMiddleware")
 const LoginController = require("./controllers/LoginController")
 const AuthController = require("./controllers/AuthController")
 
+const Admin = require("./models/Admin")
+const AdminController = require("./controllers/AdminController")
+
 
 User.sync()
+//User.sync({ force: true })
 Material.sync()
 Movement.sync()
 // Movement.sync({ force: true})
+Admin.sync()
+//Admin.sync({ force: true })
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -37,6 +43,9 @@ routes.delete("/materials/:id", AuthMiddleware.checkToken, MaterialController.re
 routes.get("/movements", AuthMiddleware.checkToken, MovementController.index)
 routes.post("/movements", AuthMiddleware.checkToken, MovementController.store)
 routes.delete("/movements", AuthMiddleware.checkToken, MovementController.desroy)
+
+routes.get("/admin", AuthMiddleware.checkToken, AdminController.index)
+routes.post("/admin", AuthMiddleware.checkToken, AdminController.store)
 
 routes.get("/auth", AuthController.verify)
 

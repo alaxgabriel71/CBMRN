@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const Admin = require("../models/Admin")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
@@ -17,7 +18,11 @@ module.exports = {
             const secret = process.env.SECRET
             const token = jwt.sign({ }, secret, { expiresIn: '7d' })
 
-            return response.status(200).json({ id: user._id, name: `${user.rank} ${user.qra}`, admin: user.admin, token })
+            const admin = await Admin.findOne({ where: {
+               _id: `${user.admin}`
+            }})
+
+            return response.status(200).json({ id: user._id, name: `${user.rank} ${user.qra}`, admin: admin.level, token })
          } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
          }
