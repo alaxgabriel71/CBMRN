@@ -8,7 +8,7 @@ export default function ActiveTD({id, status, handle, handleDelete}) {
         <td onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)} >
             <input type="checkbox" checked={status} onChange={() => handle(id,!status)} />
             {isHovering && (
-                <Button variant="danger" onClick={() => handleDelete(id)}>Excluir usuário</Button>
+                <Button variant="danger" size="sm" onClick={() => handleDelete(id)}>Excluir usuário</Button>
             )}
         </td>
     )

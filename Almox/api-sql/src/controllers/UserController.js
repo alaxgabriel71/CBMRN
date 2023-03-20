@@ -6,9 +6,12 @@ module.exports = {
     async index(request, response) {
         try {
             const users = await User.findAll({
+                order: [
+                    ['rank', 'DESC']
+                ],
                 attributes: {
                     exclude: ['password']
-                }
+                }                
             })
             return response.status(200).json({ users })
         } catch(err){
