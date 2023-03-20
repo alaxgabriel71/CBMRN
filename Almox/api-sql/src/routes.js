@@ -21,6 +21,9 @@ const AdminController = require("./controllers/AdminController")
 const Rank = require("./models/Rank")
 const RankController = require("./controllers/RankController")
 
+const Vehicle = require("./models/Vehicle")
+const VehicleController = require("./controllers/VehicleController")
+
 
 User.sync()
 // User.sync({ alter: true })
@@ -30,6 +33,7 @@ Movement.sync()
 Admin.sync()
 //Admin.sync({ force: true })
 Rank.sync()
+Vehicle.sync()
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -58,6 +62,8 @@ routes.get("/movements", AuthMiddleware.checkToken, MovementController.index)
 routes.post("/movements", AuthMiddleware.checkToken, MovementController.store)
 routes.delete("/movements", AuthMiddleware.checkToken, MovementController.desroy)
 
+routes.get("/vehicles", AuthMiddleware.checkToken, VehicleController.index)
+routes.post("/vehicles", AuthMiddleware.checkToken, VehicleController.store)
 
 routes.get("/auth", AuthController.verify)
 
