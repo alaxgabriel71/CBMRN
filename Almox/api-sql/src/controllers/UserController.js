@@ -51,6 +51,20 @@ module.exports = {
             return response.status(500).json({ error: "Try again later!", err })
         }
     },
+    async remove(request, response) {
+        const { id } = request.params
+
+        try {
+            await User.destroy({
+                where: {
+                    _id: id
+                }
+            })
+            return response.status(200).json({ message: "User deleted successfully!" })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
+    },
     async updateAdminLevel(request, response) {
         const { admin } = request.body
         const { id } = request.params
@@ -82,6 +96,23 @@ module.exports = {
                 }
             })
             return response.status(201).json({ message: "User rank updated successfully!" })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
+    },
+    async updateActive(request, response) {
+        const { id } = request.params
+        const { active } = request.body
+
+        if(active === null) return response.status(400).json({ error: "Operation failed!" })
+
+        try {
+            await User.update({ active }, {
+                where: {
+                    _id: id
+                }
+            })
+            return response.status(201).json({ message: "User active status updated successfully!" })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }

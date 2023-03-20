@@ -8,6 +8,11 @@ const User = db.define('user', {
         autoIncrement: true,
         primaryKey: true
     },
+    active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+    },
     admin: {
         type: Sequelize.INTEGER,
         defaultValue: 4,

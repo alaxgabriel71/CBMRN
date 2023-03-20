@@ -23,7 +23,7 @@ const RankController = require("./controllers/RankController")
 
 
 User.sync()
-//User.sync({ alter: true })
+// User.sync({ alter: true })
 Material.sync()
 Movement.sync()
 // Movement.sync({ force: true})
@@ -37,8 +37,10 @@ routes.post("/login", LoginController.check)
 
 routes.get("/users", AuthMiddleware.checkToken, UserController.index)
 routes.post("/users", AuthMiddleware.checkToken, UserController.store)
+routes.delete("/users/:id", AuthMiddleware.checkToken, UserController.remove)
 routes.put("/users/admin-level/:id", AuthMiddleware.checkToken, UserController.updateAdminLevel)
 routes.put("/users/rank/:id", AuthMiddleware.checkToken, UserController.updateRank)
+routes.put("/users/active/:id", AuthMiddleware.checkToken, UserController.updateActive)
 routes.get("/users-name", AuthMiddleware.checkToken, UserController.show)
 
 routes.get("/admin", AuthMiddleware.checkToken, AdminController.index)

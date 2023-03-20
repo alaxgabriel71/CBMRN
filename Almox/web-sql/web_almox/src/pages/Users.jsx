@@ -1,11 +1,12 @@
 import { useState, useContext, useEffect } from 'react'
-import { Dropdown, Table } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 
 import { UserContext } from '../components/contexts/UserContext'
 import api from '../services/api'
 
 import AdminTD from '../components/AdminTD'
 import RankTD from '../components/RankTD'
+import ActiveTD from '../components/ActiveTD'
 
 export default function Users() {
 
@@ -68,6 +69,24 @@ export default function Users() {
             .catch(err => console.error(err))
     }
 
+    const handleActiveUpdate = (id, newStatus) => {
+        api.put(`/users/active/${id}`, { 
+            active: newStatus 
+        })
+            .then(() => {
+                window.location.reload(false)
+            })
+            .catch(err => console.error(err))
+    }
+
+    const handleDelete = (id) => {
+        console.log(id, "excluir")
+        api.delete(`/users/${id}`)
+            .then(() => {
+                window.location.reload(false)
+            })
+            .catch(err => console.error(err))
+    }
     
     return (
         <article>
@@ -81,27 +100,19 @@ export default function Users() {
                         <th>QRA</th>
                         <th>Email</th>
                         <th>Administrador</th>
+                        <th>Ativo</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users?.map(user => (
                         <tr key={user._id}>
-                            <td>{user._id}</td>
-                            {/* <td>{getRank(user.rank)}</td> */}
-                            <RankTD id={user._id} rank={getRank(user.rank)} handleRankUpdate={handleRankUpdate} />
-                            <td>{user.qra}</td>
-                            <td>{user.email}</td>
-                            {/* <td onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
-                                {!isHovering && (getLevel(user.admin))}
-                                {isHovering && (
-                                    <select name="levels" value={newAdminLevel} onChange={e => setNewAdminLevel(e.target.value)}>
-                                        {admins.map(admin => (
-                                            <option key={admin._id} onClick={handleClick(admin._id) }>{admin.level}</option>
-                                        ))}
-                                    </select>
-                                )}
-                            </td> */}
-                            <AdminTD id={user._id} level={getLevel(user.admin)} handleAdminLevelUpdate={handleAdminLevelUpdate}/>
+                            <td disabled={!user.active}>{user._id}</td>
+                            <RankTD disabled={!user.active} id={user._id} rank={getRank(user.rank)} handleRankUpdate={handleRankUpdate} />
+                            <td disabled={!user.active}>{user.qra}</td>
+                            <td disabled={!user.active}>{user.email}</td>
+                            <AdminTD disabled={!user.active} id={user._id} level={getLevel(user.admin)} handleAdminLevelUpdate={handleAdminLevelUpdate}/>
+                            {/* <td>{user.active && (<p>Active</p>)}</td> */}
+                            <ActiveTD id={user._id} status={user.active} handle={handleActiveUpdate} handleDelete={handleDelete}/>
                         </tr>
                     ))}
                 </tbody>
