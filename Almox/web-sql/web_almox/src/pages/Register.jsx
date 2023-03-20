@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { Button, FloatingLabel, Form, FormLabel } from "react-bootstrap"
 //import { useNavigate } from "react-router-dom"
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 
+import { UserContext } from '../components/contexts/UserContext'
 import StatusMessage from '../components/StatusMessage'
 //import { UserContext } from '../components/contexts/UserContext'
 import api from '../services/api'
@@ -10,24 +11,7 @@ import api from '../services/api'
 import './Register.css'
 
 export default function Register() {
-    const options = [
-        { value: 14, rank: "CEL" },
-        { value: 13, rank: "TEN CEL" },
-        { value: 12, rank: "MAJ" },
-        { value: 11, rank: "CAP" },
-        { value: 10, rank: "1º TEN" },
-        { value: 9, rank: "2º TEN" },
-        { value: 8, rank: "ASP" },
-        { value: 7, rank: "CAD" },
-        { value: 6, rank: "ST" },
-        { value: 5, rank: "1º SGT" },
-        { value: 4, rank: "2º SGT" },
-        { value: 3, rank: "3º SGT" },
-        { value: 2, rank: "CB" },
-        { value: 1, rank: "SD" },
-    ]
-
-    // const { setLogin } = useContext(UserContext)
+    const { ranks } = useContext(UserContext)
 
     const componentReference = useRef(null)
 
@@ -146,8 +130,8 @@ export default function Register() {
                                     required
                                 >
                                     <option key="0" value="">-- Informe a patente --</option>
-                                    {options.map(option => (
-                                        <option key={option.value} value={option.rank}>{option.rank}</option>
+                                    {ranks.map(rk => (
+                                        <option key={rk._id} value={rk._id}>{rk.rank}</option>
                                     ))}
                                 </Form.Select>
                             </FloatingLabel>

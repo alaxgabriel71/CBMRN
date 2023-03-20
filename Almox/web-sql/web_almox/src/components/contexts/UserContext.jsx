@@ -12,6 +12,8 @@ export const UserProvider = ({children}) => {
     const [user, setUser] = useState(loggedUser)
     const [isAuthenticated, setIsAuthenticated] = useState(!!loggedUser)
     const [login, setLogin] = useState(false)
+    const [adminLevels, setAdminLevels] = useState([])
+    const [ranks, setRanks] = useState([])
 
     const navigate = useNavigate()
 
@@ -32,6 +34,19 @@ export const UserProvider = ({children}) => {
                 })
         }
     }, [setIsAuthenticated, user, navigate])
+
+    useEffect(()=>{
+        api.get('/admin')
+            .then(({data}) => {
+                setAdminLevels(data.adminLevels)
+            })
+            .catch(err => console.error(err.message))
+
+        api.get('/ranks')
+            .then(({data}) => {
+                setRanks(data.ranks)
+            })
+    },[])
     
     function saveLoggedUser(loggedUser) {
         localStorage.setItem('user', JSON.stringify(loggedUser))
@@ -42,7 +57,7 @@ export const UserProvider = ({children}) => {
 
     return(
         <UserContext.Provider 
-            value={{ login, setLogin, user, isAuthenticated, setIsAuthenticated, saveLoggedUser }}
+            value={{ login, setLogin, user, isAuthenticated, setIsAuthenticated, saveLoggedUser, adminLevels, ranks }}
         >
             {children}
         </UserContext.Provider>

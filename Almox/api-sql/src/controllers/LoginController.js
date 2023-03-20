@@ -1,5 +1,6 @@
 const User = require("../models/User")
 const Admin = require("../models/Admin")
+const Rank = require("../models/Rank")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
@@ -20,6 +21,10 @@ module.exports = {
 
             const admin = await Admin.findOne({ where: {
                _id: `${user.admin}`
+            }})
+
+            const rank = await Rank.findOne({ where: {
+               _id: `${user.rank}`
             }})
 
             return response.status(200).json({ id: user._id, name: `${user.rank} ${user.qra}`, admin: admin.level, token })

@@ -5,13 +5,15 @@ import { UserContext } from '../components/contexts/UserContext'
 import api from '../services/api'
 
 import AdminTD from '../components/AdminTD'
+import RankTD from '../components/RankTD'
 
 export default function Users() {
 
+    const { user, adminLevels, ranks } = useContext(UserContext)
+    
     const [users, setUsers] = useState([])
-    const [admins, setAdmins] = useState([])
+    //const [admins, setAdmins] = useState(adminLevels)
 
-    const { user } = useContext(UserContext)
 
     api.defaults.headers.Authorization = `Bearer ${user.token}`
 
@@ -23,17 +25,11 @@ export default function Users() {
             .catch(err => {
             console.error(err.message)
             })
-
-        api.get('/admin')
-            .then(({data}) => {
-                setAdmins(data.adminLevels)
-            })
-            .catch(err => console.error(err.message))
     }, [])
 
     function getLevel(id) {
         let level = ''
-        admins.forEach(admin => {
+        adminLevels.forEach(admin => {
             if(id === admin._id) {
                 level = admin.level
             }
@@ -41,8 +37,17 @@ export default function Users() {
         return level
     }
 
-    const handleClick = (id, newLevel) => {
-        console.log(id, Number(newLevel))
+    function getRank(id) {
+        let rank = ''
+        ranks.forEach(rk => {
+            if(id === rk._id){
+                rank = rk.rank
+            }
+        })
+        return rank
+    }
+
+    const handleAdminLevelUpdate = (id, newLevel) => {
         api.put(`/users/admin-level/${id}`, { 
             admin: Number(newLevel) 
         })
@@ -51,6 +56,16 @@ export default function Users() {
             })
             .catch(err => console.error(err))
 
+    }
+
+    const handleRankUpdate = (id, newRank) => {
+        api.put(`/users/rank/${id}`, { 
+            rank: newRank 
+        })
+            .then(() => {
+                window.location.reload(false)
+            })
+            .catch(err => console.error(err))
     }
 
     
@@ -72,7 +87,8 @@ export default function Users() {
                     {users?.map(user => (
                         <tr key={user._id}>
                             <td>{user._id}</td>
-                            <td>{user.rank}</td>
+                            {/* <td>{getRank(user.rank)}</td> */}
+                            <RankTD id={user._id} rank={getRank(user.rank)} handleRankUpdate={handleRankUpdate} />
                             <td>{user.qra}</td>
                             <td>{user.email}</td>
                             {/* <td onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
@@ -85,7 +101,7 @@ export default function Users() {
                                     </select>
                                 )}
                             </td> */}
-                            <AdminTD id={user._id} level={getLevel(user.admin)} handleClick={handleClick}/>
+                            <AdminTD id={user._id} level={getLevel(user.admin)} handleAdminLevelUpdate={handleAdminLevelUpdate}/>
                         </tr>
                     ))}
                 </tbody>

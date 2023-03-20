@@ -20,7 +20,6 @@ module.exports = {
             const users = await User.findAll({
                 attributes: ['_id', 'rank', 'qra', 'email', 'admin']
             })
-
             return response.status(200).json({ users })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
@@ -66,6 +65,23 @@ module.exports = {
             })
 
             return response.status(201).json({ message: "Admin level updated successfully!" })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
+    },
+    async updateRank(request, response) {
+        const { rank } = request.body
+        const { id } = request.params
+
+        if(!rank) return response.status(400).json({ error: "Operation failed!" })
+
+        try { 
+            await User.update({ rank }, {
+                where: {
+                    _id: id
+                }
+            })
+            return response.status(201).json({ message: "User rank updated successfully!" })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }

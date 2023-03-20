@@ -24,8 +24,9 @@ const User = db.define('user', {
         defaultValue: 0
     },
     rank: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        foreignKey: true
     },
     qra: {
         type: Sequelize.STRING,

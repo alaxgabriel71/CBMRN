@@ -1,29 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
-import api from '../services/api'
+//import api from '../services/api'
+import { UserContext } from './contexts/UserContext'
 
-export default function AdminTD({id, level, handleClick}) {
+export default function AdminTD({id, level, handleAdminLevelUpdate}) {
+    const { adminLevels } = useContext(UserContext)
     const [isHovering, setIsHovering] = useState(false)
-    const [adminLevels, setAdminLevels] = useState([])
-    const [newAdminLevel, setNewAdminLevel] = useState()
-
-    useEffect(() => {
-        api.get("/admin")
-            .then(({data}) => setAdminLevels(data.adminLevels))
-            .catch(err => console.error(err))
-    }, [id, newAdminLevel])
-
-    /* function handleClick(event) {
-        setNewAdminLevel(event.target.value)
-        console.log("evento", event.target.value)
-        setNewAdminLevel(event.target.value)
-        console.log(id, newAdminLevel)
-    } */
+    const [newAdminLevel] = useState()
     
     return(
         <td onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
             {isHovering && (
-                <select value={newAdminLevel} onChange={e => {handleClick(id, e.target.value)}}>
+                <select value={newAdminLevel} onChange={e => {handleAdminLevelUpdate(id, e.target.value)}}>
                     <option>{level}</option>
                     {adminLevels.map(adminLevel => (
                         ((level !== adminLevel.level) && (
