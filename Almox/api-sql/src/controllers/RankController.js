@@ -3,7 +3,11 @@ const Rank = require("../models/Rank")
 module.exports = {
     async index(request, response) {
         try {
-            const ranks = await Rank.findAll()
+            const ranks = await Rank.findAll({
+                order: [
+                    ['_id', 'DESC']
+                ]
+            })
             return response.status(200).json({ ranks })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
