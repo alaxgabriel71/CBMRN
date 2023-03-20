@@ -51,5 +51,23 @@ module.exports = {
         } catch(err) {
             return response.status(500).json({ error: "Try again later!", err })
         }
+    },
+    async updateAdminLevel(request, response) {
+        const { admin } = request.body
+        const { id } = request.params
+
+        if(!admin) return response.status(400).json({ error: "Operation failed!" })
+
+        try {
+            await User.update({ admin }, {
+                where: {
+                    _id: id
+                }
+            })
+
+            return response.status(201).json({ message: "Admin level updated successfully!" })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
     }
 }

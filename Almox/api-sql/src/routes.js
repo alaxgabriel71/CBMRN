@@ -33,6 +33,7 @@ routes.post("/login", LoginController.check)
 
 routes.get("/users", AuthMiddleware.checkToken, UserController.index)
 routes.post("/users", AuthMiddleware.checkToken, UserController.store)
+routes.put("/users/admin-level/:id", AuthMiddleware.checkToken, UserController.updateAdminLevel)
 routes.get("/users-name", AuthMiddleware.checkToken, UserController.show)
 
 routes.get("/materials", AuthMiddleware.checkToken, MaterialController.index)

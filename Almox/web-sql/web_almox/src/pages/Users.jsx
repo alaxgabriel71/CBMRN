@@ -1,8 +1,10 @@
 import { useState, useContext, useEffect } from 'react'
-import { Table } from 'react-bootstrap'
+import { Dropdown, Table } from 'react-bootstrap'
 
 import { UserContext } from '../components/contexts/UserContext'
 import api from '../services/api'
+
+import AdminTD from '../components/AdminTD'
 
 export default function Users() {
 
@@ -31,12 +33,24 @@ export default function Users() {
 
     function getLevel(id) {
         let level = ''
-        admins.map(admin => {
+        admins.forEach(admin => {
             if(id === admin._id) {
                 level = admin.level
             }
         })
         return level
+    }
+
+    const handleClick = (id, newLevel) => {
+        console.log(id, Number(newLevel))
+        api.put(`/users/admin-level/${id}`, { 
+            admin: Number(newLevel) 
+        })
+            .then(() => {
+                window.location.reload(false)
+            })
+            .catch(err => console.error(err))
+
     }
 
     
@@ -61,7 +75,17 @@ export default function Users() {
                             <td>{user.rank}</td>
                             <td>{user.qra}</td>
                             <td>{user.email}</td>
-                            <td>{getLevel(user.admin)}</td>
+                            {/* <td onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
+                                {!isHovering && (getLevel(user.admin))}
+                                {isHovering && (
+                                    <select name="levels" value={newAdminLevel} onChange={e => setNewAdminLevel(e.target.value)}>
+                                        {admins.map(admin => (
+                                            <option key={admin._id} onClick={handleClick(admin._id) }>{admin.level}</option>
+                                        ))}
+                                    </select>
+                                )}
+                            </td> */}
+                            <AdminTD id={user._id} level={getLevel(user.admin)} handleClick={handleClick}/>
                         </tr>
                     ))}
                 </tbody>
