@@ -21,6 +21,7 @@ import MilitaryTabs from './pages/MilitaryTabs'
 import Login from './pages/Login'
 import Register from './pages/Register';
 import Users from './pages/Users'
+import CreateGarrison from './pages/CreateGarrison';
 
 export default function AppRoutes() {
     
@@ -75,6 +76,7 @@ export default function AppRoutes() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Private><Commander><Register /></Commander></Private>} />
                 <Route path="/users" element={<Private><Commander><Users /></Commander></Private>} />
+                <Route path="/create-garrison" element={<Private><Commander><CreateGarrison /></Commander></Private>} />
             </Routes>
             <Footer className="App-footer" />
         </>

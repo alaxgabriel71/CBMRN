@@ -70,6 +70,7 @@ function NavBar() {
                   <Nav.Link href="/military-tabs">Militares</Nav.Link>
                   <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/users">Usuários</Nav.Link>
                   <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/register">Cadastrar Militar</Nav.Link>
+                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/create-garrison">Criar Guarnição</Nav.Link>
                   {/* <NavDropdown
                   title="Dropdown"
                   id={`offcanvasNavbarDropdown-expand-${expand}`}

@@ -14,6 +14,7 @@ export const UserProvider = ({children}) => {
     const [login, setLogin] = useState(false)
     const [adminLevels, setAdminLevels] = useState([])
     const [ranks, setRanks] = useState([])
+    const [functions, setFunctions] = useState([])
 
     const navigate = useNavigate()
 
@@ -46,6 +47,11 @@ export const UserProvider = ({children}) => {
             .then(({data}) => {
                 setRanks(data.ranks)
             })
+            .catch(err => console.error(err.message))
+
+        api.get('/functions')
+            .then(({data}) => setFunctions(data.functions))
+            .catch(err => console.error(err))
     },[])
     
     function saveLoggedUser(loggedUser) {
@@ -57,7 +63,7 @@ export const UserProvider = ({children}) => {
 
     return(
         <UserContext.Provider 
-            value={{ login, setLogin, user, isAuthenticated, setIsAuthenticated, saveLoggedUser, adminLevels, ranks }}
+            value={{ login, setLogin, user, isAuthenticated, setIsAuthenticated, saveLoggedUser, adminLevels, ranks, functions }}
         >
             {children}
         </UserContext.Provider>

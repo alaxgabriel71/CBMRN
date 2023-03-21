@@ -24,6 +24,12 @@ const RankController = require("./controllers/RankController")
 const Vehicle = require("./models/Vehicle")
 const VehicleController = require("./controllers/VehicleController")
 
+const Garrison = require("./models/Garrison")
+const GarrisonController = require("./controllers/GarrisonController")
+
+const Function = require("./models/Function")
+const FunctionController = require("./controllers/FunctionController")
+
 
 User.sync()
 // User.sync({ alter: true })
@@ -34,6 +40,8 @@ Admin.sync()
 //Admin.sync({ force: true })
 Rank.sync()
 Vehicle.sync()
+Garrison.sync(/* { alter: true } */)
+Function.sync()
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -64,6 +72,14 @@ routes.delete("/movements", AuthMiddleware.checkToken, MovementController.desroy
 
 routes.get("/vehicles", AuthMiddleware.checkToken, VehicleController.index)
 routes.post("/vehicles", AuthMiddleware.checkToken, VehicleController.store)
+
+routes.get("/garrisons", AuthMiddleware.checkToken, GarrisonController.index)
+routes.post("/garrisons", AuthMiddleware.checkToken, GarrisonController.store)
+
+routes.get("/functions", AuthMiddleware.checkToken, FunctionController.index)
+routes.post("/functions", AuthMiddleware.checkToken, FunctionController.store)
+
+
 
 routes.get("/auth", AuthController.verify)
 

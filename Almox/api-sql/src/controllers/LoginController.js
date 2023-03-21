@@ -27,7 +27,7 @@ module.exports = {
                _id: `${user.rank}`
             }})
 
-            return response.status(200).json({ id: user._id, name: `${user.rank} ${user.qra}`, admin: admin.level, token })
+            return response.status(200).json({ id: user._id, name: `${rank.rank} ${user.qra}`, admin: admin.level, token })
          } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
          }
