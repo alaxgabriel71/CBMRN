@@ -74,12 +74,12 @@ routes.get("/vehicles", AuthMiddleware.checkToken, VehicleController.index)
 routes.post("/vehicles", AuthMiddleware.checkToken, VehicleController.store)
 
 routes.get("/garrisons", AuthMiddleware.checkToken, GarrisonController.index)
+routes.get("/garrison/:id", AuthMiddleware.checkToken, GarrisonController.getOne)
 routes.post("/garrisons", AuthMiddleware.checkToken, GarrisonController.store)
+routes.put("/garrison/:id", AuthMiddleware.checkToken, GarrisonController.update)
 
 routes.get("/functions", AuthMiddleware.checkToken, FunctionController.index)
 routes.post("/functions", AuthMiddleware.checkToken, FunctionController.store)
-
-
 
 routes.get("/auth", AuthController.verify)
 

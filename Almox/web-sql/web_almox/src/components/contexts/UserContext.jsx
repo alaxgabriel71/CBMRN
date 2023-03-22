@@ -15,6 +15,7 @@ export const UserProvider = ({children}) => {
     const [adminLevels, setAdminLevels] = useState([])
     const [ranks, setRanks] = useState([])
     const [functions, setFunctions] = useState([])
+    const [garrisons, setGarrisons] = useState([])
 
     const navigate = useNavigate()
 
@@ -52,6 +53,10 @@ export const UserProvider = ({children}) => {
         api.get('/functions')
             .then(({data}) => setFunctions(data.functions))
             .catch(err => console.error(err))
+
+        api.get('/garrisons')
+            .then(({data}) => setGarrisons(data.garrisons))
+            .catch(err => console.error(err))
     },[])
     
     function saveLoggedUser(loggedUser) {
@@ -63,7 +68,7 @@ export const UserProvider = ({children}) => {
 
     return(
         <UserContext.Provider 
-            value={{ login, setLogin, user, isAuthenticated, setIsAuthenticated, saveLoggedUser, adminLevels, ranks, functions }}
+            value={{ login, setLogin, user, isAuthenticated, setIsAuthenticated, saveLoggedUser, adminLevels, ranks, functions, garrisons }}
         >
             {children}
         </UserContext.Provider>
