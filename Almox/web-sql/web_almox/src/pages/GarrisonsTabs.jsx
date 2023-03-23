@@ -4,9 +4,10 @@ import { Tabs, Tab } from 'react-bootstrap'
 import CreateGarrison from './CreateGarrison'
 import DayGarrisons from './DayGarrisons'
 import EditGarrisons from './EditGarrisons'
+import ExistingGarrisons from './ExistingGarrisons'
 
 export default function GarrisonsTabs() {
-    const [key2, setKey2] = useState(localStorage.getItem('key2') || 'create-garrison')
+    const [key2, setKey2] = useState(localStorage.getItem('key2') || 'existing-garrisons')
     
     return(
         <article>
@@ -19,6 +20,9 @@ export default function GarrisonsTabs() {
                 className="mb-3"
                 fill
             >
+                <Tab eventKey="existing-garrisons" title="Guarnições Existentes">
+                    <ExistingGarrisons />
+                </Tab>
                 <Tab eventKey="create-garrison" title="Criar Guarnição">
                     <CreateGarrison />
                 </Tab>
