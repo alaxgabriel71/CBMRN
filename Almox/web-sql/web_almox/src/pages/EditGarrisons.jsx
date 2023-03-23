@@ -9,6 +9,11 @@ export default function EditGarrisons() {
     const { garrisons } = useContext(UserContext)
     const [choice, setChoice] = useState(false)
     const [choiced, setChoiced] = useState(false)
+    const [show, setShow] = useState(false)    
+    
+    useEffect(()=>{
+        //if(choiced && choice) console.log(choiced.composition)
+    },[show])
     
     function getGarrison(id) {
         
@@ -16,30 +21,31 @@ export default function EditGarrisons() {
             .then(({data}) => {
                 setChoiced(data.garrison)
                 //console.log(data.garrison.composition.composition)
+                setShow(true)
             })
             .catch(err => console.error(err))
     }
 
-    useEffect(()=>{
-        if(choiced) console.log(choiced.composition.composition)
-    },[choiced])
+    const handleGarrisonChange = (e) => {
+        setShow(false)
+        setChoice(e.target.value)
+        getGarrison(e.target.value)
+    }
 
     return(
         <>
             <h1>Editar Guarnição</h1>
             <fieldset>
                 <h4>Escolha a Guarnição</h4>
-                <select onChange={e => {
-                    setChoice(e.target.value)
-                    getGarrison(e.target.value)
-                }}>
+                <select onChange={handleGarrisonChange}>
+                {/* <select onChange={e => {setChoice(e.target.value); getGarrison(e.target.value)}}> */}
                     <option key="0" value=''>-- Guarnição --</option>
                     {garrisons?.map(garrison => (
                         <option key={garrison._id} value={garrison._id}>{garrison.name}</option>
                     ))}
                 </select>
             </fieldset>
-            {(choice && choiced) && (
+            {show && (
                 <EditGarrisonForm 
                     cId={choice} 
                     cComposition={choiced} 
