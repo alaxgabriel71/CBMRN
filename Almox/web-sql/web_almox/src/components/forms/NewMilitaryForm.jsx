@@ -50,7 +50,6 @@ export default function NewMilitaryList() {
                 setMessage('O militar foi registrado.')
                 setVariant('success')
                 setVisible(true)
-                return response.status
             })
             .catch(err => {
                 console.error(err)

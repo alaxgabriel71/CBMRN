@@ -43,6 +43,7 @@ export default function NewMaterialsForm() {
   }, []);
 
   function insertNewMaterial(event) {
+    setVisible(false)
     event.preventDefault();
     const mili = dateObject.getTime();
     var materialExists = false;

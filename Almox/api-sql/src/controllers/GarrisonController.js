@@ -58,6 +58,7 @@ module.exports = {
                     _id: id
                 }
             })
+            return response.status(201).json({ message: "Garrison updated successfuly!" })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }

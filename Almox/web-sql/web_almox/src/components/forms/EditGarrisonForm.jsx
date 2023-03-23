@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
-
 import { FloatingLabel, Form, Button } from 'react-bootstrap'
-import { UserContext } from '../contexts/UserContext'
 
+import { UserContext } from '../contexts/UserContext'
+import StatusMessage from '../StatusMessage'
 import api from '../../services/api'
 
 export default function EditGarrisonForm({ cId, cName, cComposition, cMax, cMin, cActive }) {
@@ -12,6 +12,10 @@ export default function EditGarrisonForm({ cId, cName, cComposition, cMax, cMin,
     const [max, setMax] = useState(cMax)
     const [min, setMin] = useState(cMin)
     const [active, setActive] = useState(cActive)
+    const [message, setMessage] = useState()
+    const [status, setStatus] = useState()
+    const [variant, setVariant] = useState()
+    const [show, setShow] = useState(false)
 
     const { functions } = useContext(UserContext)
 
@@ -44,6 +48,7 @@ export default function EditGarrisonForm({ cId, cName, cComposition, cMax, cMin,
     }
 
     const handleSubmit = (event) => {
+        setShow(false)
         event.preventDefault()
         console.log(name, composition, min, max)
         api.put(`/garrison/${cId}`, {
@@ -53,13 +58,25 @@ export default function EditGarrisonForm({ cId, cName, cComposition, cMax, cMin,
             max,
             min
         })
-            .then(() => window.location.reload(false))
-            .catch(err => console.error(err))
+            .then(() => {
+                setStatus("Sucesso")
+                setMessage("Edição salva com sucesso!")
+                setVariant("success")
+                setShow(true)
+            })
+            .catch(() => {
+                setStatus("Falha")
+                setMessage("Ocorreu um erro. Tente novamente mais tarde!")
+                setVariant("danger")
+                setShow(true)
+            })
+        setShow(false)
     }
     
     return(
         <form onSubmit={handleSubmit}>
             <fieldset>
+                <StatusMessage message={message} status={status} variant={variant} show={show} />
                 <FloatingLabel 
                     label="Nome da Guarnição" 
                     className="mb-3"
@@ -124,9 +141,12 @@ export default function EditGarrisonForm({ cId, cName, cComposition, cMax, cMin,
                         isInvalid 
                         onChange={() => setActive(!active)} 
                     />
-                    <Form.Check.Label>Ativar</Form.Check.Label>
-                    <Form.Control.Feedback type="invalid" hidden={!active}>
-                        Ativada
+                    <Form.Check.Label>
+                        {active && <strong>Ativada</strong>}
+                        {!active && <strong>Ativar</strong>}
+                    </Form.Check.Label>
+                    <Form.Control.Feedback type="invalid" hidden={active} >
+                        <small>Guarnição desativada</small>
                     </Form.Control.Feedback>
                 </Form.Check>
                 <div className="form-btn-area">
