@@ -39,7 +39,7 @@ Movement.sync()
 Admin.sync()
 //Admin.sync({ force: true })
 Rank.sync()
-Vehicle.sync()
+Vehicle.sync(/* { force: true } */)
 Garrison.sync(/* { alter: true } */)
 Function.sync()
 
@@ -72,11 +72,13 @@ routes.delete("/movements", AuthMiddleware.checkToken, MovementController.desroy
 
 routes.get("/vehicles", AuthMiddleware.checkToken, VehicleController.index)
 routes.post("/vehicles", AuthMiddleware.checkToken, VehicleController.store)
+routes.delete("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.remove)
 
 routes.get("/garrisons", AuthMiddleware.checkToken, GarrisonController.index)
 routes.get("/garrison/:id", AuthMiddleware.checkToken, GarrisonController.getOne)
 routes.post("/garrisons", AuthMiddleware.checkToken, GarrisonController.store)
 routes.put("/garrison/:id", AuthMiddleware.checkToken, GarrisonController.update)
+routes.delete("/garrison/:id", AuthMiddleware.checkToken, GarrisonController.remove)
 
 routes.get("/functions", AuthMiddleware.checkToken, FunctionController.index)
 routes.post("/functions", AuthMiddleware.checkToken, FunctionController.store)

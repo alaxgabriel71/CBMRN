@@ -8,18 +8,31 @@ const Vehicle = db.define('vehicle', {
         autoIncrement: true,
         primaryKey: true
     },
+    active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+    },
     name: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    materials: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        foreignKey: true
+    model: {
+        type: Sequelize.STRING,
+        allowNull: true
     },
     plate: {
         type: Sequelize.STRING,
         allowNull: true
+    },
+    seats: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    list: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        allowNull: true,
     }
 })
 

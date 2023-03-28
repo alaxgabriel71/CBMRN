@@ -47,6 +47,25 @@ export default function EditGarrisonForm({ cId, cName, cComposition, cMax, cMin,
         setComposition([])
     }
 
+    const handleExclusion = (id) => {
+        // console.log(id, "teste")
+        setShow(false)
+        api.delete(`/garrison/${id}`)
+            .then(() => {
+                setStatus("Sucesso")
+                setMessage("Guarnição excluída com sucesso!")
+                setVariant("success")
+                setShow(true)
+            })
+            .catch(() => {
+                setStatus("Falha")
+                setMessage("Ocorreu um erro. Tente novamente mais tarde!")
+                setVariant("secondary")
+                setShow(true)
+            })
+        setShow(false)
+    }
+
     const handleSubmit = (event) => {
         setShow(false)
         event.preventDefault()
@@ -149,6 +168,12 @@ export default function EditGarrisonForm({ cId, cName, cComposition, cMax, cMin,
                         <small>Guarnição desativada</small>
                     </Form.Control.Feedback>
                 </Form.Check>
+                <Button
+                    variant="warning"
+                    onClick={() => handleExclusion(cId)}
+                >
+                    Excluir Guarnição
+                </Button>
                 <div className="form-btn-area">
                     <Button
                         id="cancel"

@@ -62,5 +62,17 @@ module.exports = {
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }
+    },
+    async remove(request, response) {
+        const { id } = request.params
+        
+        try {
+            await Garrison.destroy({ where: {
+                _id: id
+            }})
+            return response.status(200).json({ message: "Garrison deleted successfuly!" })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
     }
 }
