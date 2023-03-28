@@ -45,9 +45,11 @@ export default function NewGarrison() {
 
     function cancelSubmit() {
         setComposition([])
+        setActive(false)
     }
 
     const handleSubmit = (event) => {
+        setShow(false)
         event.preventDefault()
         console.log(name, composition, min, max)
         api.post('/garrisons', {
@@ -69,6 +71,7 @@ export default function NewGarrison() {
                 setVariant("danger")
                 setShow(true)
             })
+        setShow(false)
     }
     
     return(
