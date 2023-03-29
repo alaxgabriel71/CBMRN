@@ -71,7 +71,9 @@ routes.post("/movements", AuthMiddleware.checkToken, MovementController.store)
 routes.delete("/movements", AuthMiddleware.checkToken, MovementController.desroy)
 
 routes.get("/vehicles", AuthMiddleware.checkToken, VehicleController.index)
+routes.get("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.getOne)
 routes.post("/vehicles", AuthMiddleware.checkToken, VehicleController.store)
+routes.put("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.update)
 routes.delete("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.remove)
 
 routes.get("/garrisons", AuthMiddleware.checkToken, GarrisonController.index)

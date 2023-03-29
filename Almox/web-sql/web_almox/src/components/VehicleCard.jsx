@@ -3,11 +3,11 @@ export default function VehicleCard({ name, active, model, plate, seats}) {
         <li>
             <fieldset>
                 <h5>{name}</h5>
-                <smal>Modelo: {model}</smal>
+                <small>Modelo: {model}</small>
                 <br />
-                <smal>Placa: {plate}</smal>
+                <small>Placa: {plate}</small>
                 <br />
-                <smal>Quant. de Assentos: {seats}</smal>
+                <small>Quant. de Assentos: {seats}</small>
                 <br />
                 {active ? (<strong>Ativada</strong>) : (<strong>Desativada</strong>)}
             </fieldset>

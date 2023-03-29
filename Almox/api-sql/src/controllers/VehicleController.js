@@ -9,6 +9,18 @@ module.exports = {
             return response.status(500).json({ error: "Try again later!" })
         }
     },
+    async getOne(request, response) {
+        const { id } = request.params
+
+        try {
+            const vehicle = await Vehicle.findOne({ where: {
+                _id: id
+            }})
+            return response.status(200).json({ vehicle })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
+    },
     async store(request, response) {
         const { name, active, model, seats, plate, list } = request.body
 
@@ -33,6 +45,28 @@ module.exports = {
                     _id: id
                 }}
             )
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
+    },
+    async update(request, response) {
+        const { id } = request.params
+        const { name, active, model, seats, plate } = request.body
+
+        try {
+            await Vehicle.update({ 
+                name, 
+                active, 
+                model, 
+                seats, 
+                plate 
+            }, 
+            {
+                where: {
+                    _id: id
+                }
+            })
+            return response.status(201).json({ message: "Vehicle updated successfully!" })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }
