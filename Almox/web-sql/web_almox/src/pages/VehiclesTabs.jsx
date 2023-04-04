@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
+
 import CreateVehicle from './CreateVehicle'
 import EditVehicle from './EditVehicle'
-
 import ExistingVehicles from './ExistingVehicles'
+import CreateVehicleMaterialsList from './CreateVehicleMaterialsList'
 
 export default function VehiclesTabs() {
     const [key3, setKey3] = useState(localStorage.getItem('key3') || 'existing-vehicles')
@@ -27,6 +28,9 @@ export default function VehiclesTabs() {
                 </Tab>
                 <Tab eventKey="edit-vehicle" title="Editar Viatura">
                     <EditVehicle />
+                </Tab>
+                <Tab eventKey="create-vehicle-materials-list" title="Criar Lista de Materiais">
+                    <CreateVehicleMaterialsList />
                 </Tab>
             </Tabs>
         </article>
