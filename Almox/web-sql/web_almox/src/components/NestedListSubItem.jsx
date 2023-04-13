@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function SubItem({name, childs, id, showItem}){
+export default function SubItem({name, childs, id, list, showItem}){
     const [show, setShow] = useState(false)
 
     return (
@@ -17,7 +17,14 @@ export default function SubItem({name, childs, id, showItem}){
                 </div>
             )}
             <ul key={id+'ul'}>
-                {childs.map(showItem)}
+                {/* {childs.forEach(showItem)} */}
+                {childs.forEach(child => {
+                    list.forEach(item => {
+                        if (item.id === child) (
+                            showItem(item)
+                        )
+                    })
+                })}
             </ul>
         </li>
     )

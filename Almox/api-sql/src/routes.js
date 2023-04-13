@@ -30,6 +30,9 @@ const GarrisonController = require("./controllers/GarrisonController")
 const Function = require("./models/Function")
 const FunctionController = require("./controllers/FunctionController")
 
+const VehicleListController = require("./controllers/VehicleListController")
+const VehicleList = require("./models/VehicleList")
+
 
 User.sync()
 // User.sync({ alter: true })
@@ -42,6 +45,7 @@ Rank.sync()
 Vehicle.sync(/* { force: true } */)
 Garrison.sync(/* { alter: true } */)
 Function.sync()
+VehicleList.sync()
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -84,6 +88,9 @@ routes.delete("/garrison/:id", AuthMiddleware.checkToken, GarrisonController.rem
 
 routes.get("/functions", AuthMiddleware.checkToken, FunctionController.index)
 routes.post("/functions", AuthMiddleware.checkToken, FunctionController.store)
+
+routes.get("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.index)
+routes.post("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.store)
 
 routes.get("/auth", AuthController.verify)
 

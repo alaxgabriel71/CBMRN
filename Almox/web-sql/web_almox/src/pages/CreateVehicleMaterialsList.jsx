@@ -1,100 +1,123 @@
 import { useState, useEffect, useContext } from "react"
 import { UserContext } from "../components/contexts/UserContext"
 import { FloatingLabel, Form, Button, Table } from "react-bootstrap"
-import NestedList from "../components/NestedList"
+
+//import NestedList from "../components/NestedList"
+import VehicleMaterialTD from "../components/VehicleMaterialTD"
+import api from "../services/api"
 
 export default function CreateVehicleMaterialsList() {
     const { vehicles } = useContext(UserContext)
 
-    const [ vehicle, setVehicle ] = useState()
+    const [vehicle, setVehicle ] = useState()
+    const [name, setName] = useState()
+    const [quantity, setQuantity] = useState()
+    const [remark, setRemark] = useState()
     const [ materials, setMaterials ] = useState([])
 
     useEffect(()=>{
         console.log(vehicle)
-    }, [vehicle])
-
-    /* const listExample = [
-        {name: "martelo", quantity: 2, size: 0, level: 0, childs: []},
-        {name: "gaveta 1", quantity: 0, size: 4, level: 1, childs: [
-            {name: "cilindro", quantity: 2, size: 0, level: 2, childs: []}, 
-            {name: "mascara", quantity: 2, size: 0, level: 2, childs: []}, 
-            {name: "luva", quantity: 2, size: 0, level: 2, childs: []}, 
-            {name: "maleta de ferramentas", quantity: 0, size: 2, level: 2, childs: [
-                {name: "alicate", quantity: 1, size: 0, level: 3, childs: []},
-                {name: "chave de fenda", quantity: 1, size: 0, level: 3, childs: []}
-            ]}, 
-        ]}
-    ] */
-
+    }, [vehicle, materials])
     
-    /* function showItem(item) {
-        item.childs.forEach(child => {
-            if(child.size === 0){
-                return <li key={child.name}>{child.name}</li>
-            } else {
-                showItem(child)
-                return <li key={child.name}>{child.name}</li>
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setMaterials([{id: materials.length, name, quantity}, ...materials])
+    }
+
+    function removeItem(id) {
+        let newArray = []
+        materials.forEach(material => {
+            if (material.id !== id) {
+                newArray.push(material)
             }
         })
+
+        newArray.forEach((material, newId) => {
+            material.id = newId
+        })
+
+        setMaterials(newArray)
+    }
+
+    function getName(id) {
+        let name
+        vehicles.forEach(v => {
+            if (id === v._id) {
+                name = v.name
+            }
+        })
+        return name
     }
     
-    function getItem(item) {
-        if(item.size === 0){
-            return(
-                <li key={item.name}>{item.name}</li>
-                )
-            } else {
-                showItem(item)
-                return <li key={item.name}>{item.name}</li>
-            }
-        } */
-        
-        
-    
-    
+    const handleSave = () => {
+        let vehicleName = getName(vehicle)
+        console.log(vehicle)
+        console.log(vehicleName)
+        console.log(materials)
+        /* api.post("/vehicles-lists", {
+            name: vehicleName,
+            vehicle,
+            list: materials
+        })
+            .then(({status}) => console.log(status))
+            .catch(err => console.error(err)) */
+    }
     return(
         <>
             <h1>Criar Lista de Materiais</h1>
             {!vehicle && (
-                <select value={vehicle} onChange={e => setVehicle(e.target.value)}>
+                <select value={vehicle} onChange={e => setVehicle(JSON.parse(e.target.value))}>
                     <option>-- Escolha a Viatura --</option>
                     {vehicles.map(v => (
-                        <option key={v._id} value={v.name}>{v.name}</option>
+                        <option key={v._id} value={v._id}>{v.name}</option>
                     ))}
                 </select>
             )}
-            {vehicle && <NestedList />}
-        </>
-    )
-}
-
-{/* <fieldset>
-                    <h2>Nova Lista de Materiais para a {vehicle}</h2>
-                    <Button variant="secondary" onClick={() => window.alert(`A lista da VTR ${vehicle} ainda não foi salva. Deseja realmente sair?`)}>Escolher outra VTR</Button>
-                    <form>
-                        <FloatingLabel
-                            label="Material"
-                        >
-                            <Form.Control type="text" required />
-                        </FloatingLabel>
-                        <FloatingLabel
+            {vehicle && (
+                <fieldset>
+                    <h2>{getName(vehicle)}</h2>
+                    <button onClick={() => setVehicle('')}>Escolher outra Viatura</button>
+                    <button onClick={handleSave}>Salvar Lista</button>
+                    <form onSubmit={handleSubmit}>
+                        <FloatingLabel 
                             label="Quantidade"
+                            value={quantity}
+                            onChange={e => setQuantity(e.target.value)}                        
                         >
                             <Form.Control type="number" min="1" required />
                         </FloatingLabel>
-                        <FloatingLabel
-                            label="Observações"
+                        <FloatingLabel 
+                            label="Material"
+                            value={name}
+                            onChange={e => setName(e.target.value)}  
+                        >
+                            <Form.Control type="text" required/>
+                        </FloatingLabel>
+                        <FloatingLabel 
+                            label="Observação"
+                            value={remark}
+                            onChange={e => setRemark(e.target.value)}  
                         >
                             <Form.Control type="text" />
                         </FloatingLabel>
-                        <Button type="submit" variant="danger" >Adicionar</Button>
+                        <Button type="submit" variant="danger" >Adicionar Material</Button>
                     </form>
                     <Table striped bordered hover size="sm">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>Quantidade</th>
+                                <th>Material</th>
+                                <th>Observação</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            {materials?.map(material => (
+                                <VehicleMaterialTD key={material.id} id={material.id} name={material.name} quantity={material.quantity} removeItem={removeItem} remark={material.remark}/>
+                            ))}
+                        </tbody>
                     </Table>
-                </fieldset> */}
+                </fieldset>
+            )}
+        </>
+    )
+}
