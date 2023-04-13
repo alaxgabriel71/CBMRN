@@ -23,6 +23,7 @@ import Register from './pages/Register';
 import Users from './pages/Users'
 import GarrisonsTabs from './pages/GarrisonsTabs';
 import VehiclesTabs from './pages/VehiclesTabs';
+import Vehicle from './pages/Vehicle'
 
 export default function AppRoutes() {
     
@@ -79,6 +80,7 @@ export default function AppRoutes() {
                 <Route path="/users" element={<Private><Commander><Users /></Commander></Private>} />
                 <Route path="/garrisons-tabs" element={<Private><Commander><GarrisonsTabs /></Commander></Private>} />
                 <Route path="/vehicles-tabs" element={<Private><Commander><VehiclesTabs /></Commander></Private>} />
+                <Route path="/vehicles/:id" element={<Private><Vehicle /></Private>} />
             </Routes>
             <Footer className="App-footer" />
         </>

@@ -28,7 +28,7 @@ module.exports = {
 
         try {
             await Vehicle.create({ name, active, model, seats, plate, list })
-            return response.status(200).json({ message: "Vehicle created successfully!" })
+            return response.status(201).json({ message: "Vehicle created successfully!" })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }
@@ -45,8 +45,9 @@ module.exports = {
                     _id: id
                 }}
             )
+            return response.status(200).json({ message: "Vehicle list updated successfully!" })
         } catch(err) {
-            return response.status(500).json({ error: "Try again later!" })
+            return response.status(500).json({ message: "Try again later!", error: err })
         }
     },
     async update(request, response) {

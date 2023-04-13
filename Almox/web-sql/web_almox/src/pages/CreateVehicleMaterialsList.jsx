@@ -51,16 +51,23 @@ export default function CreateVehicleMaterialsList() {
     
     const handleSave = () => {
         let vehicleName = getName(vehicle)
-        console.log(vehicle)
+        /* console.log(vehicle)
         console.log(vehicleName)
-        console.log(materials)
-        /* api.post("/vehicles-lists", {
+        console.log(materials) */
+        api.post("/vehicles-lists", {
             name: vehicleName,
             vehicle,
             list: materials
         })
-            .then(({status}) => console.log(status))
-            .catch(err => console.error(err)) */
+            .then((response) => response.data.id)
+            .then(id => {
+                api.put(`/vehicle-list/${vehicle}`, {
+                    list: id
+                })
+                    .then((response) => console.log(response.status))
+                    .catch(err => console.error(err))
+            })
+            .catch(err => console.error(err))
     }
     return(
         <>

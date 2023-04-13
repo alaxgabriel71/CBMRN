@@ -102,7 +102,7 @@ export default function EditVehicleForm({ cId, cName, cModel, cPlate, cSeats, cA
                     type="submit"
                     variant="danger"
                 >
-                    Criar Viatura
+                    Salvar Edição
                 </Button>
             </fieldset>
         </form>

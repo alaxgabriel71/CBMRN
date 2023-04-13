@@ -45,7 +45,7 @@ Rank.sync()
 Vehicle.sync(/* { force: true } */)
 Garrison.sync(/* { alter: true } */)
 Function.sync()
-VehicleList.sync()
+VehicleList.sync(/* { alter: true } */)
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -78,6 +78,7 @@ routes.get("/vehicles", AuthMiddleware.checkToken, VehicleController.index)
 routes.get("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.getOne)
 routes.post("/vehicles", AuthMiddleware.checkToken, VehicleController.store)
 routes.put("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.update)
+routes.put("/vehicle-list/:id", AuthMiddleware.checkToken, VehicleController.updateList)
 routes.delete("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.remove)
 
 routes.get("/garrisons", AuthMiddleware.checkToken, GarrisonController.index)
@@ -90,6 +91,7 @@ routes.get("/functions", AuthMiddleware.checkToken, FunctionController.index)
 routes.post("/functions", AuthMiddleware.checkToken, FunctionController.store)
 
 routes.get("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.index)
+routes.get("/vehicle-list/:id", AuthMiddleware.checkToken, VehicleListController.getOne)
 routes.post("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.store)
 
 routes.get("/auth", AuthController.verify)

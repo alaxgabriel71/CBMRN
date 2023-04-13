@@ -2,7 +2,7 @@ const Sequelize = require("sequelize")
 const db = require("../db")
 
 const VehicleList = db.define('vehicle_list', {
-    id: {
+    _id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
