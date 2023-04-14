@@ -1,16 +1,21 @@
-export default function VehicleCard({ name, active, model, plate, seats}) {
+import { Link } from 'react-router-dom'
+
+export default function VehicleCard({ id, name, active, model, plate, seats}) {
+    
     return(
         <li>
-            <fieldset>
-                <h5>{name}</h5>
-                <small>Modelo: {model}</small>
-                <br />
-                <small>Placa: {plate}</small>
-                <br />
-                <small>Quant. de Assentos: {seats}</small>
-                <br />
-                {active ? (<strong>Ativada</strong>) : (<strong>Desativada</strong>)}
-            </fieldset>
+            <Link to={`/vehicles/${id}`} >
+                <fieldset>
+                    <h5>{name}</h5>
+                    <small>Modelo: {model}</small>
+                    <br />
+                    <small>Placa: {plate}</small>
+                    <br />
+                    <small>Quant. de Assentos: {seats}</small>
+                    <br />
+                    {active ? (<strong>Ativada</strong>) : (<strong>Desativada</strong>)}
+                </fieldset>
+            </Link>
         </li>
     )
 }

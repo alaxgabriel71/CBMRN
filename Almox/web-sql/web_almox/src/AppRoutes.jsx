@@ -24,6 +24,7 @@ import Users from './pages/Users'
 import GarrisonsTabs from './pages/GarrisonsTabs';
 import VehiclesTabs from './pages/VehiclesTabs';
 import Vehicle from './pages/Vehicle'
+import EditVehicleList from './pages/EditVehicleList';
 
 export default function AppRoutes() {
     
@@ -80,7 +81,8 @@ export default function AppRoutes() {
                 <Route path="/users" element={<Private><Commander><Users /></Commander></Private>} />
                 <Route path="/garrisons-tabs" element={<Private><Commander><GarrisonsTabs /></Commander></Private>} />
                 <Route path="/vehicles-tabs" element={<Private><Commander><VehiclesTabs /></Commander></Private>} />
-                <Route path="/vehicles/:id" element={<Private><Vehicle /></Private>} />
+                <Route path="/vehicles-lists/:id" element={<Private><Commander><EditVehicleList /></Commander></Private>} />
+                <Route path="/vehicles/:id" element={<Private><Regular><Vehicle /></Regular></Private>} />
             </Routes>
             <Footer className="App-footer" />
         </>

@@ -4,7 +4,7 @@ import { UserContext } from '../components/contexts/UserContext'
 import VehicleCard from '../components/VehicleCard'
 
 export default function ExistingVehicles() {
-    const { vehicles } = useContext(UserContext)
+    const { vehicles } = useContext(UserContext)    
 
     return(
         <>
@@ -12,7 +12,15 @@ export default function ExistingVehicles() {
             <fieldset>
                 <ul>
                     {vehicles.map(v => (
-                        <VehicleCard key={v._id} name={v.name} active={v.active} model={v.model} plate={v.plate} seats={v.seats} />
+                        <VehicleCard 
+                            key={v._id} 
+                            id={v._id} 
+                            name={v.name} 
+                            active={v.active} 
+                            model={v.model} 
+                            plate={v.plate} 
+                            seats={v.seats}                             
+                        />
                     ))}
                 </ul>
             </fieldset>
