@@ -39,6 +39,16 @@ export default function CreateVehicleMaterialsList() {
         setMaterials(newArray)
     }
 
+    function editItem(id, name, quantity, remark) {
+        materials.forEach(material => {
+            if(material.id === id) {
+                material.name = name
+                material.quantity = quantity
+                material.remark = remark
+            }
+        })
+    }
+
     function getName(id) {
         let name
         vehicles.forEach(v => {
@@ -119,7 +129,7 @@ export default function CreateVehicleMaterialsList() {
                         </thead>
                         <tbody>
                             {materials?.map(material => (
-                                <VehicleMaterialTD key={material.id} id={material.id} name={material.name} quantity={material.quantity} removeItem={removeItem} remark={material.remark}/>
+                                <VehicleMaterialTD key={material.id} id={material.id} name={material.name} quantity={material.quantity} removeItem={removeItem} remark={material.remark} editItem={editItem}/>
                             ))}
                         </tbody>
                     </Table>
