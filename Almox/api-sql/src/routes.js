@@ -93,6 +93,7 @@ routes.post("/functions", AuthMiddleware.checkToken, FunctionController.store)
 routes.get("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.index)
 routes.get("/vehicle-list/:id", AuthMiddleware.checkToken, VehicleListController.getOne)
 routes.post("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.store)
+routes.put("/vehicles-materials-list/:id", AuthMiddleware.checkToken, VehicleListController.updateOne)
 
 routes.get("/auth", AuthController.verify)
 

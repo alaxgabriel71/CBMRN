@@ -46,5 +46,22 @@ module.exports = {
         } catch(err) {
             return response.status(500).json({ message: "Try again later!", error: err })
         }
+    },
+    async updateOne(request, response) {
+        const { id } = request.params
+        const { list } = request.body
+
+        if(!list) return response.status(400).json({ error: "Operation failed!" })
+
+        try {
+            await VehicleList.update({ list }, {
+                where: {
+                    _id: id
+                }
+            })
+            return response.status(201).json({ message: "Vehicle materials list updated successfully!" })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
     }
 }

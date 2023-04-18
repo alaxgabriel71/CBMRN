@@ -28,6 +28,9 @@ export default function EditVehicleList() {
             .catch(err => console.error(err))
     }, [id])
 
+    useEffect(()=>{
+    },[newName, newQuantity, newRemark, materialId])
+
     /* useEffect(()=>{
         console.log(materials)
     },[materials]) */
@@ -51,6 +54,22 @@ export default function EditVehicleList() {
         setShowUpdate(true)
     }
 
+    function editItem(id, name, quantity, remark) {
+        let newArray = [...materials]
+        console.log(materials)
+        newArray.forEach(material => {
+            if(material.id === id) {
+                console.log(quantity)
+                material.name = name
+                material.quantity = quantity
+                material.remark = remark
+                console.log(material.name, material.quantity, material.remark)
+            }
+        })
+        console.log(newArray)
+        setMaterials(newArray)
+    }
+
     function removeItem(id) {
         let newArray = []
         materials.forEach(material => {
@@ -61,19 +80,6 @@ export default function EditVehicleList() {
 
         newArray.forEach((material, newId) => {
             material.id = newId
-        })
-
-        setMaterials(newArray)
-    }
-
-    function editItem(id, name, quantity, remark) {
-        let newArray = [...materials]
-        newArray.forEach(material => {
-            if(material.id === id) {
-                material.name = name
-                material.quantity = quantity
-                material.remark = remark
-            }
         })
         setMaterials(newArray)
     }
@@ -88,6 +94,15 @@ export default function EditVehicleList() {
         setMaterials(auxArray)
     }
 
+    const handleSave = () => {
+        console.log(materials)
+        api.put(`/vehicles-materials-list/${id}`, { 
+            list: materials 
+        })
+            .then(() => window.location.reload(false))
+            .catch(err => console.error(err))
+    }
+
     return (
         <article>
             <h1>Editar Lista de Materiais</h1>
@@ -96,7 +111,7 @@ export default function EditVehicleList() {
                 {vehicles.map(v => <option key={v._id} value={v._id}>{v.name}</option>)}
             </select>
             <h2>Viatura: {vehicleName}</h2>
-            <Button variant="danger" size="sm">Salvar Edição</Button>
+            <Button variant="danger" size="sm" onClick={handleSave}>Salvar Edição</Button>
             <form onSubmit={handleSubmit}>
                 <FloatingLabel 
                     label="Quantidade"
@@ -143,15 +158,17 @@ export default function EditVehicleList() {
                 </tbody>
             </Table>
             )}
-            <UpdateVehicleMaterialsListModal
-                onClose={() => setShowUpdate(false)}
-                show={showUpdate}
-                materialName={newName}
-                materialId={materialId}
-                materialQuantity={newQuantity}
-                materialRemark={newRemark}
-                editItem={editItem}
-            />
+            {showUpdate && (
+                <UpdateVehicleMaterialsListModal
+                    onClose={() => setShowUpdate(false)}
+                    show={showUpdate}
+                    materialName={newName}
+                    materialId={materialId}
+                    materialQuantity={newQuantity}
+                    materialRemark={newRemark}
+                    editItem={editItem}
+                />
+            )}
         </article>
     )
 }

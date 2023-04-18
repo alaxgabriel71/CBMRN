@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import styles from './UpdateMaterialModal.module.css'
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
@@ -8,13 +8,16 @@ export default function UpdateVehicleMaterialsListModal({ show, onClose, materia
     const [newQuantity, setNewQuantity] = useState(materialQuantity);
     const [newRemark, setNewRemark] = useState(materialRemark);
 
+    useEffect(()=>{},[newName, newQuantity, newRemark])
+
     if (!show) {
         return null
     }
 
     const updateMaterial = (e) => {
         e.preventDefault()
-        editItem(materialId, materialName, materialQuantity, materialRemark)
+        console.log("modal", newName, newQuantity)
+        editItem(materialId, newName, newQuantity, newRemark)
         onClose()
     }
 
