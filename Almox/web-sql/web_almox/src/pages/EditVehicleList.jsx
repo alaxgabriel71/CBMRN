@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useCallback } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { Table, Button, FloatingLabel, Form } from 'react-bootstrap'
 
 import { UserContext } from "../components/contexts/UserContext"
@@ -10,6 +10,7 @@ import UpdateVehicleMaterialsListModal from '../components/modals/UpdateVehicleM
 export default function EditVehicleList() {
     const { id } = useParams()
     const { vehicles } = useContext(UserContext)
+    const navigate = useNavigate()
 
     const [materials, setMaterials] = useState([])
     const [vehicleName, setVehicleName] = useState()
@@ -35,15 +36,22 @@ export default function EditVehicleList() {
         console.log(materials)
     },[materials]) */
 
+    
     const getVehicleParams = useCallback((id) => {
+        console.log(vehicles)
         vehicles.forEach(v => {
             if(v.list === id) {
                 setVehicleName(v.name)
             }
         })
     }, [vehicles])
+    
+    useEffect(()=>{
+        console.log(vehicleName)
+    },[vehicleName])
 
     useEffect(() => getVehicleParams(Number(id)), [id, getVehicleParams])
+
 
     function editingItem(id, name, quantity, remark) {
         console.log(name, quantity, remark)
@@ -84,6 +92,11 @@ export default function EditVehicleList() {
         setMaterials(newArray)
     }
 
+    const handleVehicleChange = e => {
+        //console.log(e.target.value)
+        navigate(`/vehicles-lists/${e.target.value}`)
+    }
+
     const handleSubmit = e => {
         e.preventDefault()
         //console.log(name, quantity, remark)
@@ -106,10 +119,18 @@ export default function EditVehicleList() {
     return (
         <article>
             <h1>Editar Lista de Materiais</h1>
-            <select>
+            {/* <select>
                 <option>-- Escolher outra VTR --</option>
                 {vehicles.map(v => <option key={v._id} value={v._id}>{v.name}</option>)}
-            </select>
+            </select> */}
+            <FloatingLabel
+                label="Escolher Viatura"
+            >
+                <Form.Select onChange={handleVehicleChange}>
+                    <option>-- Viatura --</option>
+                    {vehicles.map(v => <option key={v._id} value={v.list}>{v.name}</option>)}
+                </Form.Select>
+            </FloatingLabel>
             <h2>Viatura: {vehicleName}</h2>
             <Button variant="danger" size="sm" onClick={handleSave}>Salvar Edição</Button>
             <form onSubmit={handleSubmit}>
@@ -143,6 +164,7 @@ export default function EditVehicleList() {
                         <th>Quantidade</th>
                         <th>Material</th>
                         <th>Observação</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
