@@ -63,5 +63,32 @@ module.exports = {
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }
+    },
+    async insertOneMaterial(request, response) {
+        const { id } = request.params
+        const { material } = request.body
+
+        if(!material) return response.status(400).json({ error: "Operation failed!" })
+
+        try{
+            const vehicleMaterialsList = await VehicleList.findOne({ where: {
+                _id: id
+            }})
+            const list = vehicleMaterialsList.list
+            material.id = list.length+1
+            list.push(material)
+            try{
+                await VehicleList.update({ list }, {
+                    where: {
+                        _id: id
+                    }
+                })
+                return response.status(201).json({ message: "Material added successfuly!" })
+            } catch(err) {
+                return response.status(500).json({ error: "Try again later!" })
+            }
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
     }
 }

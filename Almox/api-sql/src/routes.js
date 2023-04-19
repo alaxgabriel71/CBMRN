@@ -94,6 +94,7 @@ routes.get("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.i
 routes.get("/vehicle-list/:id", AuthMiddleware.checkToken, VehicleListController.getOne)
 routes.post("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.store)
 routes.put("/vehicles-materials-list/:id", AuthMiddleware.checkToken, VehicleListController.updateOne)
+routes.put("/vehicles-materials-list/:id/insert-new-material", AuthMiddleware.checkToken, VehicleListController.insertOneMaterial)
 
 routes.get("/auth", AuthController.verify)
 
