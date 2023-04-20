@@ -5,7 +5,7 @@ import { UserContext } from '../contexts/UserContext'
 import styles from './Modal.module.css'
 import api from '../../services/api'
 
-export default function Modal({ show, onClose, id, material, quantity, remark, origin, updateMaterialQuantity}) {
+export default function Modal({ show, onClose, id, material, quantity, remark, origin, updateMaterialQuantity, handleSave}) {
     const { vehicles } = useContext(UserContext)
 
     const [totalTransferQuantity, setTotalTransferQuantity] = useState(quantity)
@@ -16,6 +16,7 @@ export default function Modal({ show, onClose, id, material, quantity, remark, o
     const handleMaterialTransfer = e => {
         e.preventDefault()
         console.log(totalTransferQuantity, destiny)
+        const remainingQuantity = Number(quantity) - Number(totalTransferQuantity)
 
         if(destiny === 'almox') {
             console.log('almox')
@@ -25,17 +26,20 @@ export default function Modal({ show, onClose, id, material, quantity, remark, o
                 remark: remark
             })
                 .then(() => {                    
-                    updateMaterialQuantity(id, Number(quantity) - Number(totalTransferQuantity))
+                    updateMaterialQuantity(id, remainingQuantity)
                 })
+                .then(() => onClose())
         } else {
             console.log('vtr')
-            const transferMaterial = {id: '', name: material, quantity: totalTransferQuantity, remark: remark? remark:""}
+            const transferMaterial = {id: '', name: material, quantity: totalTransferQuantity, remark: remark}
             api.put(`/vehicles-materials-list/${destiny}/insert-new-material`, {
                 material: transferMaterial
             })
                 .then(() => {                    
-                    updateMaterialQuantity(id, Number(quantity) - Number(totalTransferQuantity))
+                    updateMaterialQuantity(id, remainingQuantity)
                 })
+                .then(() => handleSave())
+                .then(() => onClose())
         }
     }
 

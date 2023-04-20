@@ -39,12 +39,12 @@ export default function EditVehicleList() {
     }, [newName, newQuantity, newRemark, materialId])
 
     useEffect(()=>{
-        console.log(materials)
+        console.log("useEffect", materials)
     },[materials])
 
 
     const getVehicleParams = useCallback((id) => {
-        console.log(vehicles)
+        //console.log(vehicles)
         vehicles.forEach(v => {
             if (v.list === id) {
                 setVehicleName(v.name)
@@ -60,7 +60,7 @@ export default function EditVehicleList() {
 
 
     function editingItem(id, name, quantity, remark) {
-        console.log(name, quantity, remark)
+        //console.log(name, quantity, remark)
         setMaterialId(id)
         setNewName(name)
         setNewQuantity(quantity)
@@ -70,7 +70,7 @@ export default function EditVehicleList() {
 
     function editItem(id, name, quantity, remark) {
         let newArray = [...materials]
-        console.log(materials)
+        console.log("editItem - materials", materials)
         newArray.forEach(material => {
             if (material.id === id) {
                 console.log(quantity)
@@ -80,21 +80,26 @@ export default function EditVehicleList() {
                 console.log(material.name, material.quantity, material.remark)
             }
         })
-        console.log(newArray)
+        console.log("editItem - newArray", newArray)
         setMaterials(newArray)
     }
 
     function removeItem(id) {
-        let newArray = []
+        /* let newArray = []
+        console.log("removeItem - before", materials)
         materials.forEach(material => {
             if (material.id !== id) {
                 newArray.push(material)
             }
-        })
+        }) */
+        let newArray = [...materials]
+        newArray.splice(id, 1)
+        console.log("removeItem - before", newArray)
 
         newArray.forEach((material, newId) => {
             material.id = newId
         })
+        console.log("removeItem - after", newArray)
         setMaterials(newArray)
     }
 
@@ -122,21 +127,24 @@ export default function EditVehicleList() {
     }
 
     const updateMaterialQuantity = (id, newQuantity) => {
-        let newArray = [...materials]
+        console.log("updateMaterialQuantity - before", materials)
+        console.log(newQuantity)
+        let newArray = materials
+        console.log("updateMaterialQuantity - before", newArray)
         newArray.forEach(material => {
             if (material.id === id) {
                 if(newQuantity > 0){
                     material.quantity = newQuantity
+                    console.log("updateMaterialQuantity - after", newArray)
                     setMaterials(newArray)
-                } else {
+                } else if (newQuantity === 0) {
                     removeItem(id)
                 }
             }
         })
-        //handleSave()
     }
     const handleSave = () => {
-        console.log(materials)
+        console.log("handleSave", materials)
         api.put(`/vehicles-materials-list/${id}`, {
             list: materials
         })
@@ -228,6 +236,7 @@ export default function EditVehicleList() {
                     quantity={transferQuantity}
                     remark={transferRemark}
                     updateMaterialQuantity={updateMaterialQuantity}
+                    handleSave={handleSave}
                 />
             )}
         </article>

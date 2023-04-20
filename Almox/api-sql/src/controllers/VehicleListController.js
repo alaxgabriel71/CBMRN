@@ -75,7 +75,7 @@ module.exports = {
                 _id: id
             }})
             const list = vehicleMaterialsList.list
-            material.id = list.length+1
+            material.id = list.length
             list.push(material)
             try{
                 await VehicleList.update({ list }, {
