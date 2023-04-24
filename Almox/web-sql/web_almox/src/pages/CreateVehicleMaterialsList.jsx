@@ -84,6 +84,12 @@ export default function CreateVehicleMaterialsList() {
         console.log(id, destiny)
     }
 
+    const handleClean = () => {
+        const choice = window.confirm(`Isso removerá todos os materiais adicionados à lista!`)
+        
+        if(choice) setMaterials([])
+    }
+
     const handleSave = () => {
         let vehicleName = getName(vehicle)
         /* console.log(vehicle)
@@ -105,6 +111,7 @@ export default function CreateVehicleMaterialsList() {
             })
             .catch(err => console.error(err))
     }
+
     return (
         <>
             <h1>Criar Lista de Materiais</h1>
@@ -124,6 +131,7 @@ export default function CreateVehicleMaterialsList() {
                     </Form.Select>
                 </FloatingLabel>
                 {/* <button onClick={() => setVehicle('')}>Escolher outra Viatura</button> */}
+                <Button variant="secondary" onClick={handleClean}>Limpar Lista</Button>
                 <Button variant="danger" onClick={handleSave}>Salvar Lista</Button>
                 <h2>{getName(vehicle)}</h2>
                 <form onSubmit={handleSubmit}>
@@ -153,8 +161,9 @@ export default function CreateVehicleMaterialsList() {
                 <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
-                            <th>Quantidade</th>
+                            <th>Ordem</th>
                             <th>Material</th>
+                            <th>Quantidade</th>
                             <th>Observação</th>
                             <th>Ações</th>
                         </tr>

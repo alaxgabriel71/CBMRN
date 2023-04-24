@@ -17,20 +17,22 @@ export default function Vehicle() {
 
     const { vehicles } = useContext(UserContext)
     const navigate = useNavigate()
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         api.get(`/vehicle/${id}`)
-        .then(({data}) => data.vehicle.list)
-        .then(list => {
-            api.get(`/vehicle-materials-list/${list}`)
-                .then(({data}) => setMaterials(data.list))
-        })
+            .then(({ data }) => data.vehicle.list)
+            .then(list => {
+                if (list) {
+                    api.get(`/vehicle-materials-list/${list}`)
+                        .then(({ data }) => setMaterials(data.list))
+                }
+            })
     })
 
     useEffect(() => {
         function getVehicleParams(id) {
             vehicles.forEach(v => {
-                if(v._id === id) {
+                if (v._id === id) {
                     setName(v.name)
                     setActive(v.active)
                     setModel(v.model)
@@ -51,26 +53,30 @@ export default function Vehicle() {
             <strong>Modelo</strong><span>{model}</span>
             <strong>Assentos</strong><span>{seats}</span>
             <strong>Ativo</strong><span>{active}</span>
-            <strong>Lista de Materiais<button onClick={() => navigate(`/vehicle-materials-list/${list}`)}>Editar</button></strong>
-            <Table striped bordered hover size="sm">
-                <thead>
-                    <tr>
-                        <th>Quantidade</th>
-                        <th>Material</th>
-                        <th>Observação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {materials?.map(material => (
-                        <tr key={material.id}>
-                            <td>{material.quantity}</td>
-                            <td>{material.name}</td>
-                            <td>{material.remark}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
-            
+            {list && (
+                <>
+                    <strong>Lista de Materiais <button onClick={() => navigate(`/vehicle-materials-list/${list}`)}>Editar</button></strong>
+                    <Table striped bordered hover size="sm">
+                        <thead>
+                            <tr>
+                                <th>Quantidade</th>
+                                <th>Material</th>
+                                <th>Observação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {materials?.map(material => (
+                                <tr key={material.id}>
+                                    <td>{material.quantity}</td>
+                                    <td>{material.name}</td>
+                                    <td>{material.remark}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </>
+            )}
+
         </article>
     )
 }

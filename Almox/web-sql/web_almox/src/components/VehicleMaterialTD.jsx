@@ -6,8 +6,9 @@ export default function VehicleMaterialTD({id, name, quantity, remark, remove, r
     
     return (
         <tr onMouseOver={() => setVisible(true)} onMouseOut={() => setVisible(false)}>
-            <td>{quantity}</td>
+            <td>{`${id+1}.`}</td>
             <td>{name}</td>
+            <td>{quantity}</td>
             <td>{remark}</td>
             <td>
                 {visible && (

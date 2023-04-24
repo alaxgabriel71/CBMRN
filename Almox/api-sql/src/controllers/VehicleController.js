@@ -37,8 +37,6 @@ module.exports = {
         const { id } = request.params
         const { list } = request.body
 
-        if(!list) return response.status(400).json({ error: "Operation failed!" })
-
         try {
             await Vehicle.update({ list }, {
                 where: {

@@ -56,8 +56,8 @@ export default function CheckMaterial() {
                     <thead>
                         <tr>
                             <th>Ordem</th>
-                            <th>Quantidade</th>
                             <th>Material</th>
+                            <th>Quantidade</th>
                             <th>Observação</th>
                             <th>Confere</th>
                         </tr>
@@ -80,8 +80,8 @@ export default function CheckMaterial() {
                         {materials?.map((material, k) => (
                             <tr key={material.id}>
                                 <td>{`${k+1}.`}</td>
-                                <td>{material.quantity}</td>
                                 <td>{material.name}</td>
+                                <td>{material.quantity}</td>
                                 <td>{material.remark}</td>
                                 <td>
                                     <input type="checkbox" onChange={() => handleCheck(material.id)} />

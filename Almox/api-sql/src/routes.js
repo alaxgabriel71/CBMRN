@@ -95,6 +95,7 @@ routes.get("/vehicle-materials-list/:id", AuthMiddleware.checkToken, VehicleMate
 routes.post("/vehicles-materials-lists", AuthMiddleware.checkToken, VehicleMaterialsListController.store)
 routes.put("/vehicles-materials-list/:id", AuthMiddleware.checkToken, VehicleMaterialsListController.updateOne)
 routes.put("/vehicles-materials-list/:id/insert-new-material", AuthMiddleware.checkToken, VehicleMaterialsListController.insertOneMaterial)
+routes.delete("/vehicles-materials-list/:id", AuthMiddleware.checkToken, VehicleMaterialsListController.remove)
 
 routes.get("/auth", AuthController.verify)
 

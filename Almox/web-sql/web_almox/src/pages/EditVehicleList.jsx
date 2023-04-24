@@ -15,6 +15,7 @@ export default function EditVehicleList() {
 
     const [materials, setMaterials] = useState([])
     const [vehicleName, setVehicleName] = useState()
+    const [vehicleId, setVehicleId] = useState()
     const [name, setName] = useState()
     const [newName, setNewName] = useState()
     const [quantity, setQuantity] = useState()
@@ -48,13 +49,15 @@ export default function EditVehicleList() {
         vehicles.forEach(v => {
             if (v.list === id) {
                 setVehicleName(v.name)
+                setVehicleId(v._id)
             }
         })
     }, [vehicles])
 
     useEffect(() => {
         console.log(vehicleName)
-    }, [vehicleName])
+        console.log(vehicleId)
+    }, [vehicleName, vehicleId])
 
     useEffect(() => getVehicleParams(Number(id)), [id, getVehicleParams])
 
@@ -143,6 +146,22 @@ export default function EditVehicleList() {
             }
         })
     }
+
+    const handleClean = () => {
+        const choice = window.confirm(`Isso removerá todos os materiais da lista do ${vehicleName}!`)
+        console.log("choice", choice)
+        if(choice) {
+            setMaterials([])
+            api.put(`/vehicle/materials-list/${vehicleId}`, { list: null })
+                .then(() => {
+                    api.delete(`/vehicles-materials-list/${id}`)
+                        .then(() => console.log("excluiu a list"))
+                        .catch(() => console.log("não excluiu a lista"))
+                })
+                .catch(() => console.log("não atualizou a lista do veículo"))
+        }
+    }
+
     const handleSave = () => {
         console.log("handleSave", materials)
         api.put(`/vehicles-materials-list/${id}`, {
@@ -164,6 +183,7 @@ export default function EditVehicleList() {
                 </Form.Select>
             </FloatingLabel>
             <h2>Viatura: {vehicleName}</h2>
+            <Button variant="secondary" size="sm" onClick={handleClean}>Limpar Lista</Button>
             <Button variant="danger" size="sm" onClick={handleSave}>Salvar Edição</Button>
             <form onSubmit={handleSubmit}>
                 <FloatingLabel
@@ -193,8 +213,9 @@ export default function EditVehicleList() {
                 <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
-                            <th>Quantidade</th>
+                            <th>Ordem</th>
                             <th>Material</th>
+                            <th>Quantidade</th>
                             <th>Observação</th>
                             <th>Ações</th>
                         </tr>
