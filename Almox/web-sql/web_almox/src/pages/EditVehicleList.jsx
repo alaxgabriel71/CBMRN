@@ -29,6 +29,7 @@ export default function EditVehicleList() {
     const [transferMaterial, setTransferMaterial] = useState()
     const [transferId, setTransferId] = useState()
     const [transferRemark, setTransferRemark] = useState()
+    const [total, setTotal] = useState()
 
     useEffect(() => {
         api.get(`/vehicle-materials-list/${id}`)
@@ -39,9 +40,9 @@ export default function EditVehicleList() {
     useEffect(() => {
     }, [newName, newQuantity, newRemark, materialId])
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log("useEffect", materials)
-    },[materials])
+    }, [materials])
 
 
     const getVehicleParams = useCallback((id) => {
@@ -126,6 +127,7 @@ export default function EditVehicleList() {
         setTransferQuantity(quantity)
         setTransferMaterial(name)
         setTransferRemark(remark)
+        setTotal(false)
         setShowTransfer(true)
     }
 
@@ -136,7 +138,7 @@ export default function EditVehicleList() {
         console.log("updateMaterialQuantity - before", newArray)
         newArray.forEach(material => {
             if (material.id === id) {
-                if(newQuantity > 0){
+                if (newQuantity > 0) {
                     material.quantity = newQuantity
                     console.log("updateMaterialQuantity - after", newArray)
                     setMaterials(newArray)
@@ -150,7 +152,7 @@ export default function EditVehicleList() {
     const handleClean = () => {
         const choice = window.confirm(`Isso removerá todos os materiais da lista do ${vehicleName}!`)
         console.log("choice", choice)
-        if(choice) {
+        if (choice) {
             setMaterials([])
             api.put(`/vehicle/materials-list/${vehicleId}`, { list: null })
                 .then(() => {
@@ -160,6 +162,32 @@ export default function EditVehicleList() {
                 })
                 .catch(() => console.log("não atualizou a lista do veículo"))
         }
+    }
+
+    const handleCompleteTransfer = () => {
+        console.log("complete transfer")
+        setTransferId(null)
+        setTransferQuantity(null)
+        setTransferMaterial(null)
+        setTransferRemark(null)
+        setTotal(true)
+        setShowTransfer(true)
+    }
+
+    const totalTransferAlmox = () => {
+        materials.forEach(material => {
+            api.post("/materials", {
+                name: material.name,
+                quantity: material.quantity,
+                remark: material.remark
+            })
+        })
+        setMaterials([])
+        api.put(`/vehicle/materials-list/${vehicleId}`, { list: null })
+            .then(() => {
+                api.delete(`/vehicles-materials-list/${id}`)
+                    .then(() => window.location.reload(false))
+            })
     }
 
     const handleSave = () => {
@@ -179,11 +207,15 @@ export default function EditVehicleList() {
             >
                 <Form.Select onChange={handleVehicleChange}>
                     <option>-- Viatura --</option>
-                    {vehicles.map(v => <option key={v._id} value={v.list}>{v.name}</option>)}
+                    {vehicles.map(v => {
+                        if(v.list && vehicleName !== v.name) return <option key={v._id} value={v.list}>{v.name}</option>
+                        else return null
+                    })}
                 </Form.Select>
             </FloatingLabel>
             <h2>Viatura: {vehicleName}</h2>
             <Button variant="secondary" size="sm" onClick={handleClean}>Limpar Lista</Button>
+            <Button variant="warning" size="sm" onClick={handleCompleteTransfer}>Transferir Lista</Button>
             <Button variant="danger" size="sm" onClick={handleSave}>Salvar Edição</Button>
             <form onSubmit={handleSubmit}>
                 <FloatingLabel
@@ -260,6 +292,10 @@ export default function EditVehicleList() {
                     remark={transferRemark}
                     updateMaterialQuantity={updateMaterialQuantity}
                     handleSave={handleSave}
+                    total={total}
+                    totalTransferAlmox={totalTransferAlmox}
+                    listId={id}
+                    vehicleId={vehicleId}
                 />
             )}
         </article>
