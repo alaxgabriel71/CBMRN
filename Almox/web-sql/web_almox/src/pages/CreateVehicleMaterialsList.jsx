@@ -22,7 +22,7 @@ export default function CreateVehicleMaterialsList() {
     const [showUpdate, setShowUpdate] = useState(false);
 
     useEffect(() => {
-        console.log(vehicle)
+        console.log("vehicle", vehicle)
     }, [vehicle, materials])
 
     const handleSubmit = (e) => {
@@ -89,14 +89,15 @@ export default function CreateVehicleMaterialsList() {
         /* console.log(vehicle)
         console.log(vehicleName)
         console.log(materials) */
-        api.post("/vehicles-lists", {
+        api.post("/vehicles-materials-lists", {
             name: vehicleName,
             vehicle,
             list: materials
         })
             .then((response) => response.data.id)
             .then(id => {
-                api.put(`/vehicle-list/${vehicle}`, {
+                console.log("vehicle materials list id", id)
+                api.put(`/vehicle/materials-list/${vehicle}`, {
                     list: id
                 })
                     .then(() => window.location.reload(false))
@@ -165,8 +166,10 @@ export default function CreateVehicleMaterialsList() {
                               id={material.id}
                               name={material.name}
                               quantity={material.quantity}
+                              remove={true}
                               removeItem={removeItem}
                               remark={material.remark}
+                              edit={true}
                               editingItem={editingItem} 
                               transfer={false}
                               handleTransfer={handleTransfer}

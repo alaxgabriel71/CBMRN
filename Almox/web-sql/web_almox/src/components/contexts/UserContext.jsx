@@ -26,7 +26,7 @@ export const UserProvider = ({children}) => {
             api.defaults.headers.Authorization = `Bearer ${user.token}`
             api.get('/auth')
                 .then(({data}) => {
-                    console.log('auth1', data.auth)
+                    //console.log('auth1', data.auth)
                     if(!data.auth) navigate('/login')
                     else setIsAuthenticated(true)
                 })

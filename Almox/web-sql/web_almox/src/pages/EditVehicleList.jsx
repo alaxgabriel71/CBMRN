@@ -30,7 +30,7 @@ export default function EditVehicleList() {
     const [transferRemark, setTransferRemark] = useState()
 
     useEffect(() => {
-        api.get(`/vehicle-list/${id}`)
+        api.get(`/vehicle-materials-list/${id}`)
             .then(({ data }) => setMaterials(data.list))
             .catch(err => console.error(err))
     }, [id])
@@ -105,7 +105,7 @@ export default function EditVehicleList() {
 
     const handleVehicleChange = e => {
         //console.log(e.target.value)
-        navigate(`/vehicles-lists/${e.target.value}`)
+        navigate(`/vehicle-materials-list/${e.target.value}`)
     }
 
     const handleSubmit = e => {
@@ -205,8 +205,10 @@ export default function EditVehicleList() {
                             id={material.id}
                             name={material.name}
                             quantity={material.quantity}
+                            remove={true}
                             removeItem={removeItem}
                             remark={material.remark}
+                            edit={true}
                             editingItem={editingItem}
                             transfer={true}
                             handleTransfer={handleTransfer}

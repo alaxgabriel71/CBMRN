@@ -22,7 +22,7 @@ export default function Vehicle() {
         api.get(`/vehicle/${id}`)
         .then(({data}) => data.vehicle.list)
         .then(list => {
-            api.get(`/vehicle-list/${list}`)
+            api.get(`/vehicle-materials-list/${list}`)
                 .then(({data}) => setMaterials(data.list))
         })
     })
@@ -51,7 +51,7 @@ export default function Vehicle() {
             <strong>Modelo</strong><span>{model}</span>
             <strong>Assentos</strong><span>{seats}</span>
             <strong>Ativo</strong><span>{active}</span>
-            <strong>Lista de Materiais<button onClick={() => navigate(`/vehicles-lists/${list}`)}>Editar</button></strong>
+            <strong>Lista de Materiais<button onClick={() => navigate(`/vehicle-materials-list/${list}`)}>Editar</button></strong>
             <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
@@ -62,7 +62,7 @@ export default function Vehicle() {
                 </thead>
                 <tbody>
                     {materials?.map(material => (
-                        <tr>
+                        <tr key={material.id}>
                             <td>{material.quantity}</td>
                             <td>{material.name}</td>
                             <td>{material.remark}</td>

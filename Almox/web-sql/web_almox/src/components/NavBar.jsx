@@ -14,10 +14,10 @@ import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
   const expand = false
-  const { login, user, isAuthenticated, saveLoggedUser } = useContext(UserContext)
+  const { login, user, saveLoggedUser } = useContext(UserContext)
   const navigate = useNavigate()
 
-  console.log('Authenticated', isAuthenticated)
+  //console.log('Authenticated', isAuthenticated)
 
   const handleLogout = () => {
     saveLoggedUser('')

@@ -1,9 +1,9 @@
-const VehicleList = require("../models/VehicleList")
+const VehicleMaterialsList = require("../models/VehicleMaterialsList")
 
 module.exports = {
     async index(request, response) {
         try {
-            const vehiclesLists = await VehicleList.findAll()
+            const vehiclesLists = await VehicleMaterialsList.findAll()
             return response.status(200).json({ vehiclesLists })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
@@ -12,7 +12,7 @@ module.exports = {
     async getOne(request, response) {
         const { id } = request.params
         try {
-            const vehicleList = await VehicleList.findOne({ where: {
+            const vehicleList = await VehicleMaterialsList.findOne({ where: {
                 _id: id
             }})
             return response.status(200).json({ list: vehicleList.list })
@@ -28,13 +28,13 @@ module.exports = {
         }
 
         try {
-            await VehicleList.create({
+            await VehicleMaterialsList.create({
                 name,
                 vehicle,
                 list
             })
             try {
-                const vehicleList = await VehicleList.findOne({
+                const vehicleList = await VehicleMaterialsList.findOne({
                     where: {
                         name
                     }
@@ -54,7 +54,7 @@ module.exports = {
         if(!list) return response.status(400).json({ error: "Operation failed!" })
 
         try {
-            await VehicleList.update({ list }, {
+            await VehicleMaterialsList.update({ list }, {
                 where: {
                     _id: id
                 }
@@ -71,14 +71,14 @@ module.exports = {
         if(!material) return response.status(400).json({ error: "Operation failed!" })
 
         try{
-            const vehicleMaterialsList = await VehicleList.findOne({ where: {
+            const vehicleMaterialsList = await VehicleMaterialsList.findOne({ where: {
                 _id: id
             }})
             const list = vehicleMaterialsList.list
             material.id = list.length
             list.push(material)
             try{
-                await VehicleList.update({ list }, {
+                await VehicleMaterialsList.update({ list }, {
                     where: {
                         _id: id
                     }

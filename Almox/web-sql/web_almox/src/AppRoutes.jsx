@@ -25,13 +25,14 @@ import GarrisonsTabs from './pages/GarrisonsTabs';
 import VehiclesTabs from './pages/VehiclesTabs';
 import Vehicle from './pages/Vehicle'
 import EditVehicleList from './pages/EditVehicleList';
+import CheckMaterial from './pages/CheckMaterial';
 
 export default function AppRoutes() {
     
     const { user, isAuthenticated } = useContext(UserContext)
     
     const Private = ({ children }) => {
-        console.log('auth', isAuthenticated)
+        //console.log('auth', isAuthenticated)
         if (!isAuthenticated) {
             return <Navigate to='/login' />
         }
@@ -69,6 +70,7 @@ export default function AppRoutes() {
             <Routes className="App-main">
                 <Route exact path="/" element={<Private><Home /></Private>} />
                 <Route path="/materials-list" element={<Private><MaterialsList /></Private>} />
+                <Route path="/check-material" element={<Private><CheckMaterial /></Private>} />
                 <Route path="/movement-history" element={<Private><Moderator><MovementHistory /></Moderator></Private>} />
                 <Route path="/military-list" element={<Private><Regular><MilitaryList /></Regular></Private>} />
                 <Route path="/new-materials" element={<Private><NewMaterials /></Private>} />
@@ -81,7 +83,7 @@ export default function AppRoutes() {
                 <Route path="/users" element={<Private><Commander><Users /></Commander></Private>} />
                 <Route path="/garrisons-tabs" element={<Private><Commander><GarrisonsTabs /></Commander></Private>} />
                 <Route path="/vehicles-tabs" element={<Private><Commander><VehiclesTabs /></Commander></Private>} />
-                <Route path="/vehicles-lists/:id" element={<Private><Commander><EditVehicleList /></Commander></Private>} />
+                <Route path="/vehicle-materials-list/:id" element={<Private><Commander><EditVehicleList /></Commander></Private>} />
                 <Route path="/vehicles/:id" element={<Private><Regular><Vehicle /></Regular></Private>} />
             </Routes>
             <Footer className="App-footer" />

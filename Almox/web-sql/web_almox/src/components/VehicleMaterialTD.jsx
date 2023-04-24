@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function VehicleMaterialTD({id, name, quantity, remark, removeItem, editingItem, transfer, handleTransfer}) {    
+export default function VehicleMaterialTD({id, name, quantity, remark, remove, removeItem, edit, editingItem, transfer, handleTransfer}) {    
     const [visible, setVisible] = useState(false)
     
     
@@ -12,13 +12,9 @@ export default function VehicleMaterialTD({id, name, quantity, remark, removeIte
             <td>
                 {visible && (
                     <div>
-                        <button onClick={() => removeItem(id)}>Remover</button>
-                        <button onClick={() => editingItem(id, name, quantity, remark)}>Editar</button>
-                        {transfer && (
-                            <>
-                                <button onClick={() => handleTransfer(id, name, quantity, remark)}>Transferir</button>
-                            </>
-                        )}
+                        {remove && <button onClick={() => removeItem(id)}>Remover</button>}
+                        {edit && <button onClick={() => editingItem(id, name, quantity, remark)}>Editar</button>}
+                        {transfer && <button onClick={() => handleTransfer(id, name, quantity, remark)}>Transferir</button>}
                     </div>
                 )}
             </td>

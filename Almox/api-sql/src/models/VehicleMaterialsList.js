@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize")
 const db = require("../db")
 
-const VehicleList = db.define('vehicle_list', {
+const VehicleMaterialsList = db.define('vehicle_list', {
     _id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -23,4 +23,4 @@ const VehicleList = db.define('vehicle_list', {
     }
 })
 
-module.exports = VehicleList
+module.exports = VehicleMaterialsList

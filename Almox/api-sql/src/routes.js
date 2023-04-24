@@ -30,8 +30,8 @@ const GarrisonController = require("./controllers/GarrisonController")
 const Function = require("./models/Function")
 const FunctionController = require("./controllers/FunctionController")
 
-const VehicleListController = require("./controllers/VehicleListController")
-const VehicleList = require("./models/VehicleList")
+const VehicleMaterialsListController = require("./controllers/VehicleMaterialsListController")
+const VehicleMaterialsList = require("./models/VehicleMaterialsList")
 
 
 User.sync()
@@ -45,7 +45,7 @@ Rank.sync()
 Vehicle.sync(/* { force: true } */)
 Garrison.sync(/* { alter: true } */)
 Function.sync()
-VehicleList.sync(/* { alter: true } */)
+VehicleMaterialsList.sync(/* { alter: true } */)
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -78,7 +78,7 @@ routes.get("/vehicles", AuthMiddleware.checkToken, VehicleController.index)
 routes.get("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.getOne)
 routes.post("/vehicles", AuthMiddleware.checkToken, VehicleController.store)
 routes.put("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.update)
-routes.put("/vehicle-list/:id", AuthMiddleware.checkToken, VehicleController.updateList)
+routes.put("/vehicle/materials-list/:id", AuthMiddleware.checkToken, VehicleController.updateList)
 routes.delete("/vehicle/:id", AuthMiddleware.checkToken, VehicleController.remove)
 
 routes.get("/garrisons", AuthMiddleware.checkToken, GarrisonController.index)
@@ -90,11 +90,11 @@ routes.delete("/garrison/:id", AuthMiddleware.checkToken, GarrisonController.rem
 routes.get("/functions", AuthMiddleware.checkToken, FunctionController.index)
 routes.post("/functions", AuthMiddleware.checkToken, FunctionController.store)
 
-routes.get("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.index)
-routes.get("/vehicle-list/:id", AuthMiddleware.checkToken, VehicleListController.getOne)
-routes.post("/vehicles-lists", AuthMiddleware.checkToken, VehicleListController.store)
-routes.put("/vehicles-materials-list/:id", AuthMiddleware.checkToken, VehicleListController.updateOne)
-routes.put("/vehicles-materials-list/:id/insert-new-material", AuthMiddleware.checkToken, VehicleListController.insertOneMaterial)
+routes.get("/vehicles-materials-lists", AuthMiddleware.checkToken, VehicleMaterialsListController.index)
+routes.get("/vehicle-materials-list/:id", AuthMiddleware.checkToken, VehicleMaterialsListController.getOne)
+routes.post("/vehicles-materials-lists", AuthMiddleware.checkToken, VehicleMaterialsListController.store)
+routes.put("/vehicles-materials-list/:id", AuthMiddleware.checkToken, VehicleMaterialsListController.updateOne)
+routes.put("/vehicles-materials-list/:id/insert-new-material", AuthMiddleware.checkToken, VehicleMaterialsListController.insertOneMaterial)
 
 routes.get("/auth", AuthController.verify)
 
