@@ -33,6 +33,8 @@ const FunctionController = require("./controllers/FunctionController")
 const VehicleMaterialsListController = require("./controllers/VehicleMaterialsListController")
 const VehicleMaterialsList = require("./models/VehicleMaterialsList")
 
+const GarrisonOfDay = require("./models/GarrisonOfDay")
+const GarrisonOfDayController = require("./controllers/GarrisonOfDayController")
 
 User.sync()
 // User.sync({ alter: true })
@@ -46,6 +48,7 @@ Vehicle.sync(/* { force: true } */)
 Garrison.sync(/* { alter: true } */)
 Function.sync()
 VehicleMaterialsList.sync(/* { alter: true } */)
+GarrisonOfDay.sync()
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -96,6 +99,10 @@ routes.post("/vehicles-materials-lists", AuthMiddleware.checkToken, VehicleMater
 routes.put("/vehicles-materials-list/:id", AuthMiddleware.checkToken, VehicleMaterialsListController.updateOne)
 routes.put("/vehicles-materials-list/:id/insert-new-material", AuthMiddleware.checkToken, VehicleMaterialsListController.insertOneMaterial)
 routes.delete("/vehicles-materials-list/:id", AuthMiddleware.checkToken, VehicleMaterialsListController.remove)
+
+routes.get("/garrisons-of-day", AuthMiddleware.checkToken, GarrisonOfDayController.index)
+routes.post("/garrisons-of-day", AuthMiddleware.checkToken, GarrisonOfDayController.store)
+routes.put("/garrisons-of-day/:id", AuthMiddleware.checkToken, GarrisonOfDayController.update)
 
 routes.get("/auth", AuthController.verify)
 

@@ -6,20 +6,31 @@ import api from '../services/api'
 export function GarrisonCard({ name, composition }) {
     const [functions, setFunctions] = useState([])
     const [selecteds, setSelecteds] = useState([])
+    const [militaries, setMilitaries] = useState([])
+    const [ranks, setRanks] = useState([])
 
     useEffect(() => {
         api.get("/functions")
             .then(({ data }) => setFunctions(data.functions))
     }, [])
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(functions)
         console.log(selecteds)
-    }, [functions, selecteds])
+    }, [functions, selecteds]) */
+
+    useEffect(() => {
+        api.get("/users")
+            .then(({ data }) => setMilitaries(data.users))
+            .then(() => {
+                api.get("/ranks")
+                    .then(({ data }) => setRanks(data.ranks))
+            })
+    }, [])
 
     function getComponentName(comp) {
         let name = ''
-        functions.map(func => {
+        functions.forEach(func => {
             if (func._id === comp) {
                 name = func.name
             }
@@ -32,29 +43,69 @@ export function GarrisonCard({ name, composition }) {
         let aux = [...selecteds]
 
         aux.push({
-            function: getComponentName(component), 
+            function: getComponentName(component),
             military: selected
         })
 
         setSelecteds(aux)
     }
 
+    function getRankName(id) {
+        let name
+        ranks.forEach(rank => {
+            if (id === rank._id) name = rank.rank
+        })
+
+        return name
+    }
+
+    const handleSubmit = event => {
+        event.preventDefault()
+
+        if (selecteds.length === 0) {
+            console.log("falhou")
+            return
+        }
+
+        api.get("/garrisons-of-day")
+            .then(({ data }) => {
+                console.log(data.garrisonsOfDay.length)
+                if (data.garrisonsOfDay.length > 0) {
+                    data.garrisonsOfDay.forEach(garrison => {
+                        if (garrison.name === name) {
+                            let id = garrison._id
+                            api.put(`/garrisons-of-day/${id}`, {
+                                composition: selecteds
+                            })
+                                .then(response => console.log(response.status))
+                                .then(err => console.error(err))
+                        }
+                    })
+                } else {
+                    api.post("/garrisons-of-day", {
+                        name: name,
+                        composition: selecteds
+                    })
+                        .then(response => console.log(response.status))
+                        .catch(err => console.error(err))
+                }
+            })
+    }
+
     return (
         <fieldset>
             <h2>{name}</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 {composition.map(component => (
                     <FloatingLabel key={component}
                         label={getComponentName(component)}
                     >
-                        <Form.Select onChange={e => insertSelecteds(component, e.target.value)}>
-                            <option>Escolher militar</option>
-                            <option value="militar 1">militar 2</option>
-                            <option value="militar 2">militar 1</option>
+                        <Form.Select onChange={e => insertSelecteds(component, e.target.value)} required={component === 1}>
+                            <option value="">-- Escolher militar --</option>
+                            {militaries.map(military => <option key={military._id} value={`${getRankName(Number(military.rank))} ${military.name}`}>{`${getRankName(Number(military.rank))} ${military.name}`}</option>)}
                         </Form.Select>
                     </FloatingLabel>
                 ))}
-                <Button type="cancel" variant="secondary" size="sm">Limpar Definição</Button>
                 <Button type="submit" variant="danger" size="sm">Salvar Definição</Button>
             </form>
         </fieldset>
@@ -69,15 +120,15 @@ export default function SetGarrisonsOfDay() {
             .then(({ data }) => setGarrisons(data.garrisons))
     }, [])
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(garrisons)
-    }, [garrisons])
+    }, [garrisons]) */
 
     return (
         <article>
             <h1>Definir Guarnições do Dia</h1>
             {garrisons.map(garrison => {
-                if(garrison.active) return <GarrisonCard key={garrison._id} name={garrison.name} composition={garrison.composition} />
+                if (garrison.active) return <GarrisonCard key={garrison._id} name={garrison.name} composition={garrison.composition} />
                 else return null
             })}
         </article>
