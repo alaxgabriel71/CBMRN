@@ -19,6 +19,11 @@ const User = db.define('user', {
         allowNull: true,
         foreignKey: true        
     },
+    adjunct: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+    },
     name: {
         type: Sequelize.STRING,
         allowNull: false,

@@ -28,6 +28,7 @@ import EditVehicleList from './pages/EditVehicleList';
 import CheckMaterial from './pages/CheckMaterial';
 import SetGarrisonsOfDay from './pages/SetGarrisonsOfDay';
 import Spots from './pages/Spots';
+import DefineServiceRoutine from './pages/DefineServiceRoutine';
 
 export default function AppRoutes() {
     
@@ -76,6 +77,7 @@ export default function AppRoutes() {
                 <Route path="/movement-history" element={<Private><Moderator><MovementHistory /></Moderator></Private>} />
                 <Route path="/military-list" element={<Private><Regular><MilitaryList /></Regular></Private>} />
                 <Route path="/spots" element={<Private><Regular><Spots /></Regular></Private>} />
+                <Route path="/define/service-routine" element={<Private><Regular><DefineServiceRoutine /> </Regular></Private>} />
                 <Route path="/set-garrisons-of-day" element={<Private><Regular><SetGarrisonsOfDay /></Regular></Private>} />
                 <Route path="/new-materials" element={<Private><NewMaterials /></Private>} />
                 <Route path="/return-materials" element={<Private><ReturnMaterials /></Private>} />

@@ -1,7 +1,6 @@
 const User = require("../models/User")
 const bcrypt = require("bcrypt")
 
-
 module.exports = {
     async index(request, response) {
         try {
@@ -116,6 +115,29 @@ module.exports = {
                 }
             })
             return response.status(201).json({ message: "User active status updated successfully!" })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
+    },
+    async adjunct(request, response) {
+        const { id } = request.params
+        
+        try {
+            await User.update({ adjunct: false }, {
+                where: {
+                    adjunct: true
+                }
+            })
+            try {
+                await User.update({ adjunct: true }, {
+                    where: {
+                        _id: id
+                    }
+                })
+                return response.status(201).json({ message: "Adjunct updated successfully!" })
+            } catch(err) {
+                return response.status(500).json({ error: "Try again later!" })
+            }
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }

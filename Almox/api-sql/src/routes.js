@@ -64,6 +64,7 @@ routes.delete("/users/:id", AuthMiddleware.checkToken, UserController.remove)
 routes.put("/users/admin-level/:id", AuthMiddleware.checkToken, UserController.updateAdminLevel)
 routes.put("/users/rank/:id", AuthMiddleware.checkToken, UserController.updateRank)
 routes.put("/users/active/:id", AuthMiddleware.checkToken, UserController.updateActive)
+routes.put("/users/adjunct/:id", AuthMiddleware.checkToken, UserController.adjunct)
 routes.get("/users-name", AuthMiddleware.checkToken, UserController.show)
 
 routes.get("/admin", AuthMiddleware.checkToken, AdminController.index)

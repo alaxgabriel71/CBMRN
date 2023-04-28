@@ -94,7 +94,7 @@ export function GarrisonCard({ name, composition }) {
 
     return (
         <fieldset>
-            <h2>{name}</h2>
+            <h3>{name}</h3>
             <form onSubmit={handleSubmit}>
                 {composition.map(component => (
                     <FloatingLabel key={component}
@@ -126,7 +126,7 @@ export default function SetGarrisonsOfDay() {
 
     return (
         <article>
-            <h1>Definir Guarnições do Dia</h1>
+            <h2>Definir Guarnições do Dia</h2>
             {garrisons.map(garrison => {
                 if (garrison.active) return <GarrisonCard key={garrison._id} name={garrison.name} composition={garrison.composition} />
                 else return null
