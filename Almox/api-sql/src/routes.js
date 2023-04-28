@@ -36,8 +36,11 @@ const VehicleMaterialsList = require("./models/VehicleMaterialsList")
 const GarrisonOfDay = require("./models/GarrisonOfDay")
 const GarrisonOfDayController = require("./controllers/GarrisonOfDayController")
 
-const SpotController = require("./controllers/SpotController")
 const Spot = require("./models/Spot")
+const SpotController = require("./controllers/SpotController")
+
+const Cleaning = require("./models/Cleaning")
+const CleaningController = require("./controllers/CleaningController")
 
 User.sync()
 // User.sync({ alter: true })
@@ -52,7 +55,8 @@ Garrison.sync(/* { alter: true } */)
 Function.sync()
 VehicleMaterialsList.sync(/* { alter: true } */)
 GarrisonOfDay.sync()
-Spot.sync({ alter: true })
+Spot.sync()
+Cleaning.sync()
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -113,6 +117,10 @@ routes.get("/spots", AuthMiddleware.checkToken, SpotController.index)
 routes.post("/spots", AuthMiddleware.checkToken, SpotController.store)
 routes.put("/spots/:id", AuthMiddleware.checkToken, SpotController.update)
 routes.delete("/spots/:id", AuthMiddleware.checkToken, SpotController.remove)
+
+routes.get("/cleanings", AuthMiddleware.checkToken, CleaningController.index)
+routes.post("/cleanings", AuthMiddleware.checkToken, CleaningController.store)
+routes.put("/cleanings/:id", AuthMiddleware.checkToken, CleaningController.update)
 
 routes.get("/auth", AuthController.verify)
 

@@ -49,12 +49,31 @@ export function SetAdjunct() {
     )
 }
 
+export function SetCleaning() {
+    const [spots, setSpots] = useState([])
+
+    useEffect(()=>{
+        api.get("/spots")
+            .then(({ data }) => setSpots(data.spots))
+    }, [])
+
+    return (
+        <fieldset>
+            <h2>Faxina</h2>
+            <ol>
+                {spots.map(spot => <li key={spot._id}>{spot.name}</li>)}
+            </ol>
+        </fieldset>
+    )
+}
+
 export default function DefineServiceRoutine() {
     return (
         <article>
             <h1>GUARNIÇÃO DE SERVIÇO DO DIA</h1>
             <SetAdjunct />
             <SetGarrisonsOfDay />
+            <SetCleaning />
         </article>
     )
 }

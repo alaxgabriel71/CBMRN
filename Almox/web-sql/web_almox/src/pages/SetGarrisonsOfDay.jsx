@@ -120,17 +120,13 @@ export default function SetGarrisonsOfDay() {
             .then(({ data }) => setGarrisons(data.garrisons))
     }, [])
 
-    /* useEffect(() => {
-        console.log(garrisons)
-    }, [garrisons]) */
-
     return (
-        <article>
+        <div>
             <h2>Definir Guarnições do Dia</h2>
             {garrisons.map(garrison => {
                 if (garrison.active) return <GarrisonCard key={garrison._id} name={garrison.name} composition={garrison.composition} />
                 else return null
             })}
-        </article>
+        </div>
     )
 }
