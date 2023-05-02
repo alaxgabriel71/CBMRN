@@ -40,6 +40,11 @@ export default function NewGarrison() {
                 newArray.push(comp)
             }
         })
+        
+        newArray.forEach((comp, k) => {
+            comp.id = k
+        })
+
         setComposition(newArray)
     }
 

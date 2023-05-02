@@ -13,7 +13,7 @@ module.exports = {
 
             return response.status(200).json({ auth: true })
         } catch(err) {
-            return response.status(400).json({ auth: false })
+            return response.status(400).json({ auth: false, error: err.message })
         }
 
     }

@@ -121,6 +121,7 @@ routes.delete("/spots/:id", AuthMiddleware.checkToken, SpotController.remove)
 routes.get("/cleanings", AuthMiddleware.checkToken, CleaningController.index)
 routes.post("/cleanings", AuthMiddleware.checkToken, CleaningController.store)
 routes.put("/cleanings/:id", AuthMiddleware.checkToken, CleaningController.update)
+routes.delete("/cleaning/:id", AuthMiddleware.checkToken, CleaningController.remove)
 
 routes.get("/auth", AuthController.verify)
 
