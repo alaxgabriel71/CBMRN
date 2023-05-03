@@ -3,7 +3,7 @@ import { FloatingLabel, Form, Button } from 'react-bootstrap'
 
 import api from '../services/api'
 
-export function HourCard({ from, to}) {
+export function HourCard({ from, to, id, setMilitary }) {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
@@ -16,9 +16,11 @@ export function HourCard({ from, to}) {
             <strong>{`${from} às ${to}`}</strong>
             <FloatingLabel
                 label="Militar"
+                onChange={event => setMilitary(id, event.target.value)}
             >
                 <Form.Select>
-                    {users.map(user => <option key={user._id}>{user.qra}</option>)}
+                    <option value=''>--</option>
+                    {users.map(user => <option key={user._id} value={user._id} >{user.qra}</option>)}
                 </Form.Select>
             </FloatingLabel>
         </div>
@@ -56,6 +58,17 @@ export function GuardForm() {
         const newTime = getTime(totalMinutes)
         return newTime
     }
+
+    const setMilitary = (id, military) => {
+        const aux = [...schedules]
+        aux.forEach(schedule => {
+            if(schedule.id === id) {
+                schedule.military = military
+            }
+        })
+        console.log(aux)
+        setSchedules(aux)
+    }
     
     const handleSubmit = event => {
         event.preventDefault()
@@ -65,9 +78,9 @@ export function GuardForm() {
         let aux = []
         for (let i = 1; i <= quantity; i++) {
             if(i === Number(quantity)){
-                aux.push({id: i, from, to: end})
+                aux.push({id: i, from, to: end, military: ''})
             } else {
-                aux.push({id: i, from, to})
+                aux.push({id: i, from, to, military: ''})
             }
             from = to
             to = updateTime(from, avarageMinutes) 
@@ -101,7 +114,7 @@ export function GuardForm() {
             </form>
             {show && (
                 <div>
-                    {schedules.map(schedule => <HourCard key={schedule.id} from={schedule.from} to={schedule.to}/>)}
+                    {schedules.map(schedule => <HourCard key={schedule.id} from={schedule.from} to={schedule.to} id={schedule.id} setMilitary={setMilitary} />)}
                     <Button variant="danger" size="sm">Salvar</Button>
                 </div>
             )}
