@@ -30,6 +30,7 @@ import SetGarrisonsOfDay from './pages/SetGarrisonsOfDay';
 import Spots from './pages/Spots';
 import DefineServiceRoutine from './pages/DefineServiceRoutine';
 import DefineGuard from './pages/DefineGuard';
+import CreateGuards from './pages/CreateGuards';
 
 export default function AppRoutes() {
     
@@ -84,6 +85,7 @@ export default function AppRoutes() {
                 <Route path="/new-materials" element={<Private><NewMaterials /></Private>} />
                 <Route path="/return-materials" element={<Private><ReturnMaterials /></Private>} />
                 <Route path="/new-military" element={<Private><Regular><NewMilitary /></Regular></Private>} />
+                <Route path="/control/guards" element={<Private><Regular><CreateGuards /></Regular></Private>} />
                 <Route path="/materials-tabs" element={<Private><MaterialsTabs /></Private>} />
                 <Route path="/military-tabs" element={<Private><Regular><MilitaryTabs /></Regular></Private>} />
                 <Route path="/login" element={<Login />} />

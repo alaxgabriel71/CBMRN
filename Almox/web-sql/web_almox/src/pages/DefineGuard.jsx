@@ -3,8 +3,9 @@ import { FloatingLabel, Form, Button } from 'react-bootstrap'
 
 import api from '../services/api'
 
-export function HourCard({ from, to, id, setMilitary }) {
+export const HourCard = ({ from, to, id, setMilitary }) => {
     const [users, setUsers] = useState([])
+    const [selectValue, setSelectValue] = useState('')
 
     useEffect(() => {
         api.get("/users")
@@ -16,9 +17,13 @@ export function HourCard({ from, to, id, setMilitary }) {
             <strong>{`${from} às ${to}`}</strong>
             <FloatingLabel
                 label="Militar"
-                onChange={event => setMilitary(id, event.target.value)}
+                onChange={event => {
+                    setMilitary(id, event.target.value)
+                    setSelectValue(event.target.value)
+                }}
+                value={selectValue}
             >
-                <Form.Select>
+                <Form.Select required>
                     <option value=''>--</option>
                     {users.map(user => <option key={user._id} value={user._id} >{user.qra}</option>)}
                 </Form.Select>
@@ -44,7 +49,8 @@ export function GuardForm() {
     }
 
     function getTime(minutes) {
-        const hour = Math.floor(minutes / 60)
+        let hour = Math.floor(minutes / 60)
+        if(hour < 10) hour = `0${hour}`
         let min = minutes % 60
         if(min < 10) min = `0${min}`
         const time = `${hour}:${min}`
@@ -78,15 +84,20 @@ export function GuardForm() {
         let aux = []
         for (let i = 1; i <= quantity; i++) {
             if(i === Number(quantity)){
-                aux.push({id: i, from, to: end, military: ''})
+                aux.push({id: i, from, to: end, military: schedules[i-1]?.military || ''})
             } else {
-                aux.push({id: i, from, to, military: ''})
+                aux.push({id: i, from, to, military: schedules[i-1]?.military || ''})
             }
             from = to
             to = updateTime(from, avarageMinutes) 
         }
         setSchedules(aux)
         setShow(true)
+    }
+
+    const handleSave = event => {
+        event.preventDefault()
+        console.log(schedules)
     }
 
     return (
@@ -113,10 +124,10 @@ export function GuardForm() {
                 <Button type="submit" variant="secondary" size="sm">Gerar</Button>
             </form>
             {show && (
-                <div>
+                <form onSubmit={handleSave}>
                     {schedules.map(schedule => <HourCard key={schedule.id} from={schedule.from} to={schedule.to} id={schedule.id} setMilitary={setMilitary} />)}
-                    <Button variant="danger" size="sm">Salvar</Button>
-                </div>
+                    <Button type="submit" variant="danger" size="sm">Salvar</Button>
+                </form>
             )}
         </div>
     )
