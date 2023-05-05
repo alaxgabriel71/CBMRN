@@ -10,14 +10,15 @@ module.exports = {
         }
     },
     async store(request, response) {
-        const { name, composition } = request.body
+        const { name, composition, vehicle } = request.body
 
-        if(!name || !composition) return response.status(400).json({ error: "Operation failed!" })
+        if(!name || !composition || !vehicle) return response.status(400).json({ error: "Operation failed!" })
 
         try {
             await GarrisonOfDay.create({
                 name,
-                composition
+                composition,
+                vehicle
             })
             return response.status(200).json({ message: "Garrison defined successfully!" })
         } catch(err) {
@@ -26,12 +27,12 @@ module.exports = {
     },
     async update(request, response) {
         const { id } = request.params
-        const { composition } = request.body
+        const { composition, vehicle } = request.body
 
         if(!composition) return response.status(400).json({ error: "Operation failed!" })
 
         try {
-            await GarrisonOfDay.update({ composition }, {
+            await GarrisonOfDay.update({ composition, vehicle }, {
                 where: {
                     _id: id
                 }

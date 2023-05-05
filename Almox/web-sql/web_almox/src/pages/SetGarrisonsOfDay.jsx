@@ -8,6 +8,8 @@ export function GarrisonCard({ name, composition }) {
     const [selecteds, setSelecteds] = useState([])
     const [militaries, setMilitaries] = useState([])
     const [ranks, setRanks] = useState([])
+    const [vehicles, setVehicles] = useState([])
+    const [choosedVehicle, setChoosedVehicle] = useState()
 
     useEffect(() => {
         api.get("/functions")
@@ -26,6 +28,11 @@ export function GarrisonCard({ name, composition }) {
                 api.get("/ranks")
                     .then(({ data }) => setRanks(data.ranks))
             })
+    }, [])
+
+    useEffect(() => {
+        api.get("/vehicles")
+            .then(({ data }) => setVehicles(data.vehicles))
     }, [])
 
     function getComponentName(comp) {
@@ -75,7 +82,8 @@ export function GarrisonCard({ name, composition }) {
                         if (garrison.name === name) {
                             let id = garrison._id
                             api.put(`/garrisons-of-day/${id}`, {
-                                composition: selecteds
+                                composition: selecteds,
+                                vehicle: choosedVehicle
                             })
                                 .then(response => console.log(response.status))
                                 .then(err => console.error(err))
@@ -84,7 +92,8 @@ export function GarrisonCard({ name, composition }) {
                 } else {
                     api.post("/garrisons-of-day", {
                         name: name,
-                        composition: selecteds
+                        composition: selecteds,
+                        vehicle: choosedVehicle
                     })
                         .then(response => console.log(response.status))
                         .catch(err => console.error(err))
@@ -96,6 +105,20 @@ export function GarrisonCard({ name, composition }) {
         <fieldset>
             <h3>{name}</h3>
             <form onSubmit={handleSubmit}>
+                <FloatingLabel
+                    label="Viatura"
+                >
+                    <Form.Select 
+                        onChange={event => setChoosedVehicle(event.target.value)}
+                        required
+                    >
+                        <option value="">--</option>
+                        {vehicles.map(vehicle => {
+                            if(vehicle.active) return <option key={vehicle._id} value={vehicle._id}>{vehicle.name}</option>
+                            else return null
+                        })}
+                    </Form.Select>
+                </FloatingLabel>
                 {composition.map(component => (
                     <FloatingLabel key={component}
                         label={getComponentName(component)}

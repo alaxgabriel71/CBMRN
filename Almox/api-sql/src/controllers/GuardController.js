@@ -26,12 +26,12 @@ module.exports = {
     },
     async update(request, response) {
         const { id } = request.params
-        const { name, active } = request.body
+        const { active, schedules } = request.body
 
-        if(!name) return response.status(400).json({ error: "Operation failed!" })
+        if(!schedules) return response.status(400).json({ error: "Operation failed!" })
 
         try {
-            await Guard.update( { name, active }, {
+            await Guard.update( { active, schedules }, {
                 where: {
                     _id: id
                 }

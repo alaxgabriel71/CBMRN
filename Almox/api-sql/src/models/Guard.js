@@ -16,6 +16,10 @@ const Guard = db.define('guard', {
         type: Sequelize.BOOLEAN,
         allowNull: true,
         defaultValue: true
+    },
+    schedules: {
+        type: Sequelize.JSON,
+        allowNull: true
     }
 })
 

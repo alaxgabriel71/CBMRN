@@ -15,6 +15,11 @@ const GarrisonOfDay = db.define('garrisons_of_day', {
     composition: {
         type: Sequelize.JSON,
         allowNull: false
+    },
+    vehicle: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        allowNull: false
     }
 })
 

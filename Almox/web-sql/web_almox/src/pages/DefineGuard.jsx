@@ -32,7 +32,7 @@ export const HourCard = ({ from, to, id, setMilitary }) => {
     )
 }
 
-export function GuardForm() {
+export function GuardForm({ id }) {
     const [quantity, setQuantity] = useState()
     const [start, setStart] = useState()
     const [end, setEnd] = useState()
@@ -69,10 +69,9 @@ export function GuardForm() {
         const aux = [...schedules]
         aux.forEach(schedule => {
             if(schedule.id === id) {
-                schedule.military = military
+                schedule.military = Number(military)
             }
         })
-        console.log(aux)
         setSchedules(aux)
     }
     
@@ -97,7 +96,12 @@ export function GuardForm() {
 
     const handleSave = event => {
         event.preventDefault()
-        console.log(schedules)
+        //console.log(schedules)
+        api.put(`/guards/${id}`, {
+            active: true,
+            schedules
+        })
+            .then(response => console.log(response.data.message))
     }
 
     return (
@@ -134,16 +138,32 @@ export function GuardForm() {
 }
 
 export default function DefineGuard() {
+    const [guards, setGuards] = useState([])
+
+    useEffect(() => {
+        api.get("/guards")
+            .then(({ data }) => setGuards(data.guards))
+    }, [])
 
     return (
         <article>
             <h1>Definir Guarda do Quartel</h1>
-            <h2>Guarda Diurna</h2>
+            {/* <h2>Guarda Diurna</h2>
             <GuardForm />
             <h2>Guarda Noturna</h2>
             <GuardForm />
             <h2>Guarda Matinal</h2>
-            <GuardForm />
+            <GuardForm /> */}
+            {guards.map(guard => {
+                if(guard.active) {
+                    return (
+                        <li key={guard._id}>
+                            <h2>{guard.name}</h2>
+                            <GuardForm id={guard._id} />
+                        </li>
+                    )
+                } else return null
+            })}
         </article>
     )
 }

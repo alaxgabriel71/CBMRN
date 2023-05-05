@@ -76,7 +76,7 @@ export default function AppRoutes() {
                 <Route exact path="/" element={<Private><Home /></Private>} />
                 <Route path="/materials-list" element={<Private><MaterialsList /></Private>} />
                 <Route path="/check-material" element={<Private><CheckMaterial /></Private>} />
-                <Route path="/define/guard" element={<Private><DefineGuard /></Private>} />
+                <Route path="/define/guards" element={<Private><DefineGuard /></Private>} />
                 <Route path="/movement-history" element={<Private><Moderator><MovementHistory /></Moderator></Private>} />
                 <Route path="/military-list" element={<Private><Regular><MilitaryList /></Regular></Private>} />
                 <Route path="/spots" element={<Private><Regular><Spots /></Regular></Private>} />
