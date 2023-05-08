@@ -76,19 +76,22 @@ export function GarrisonCard({ name, composition }) {
 
         api.get("/garrisons-of-day")
             .then(({ data }) => {
-                console.log(data.garrisonsOfDay.length)
-                if (data.garrisonsOfDay.length > 0) {
-                    data.garrisonsOfDay.forEach(garrison => {
-                        if (garrison.name === name) {
-                            let id = garrison._id
-                            api.put(`/garrisons-of-day/${id}`, {
-                                composition: selecteds,
-                                vehicle: choosedVehicle
-                            })
-                                .then(response => console.log(response.status))
-                                .then(err => console.error(err))
-                        }
+                const garrisons = data.garrisonsOfDay
+                let exists = false
+                let id = 0
+                garrisons.forEach(garrison => {
+                    if(garrison.name === name) {
+                        exists = true
+                        id = garrison._id
+                    }
+                })
+                if(exists) {
+                    api.put(`/garrisons-of-day/${id}`, {
+                        composition: selecteds,
+                        vehicle: choosedVehicle
                     })
+                        .then(response => console.log(response.status))
+                        .then(err => console.error(err))
                 } else {
                     api.post("/garrisons-of-day", {
                         name: name,
@@ -125,7 +128,7 @@ export function GarrisonCard({ name, composition }) {
                     >
                         <Form.Select onChange={e => insertSelecteds(component, e.target.value)} required={component === 1}>
                             <option value="">-- Escolher militar --</option>
-                            {militaries.map(military => <option key={military._id} value={`${getRankName(Number(military.rank))} ${military.name}`}>{`${getRankName(Number(military.rank))} ${military.name}`}</option>)}
+                            {militaries.map(military => <option key={military._id} value={`${getRankName(Number(military.rank))} ${military.qra}`}>{`${getRankName(Number(military.rank))} ${military.qra}`}</option>)}
                         </Form.Select>
                     </FloatingLabel>
                 ))}

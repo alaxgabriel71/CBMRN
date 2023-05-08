@@ -9,6 +9,8 @@ export function SetAdjunct() {
     const [ranks, setRanks] = useState([])
     const [adjunct, setAdjunct] = useState()
 
+    const date = new Date()
+
     useEffect(() => {
         api.get("/users")
             .then(({ data }) => setUsers(data.users))
@@ -36,7 +38,7 @@ export function SetAdjunct() {
 
     return (
         <fieldset>
-            <h2>Adjunto do dia</h2>
+            <h2>Adjunto do dia {`(${date.toLocaleDateString('pt-BR')})`}</h2>
             <form onSubmit={handleSubmit}>
                 <label>
                     Escolher militar:
@@ -53,21 +55,35 @@ export function SetAdjunct() {
 
 export function CleaningCard({ spot, name }) {
     const [users, setUsers] = useState([])
+    const [ranks, setRanks] = useState([])
     const [composition, setComposition] = useState([])
 
-    useEffect(()=>{
+    useEffect(() => {
         api.get("/users")
             .then(({ data }) => setUsers(data.users))
-    },[])
+            .then(() => {
+                api.get("/ranks")
+                    .then(({ data }) => setRanks(data.ranks))
+            })
+    }, [])
+
+    function getRankName(id) {
+        let name
+        ranks.forEach(rank => {
+            if (id === rank._id) name = rank.rank
+        })
+
+        return name
+    }
 
     function removeComponent(id) {
         let newArray = []
         composition.forEach(comp => {
-            if(id !== comp){
+            if (id !== comp) {
                 newArray.push(comp)
             }
         })
-        
+
         newArray.forEach((comp, k) => {
             comp.id = k
         })
@@ -75,16 +91,43 @@ export function CleaningCard({ spot, name }) {
         setComposition(newArray)
     }
 
+    function getMilitaryName(id) {
+        let name = ''
+        users.forEach(user => {
+            if (user._id === id) name = `${getRankName(user.rank)} ${user.qra}`
+        })
+
+        return name
+    }
+
     const handleChange = event => {
+        console.log("valor", event.target.value)
         const aux = [...composition]
-        aux.push({id: composition.length+1, name: event.target.value})
+        aux.push({ id: composition.length + 1, name: Number(event.target.value) })
         setComposition(aux)
     }
 
     const handleSave = () => {
-        console.log({spot: spot, composition})
-        api.post("/cleanings", {spot: spot, composition})
-            .then(response => console.log(response.status))
+        console.log({ spot: spot, composition })
+        api.get("/cleanings")
+            .then(({ data }) => {
+                const cleanings = data.cleanings
+                let exists = false
+                let id = 0
+                cleanings.forEach(cleaning => {
+                    if (cleaning.spot === spot) {
+                        exists = true
+                        id = cleaning._id
+                    }
+                })
+                if (exists) {
+                    api.put(`/cleanings/${id}`, { composition })
+                        .then(response => console.log(response.status))
+                } else {
+                    api.post("/cleanings", { spot: spot, composition })
+                        .then(response => console.log(response.status))
+                }
+            })
     }
 
     return (
@@ -92,9 +135,9 @@ export function CleaningCard({ spot, name }) {
             <h3>{name}</h3>
             <select onChange={handleChange}>
                 <option value="">-- Escolher Militar --</option>
-               {users.map(user => <option key={user._id}>{user.qra}</option>)}
+                {users.map(user => <option key={user._id} value={user._id}>{`${getRankName(user.rank)} ${user.qra}`}</option>)}
             </select>
-            {composition?.map(component => <p key={component.id} onClick={() => removeComponent(component)}>{component.name}</p>)}
+            {composition?.map(component => <p key={component.id} onClick={() => removeComponent(component)}>{getMilitaryName(component.name)}</p>)}
             <Button variant="danger" size="sm" onClick={handleSave}>Salvar</Button>
         </li>
     )
