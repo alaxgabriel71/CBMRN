@@ -6,7 +6,7 @@ import { UserContext } from "../components/contexts/UserContext";
 import api from "../services/api";
 
 export default function CheckMaterial() {
-    const { vehicles } = useContext(UserContext)
+    const { vehicles, user } = useContext(UserContext)
 
     const [materials, setMaterials] = useState([])
     const [checkeds, setCheckeds] = useState([])
@@ -14,13 +14,19 @@ export default function CheckMaterial() {
     const [users, setUsers] = useState([])
     const [ranks, setRanks] = useState([])
     const [commander, setCommander] = useState()
+    const [vehicleName, setVehicleName] = useState()
 
     //setMaterials([])
 
-    const getMaterials = (e) => {
-        api.get(`/vehicle-materials-list/${e.target.value}`)
-            .then(({ data }) => setMaterials(data.list))
-            .catch(err => console.error(err))
+    const getMaterials = event => {
+        vehicles.forEach(vehicle => {
+            if (vehicle._id === Number(event.target.value)) {
+                setVehicleName(vehicle.name)
+                api.get(`/vehicle-materials-list/${vehicle.list}`)
+                    .then(({ data }) => setMaterials(data.list))
+                    .catch(err => console.error(err))
+            }
+        })
     }
 
     useEffect(() => {
@@ -59,9 +65,22 @@ export default function CheckMaterial() {
 
     const handleSave = event => {
         event.preventDefault()
-        console.log(commander, remark)
-        if (checkeds.length !== materials.length) console.log("alteração")
-        else console.log("sem alteração")
+        const notification = {
+            from: user.id,
+            to: commander,
+            subject: "Conferência de Material",
+            content: `Materiais da VTR ${vehicleName} foram conferidos e não há alterações!`
+        }
+        if (checkeds.length !== materials.length) {
+            notification.content = `Materiais da VTR ${vehicleName} foram conferidos e apresentou as seguintes alterações: ${remark}`
+        } 
+        api.post(`/notifications`, {
+            from: notification.from,
+            to: notification.to,
+            subject: notification.subject,
+            content: notification.content
+        })
+            .then(response => console.log(response.status))
     }
 
     return (
@@ -74,13 +93,14 @@ export default function CheckMaterial() {
                     <option>-- Escolha a viatura --</option>
                     {vehicles.map(v => {
                         if (v.list) {
-                            return <option key={v._id} value={v.list}>{v.name}</option>
+                            return <option key={v._id} value={v._id}>{v.name}</option>
                         } else {
                             return null
                         }
                     })}
                 </Form.Select>
             </FloatingLabel>
+            {vehicleName && <h2>{`Materiais da VTR ${vehicleName}`}</h2>}
             <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
@@ -92,20 +112,6 @@ export default function CheckMaterial() {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {materials?.map(material => <VehicleMaterialTD
-                            key={material.id}
-                            id={material.id}
-                            name={material.name}
-                            quantity={material.quantity}
-                            remove={false}
-                            removeItem={() => {}}
-                            remark={material.remark}
-                            edit={false}
-                            editingItem={() => {}}
-                            transfer={false}
-                            handleTransfer={() => {}}
-                        />
-                        )} */}
                     {materials?.map((material, k) => (
                         <tr key={material.id}>
                             <td>{`${k + 1}.`}</td>
@@ -122,19 +128,20 @@ export default function CheckMaterial() {
             <form onSubmit={handleSave}>
                 <FloatingLabel
                     label="Observações"
+                    value={remark}
                     onChange={event => setRemark(event.target.value)}
                 >
-                    <Form.Control type="text-area" value={remark} required={checkeds.length !== materials.length} />
+                    <Form.Control type="text-area" required={checkeds.length !== materials.length} />
                 </FloatingLabel>
                 <FloatingLabel
-                    label={"Escolher"}
+                    label="Comandante da Guarnição"
                 >
                     <Form.Select onChange={event => setCommander(event.target.value)} required>
-                        <option value="">-- Escolher militar --</option>
+                        <option value="">-- Escolher Militar --</option>
                         {users.map(user => <option key={user._id} value={user._id}>{`${getRankName(Number(user.rank))} ${user.qra}`}</option>)}
                     </Form.Select>
                 </FloatingLabel>
-                <Button variant="danger" type="submit" >Salvar Conferência</Button>
+                <Button variant="danger" type="submit" >Enviar para o Comandante</Button>
             </form>
         </article>
     )

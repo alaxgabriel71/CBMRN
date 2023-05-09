@@ -45,6 +45,9 @@ const CleaningController = require("./controllers/CleaningController")
 const Guard = require("./models/Guard")
 const GuardController = require("./controllers/GuardController")
 
+const Notification = require("./models/Notification")
+const NotificationController = require("./controllers/NotificationController")
+
 User.sync()
 // User.sync({ alter: true })
 Material.sync()
@@ -61,6 +64,7 @@ GarrisonOfDay.sync()
 Spot.sync()
 Cleaning.sync()
 Guard.sync()
+Notification.sync()
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -131,6 +135,10 @@ routes.get("/guards", AuthMiddleware.checkToken, GuardController.index)
 routes.post("/guards", AuthMiddleware.checkToken, GuardController.store)
 routes.put("/guards/:id", AuthMiddleware.checkToken, GuardController.update)
 routes.delete("/guards/:id", AuthMiddleware.checkToken, GuardController.remove)
+
+routes.get("/notifications/:id", AuthMiddleware.checkToken, NotificationController.show)
+routes.post("/notifications", AuthMiddleware.checkToken, NotificationController.store)
+routes.delete("/notifications/:id", AuthMiddleware.checkToken, NotificationController.remove)
 
 routes.get("/auth", AuthController.verify)
 

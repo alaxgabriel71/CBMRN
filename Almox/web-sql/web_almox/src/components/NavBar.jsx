@@ -46,6 +46,7 @@ function NavBar() {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {/* <Dropdown.Item><NavLink to="/login">Sair</NavLink></Dropdown.Item> */}
+                  <Dropdown.Item onClick={() => navigate(`/notifications/${user.id}`)}>Notificações</Dropdown.Item>
                   <Dropdown.Item onClick={handleLogout}>Sair</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -72,6 +73,7 @@ function NavBar() {
                   <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/register">Cadastrar Militar</Nav.Link>
                   <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/garrisons-tabs">Controle de Guarnições</Nav.Link>
                   <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/vehicles-tabs">Controle de Viaturas</Nav.Link>
+                  <p onClick={() => navigate('/check-material')}>teste</p>
                   {/* <NavDropdown
                   title="Dropdown"
                   id={`offcanvasNavbarDropdown-expand-${expand}`}
