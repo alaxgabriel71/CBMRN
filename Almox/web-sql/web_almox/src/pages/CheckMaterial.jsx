@@ -74,13 +74,22 @@ export default function CheckMaterial() {
         if (checkeds.length !== materials.length) {
             notification.content = `Materiais da VTR ${vehicleName} foram conferidos e apresentou as seguintes alterações: ${remark}`
         } 
-        api.post(`/notifications`, {
+        api.post("/knowledges", {
             from: notification.from,
             to: notification.to,
             subject: notification.subject,
             content: notification.content
         })
-            .then(response => console.log(response.status))
+            .then(() => {
+                api.post(`/notifications`, {
+                    from: notification.from,
+                    to: notification.to,
+                    subject: notification.subject,
+                    content: notification.content
+                })
+                    .then(response => console.log(response.status))
+            })
+        
     }
 
     return (

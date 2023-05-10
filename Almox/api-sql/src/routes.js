@@ -48,6 +48,9 @@ const GuardController = require("./controllers/GuardController")
 const Notification = require("./models/Notification")
 const NotificationController = require("./controllers/NotificationController")
 
+const Knowledge = require("./models/Knowledge")
+const KnowledgeController = require("./controllers/KnowledgeController")
+
 User.sync()
 // User.sync({ alter: true })
 Material.sync()
@@ -65,6 +68,7 @@ Spot.sync()
 Cleaning.sync()
 Guard.sync()
 Notification.sync()
+Knowledge.sync()
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -139,6 +143,9 @@ routes.delete("/guards/:id", AuthMiddleware.checkToken, GuardController.remove)
 routes.get("/notifications/:id", AuthMiddleware.checkToken, NotificationController.show)
 routes.post("/notifications", AuthMiddleware.checkToken, NotificationController.store)
 routes.delete("/notifications/:id", AuthMiddleware.checkToken, NotificationController.remove)
+
+routes.get("/knowledges", AuthMiddleware.checkToken, KnowledgeController.index)
+routes.post("/knowledges", AuthMiddleware.checkToken, KnowledgeController.store)
 
 routes.get("/auth", AuthController.verify)
 
