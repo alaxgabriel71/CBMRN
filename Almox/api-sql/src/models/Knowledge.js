@@ -8,6 +8,11 @@ const Knowledge = db.define('knowledge', {
         autoIncrement: true,
         primaryKey: true
     },
+    notification: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        foreignKey: true
+    },
     from: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -27,9 +32,9 @@ const Knowledge = db.define('knowledge', {
         allowNull: false
     },
     status: {
-        type: Sequelize.STRING,
+        type: Sequelize.BOOLEAN,
         allowNull: true,
-        defaultValue: "Pendente"
+        defaultValue: false
     }
 })
 

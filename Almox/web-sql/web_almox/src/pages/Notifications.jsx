@@ -4,9 +4,10 @@ import { useParams } from "react-router"
 import api from "../services/api"
 import { Button } from "react-bootstrap"
 
-export function NotificationCard({ notification, from, content, subject, createdAt, reload }) {
+export function NotificationCard({ notification, from, content, subject, status, createdAt, reload }) {
     const [users, setUsers] = useState([])
     const [ranks, setRanks] = useState([])
+
 
     useEffect(() => {
         api.get("/users")
@@ -36,15 +37,28 @@ export function NotificationCard({ notification, from, content, subject, created
         return name
     }
 
+    const getDate = (d) => {
+        const date = new Date(d)
+        let formatedDate = d.split('T')
+        formatedDate = formatedDate[1].split(':')
+        let hour = String(Number(formatedDate[0]) - 3)
+        hour = Number(hour) < 10 ? ("0"+hour) : hour
+        formatedDate = hour+":"+formatedDate[1]
+        formatedDate = date.toLocaleDateString('pt-br')+" - "+formatedDate
+        return formatedDate
+    }
+
     const handleRemove = () => {
         api.delete(`/notifications/${notification}`)
             .then(() => reload())
     }
 
     const handleKnowledge = () => {
-        console.log("ciente")
-        
-
+        api.put(`/notifications/${notification}`)
+        .then(() => {
+            api.put(`/knowledges/${notification}`)
+                .then(() => reload())
+        })
     }
 
     return (
@@ -52,9 +66,9 @@ export function NotificationCard({ notification, from, content, subject, created
             <strong>{getFrom(from)}</strong>
             <span>{subject}</span>
             <p>{content}</p>
-            <span>{createdAt}</span>
+            <span>{getDate(createdAt)}</span>
             <Button variant="secondary" onClick={handleRemove}>Excluir</Button>
-            <Button variant="danger" onClick={handleKnowledge}>Ciente</Button>
+            <Button variant="danger" onClick={handleKnowledge} disabled={status}>Ciente</Button>
         </div>
     )
 }
@@ -84,6 +98,7 @@ export default function Notifications() {
                     from={notification.from}
                     subject={notification.subject}
                     content={notification.content}
+                    status={notification.status}
                     createdAt={notification.createdAt}
                     reload={reload}
                 />

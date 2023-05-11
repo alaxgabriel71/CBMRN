@@ -25,6 +25,11 @@ const Notification = db.define('notification', {
     content: {
         type: Sequelize.JSON,
         allowNull: false
+    },
+    status: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
     }
 })
 

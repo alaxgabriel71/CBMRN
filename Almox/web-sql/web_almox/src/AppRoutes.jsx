@@ -32,6 +32,7 @@ import DefineServiceRoutine from './pages/DefineServiceRoutine';
 import DefineGuard from './pages/DefineGuard';
 import CreateGuards from './pages/CreateGuards';
 import Notifications from './pages/Notifications';
+import CheckMaterialHistory from './pages/CheckMaterialHistory';
 
 export default function AppRoutes() {
     
@@ -79,7 +80,8 @@ export default function AppRoutes() {
                 <Route path="/check-material" element={<Private><CheckMaterial /></Private>} />
                 <Route path="/notifications/:id" element={<Private><Notifications /></Private>} />
                 <Route path="/define/guards" element={<Private><DefineGuard /></Private>} />
-                <Route path="/movement-history" element={<Private><Moderator><MovementHistory /></Moderator></Private>} />
+                <Route path="/movements/history" element={<Private><Moderator><MovementHistory /></Moderator></Private>} />
+                <Route path="/check-materials/history" element={<Private><Moderator><CheckMaterialHistory /></Moderator></Private>} />
                 <Route path="/military-list" element={<Private><Regular><MilitaryList /></Regular></Private>} />
                 <Route path="/spots" element={<Private><Regular><Spots /></Regular></Private>} />
                 <Route path="/define/service-routine" element={<Private><Regular><DefineServiceRoutine /> </Regular></Private>} />

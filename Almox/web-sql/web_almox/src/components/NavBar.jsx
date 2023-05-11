@@ -67,7 +67,8 @@ function NavBar() {
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="/">Página Inicial</Nav.Link>
                   <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator') && (user.admin !== 'regular'))}href="/materials-tabs">Controle de Materiais</Nav.Link>
-                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator'))} href="/movement-history">Histórico de movimentações</Nav.Link>
+                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator'))} href="/movements/history">Histórico de movimentações</Nav.Link>
+                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator'))} href="/check-materials/history">Histórico de Conferência de Materias</Nav.Link>
                   {/* <Nav.Link href="/military-tabs">Militares</Nav.Link> */}
                   <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/users">Controle de Usuários</Nav.Link>
                   <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/register">Cadastrar Militar</Nav.Link>

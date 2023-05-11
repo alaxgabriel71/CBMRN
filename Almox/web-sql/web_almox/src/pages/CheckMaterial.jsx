@@ -4,9 +4,11 @@ import { FloatingLabel, Form, Table, Button } from "react-bootstrap";
 import { UserContext } from "../components/contexts/UserContext";
 //import VehicleMaterialTD from "../components/VehicleMaterialTD"
 import api from "../services/api";
+import { useNavigate } from "react-router";
 
 export default function CheckMaterial() {
     const { vehicles, user } = useContext(UserContext)
+    const navigate = useNavigate()
 
     const [materials, setMaterials] = useState([])
     const [checkeds, setCheckeds] = useState([])
@@ -73,23 +75,24 @@ export default function CheckMaterial() {
         }
         if (checkeds.length !== materials.length) {
             notification.content = `Materiais da VTR ${vehicleName} foram conferidos e apresentou as seguintes alterações: ${remark}`
-        } 
-        api.post("/knowledges", {
+        }
+        api.post("/notifications", {
             from: notification.from,
             to: notification.to,
             subject: notification.subject,
             content: notification.content
         })
-            .then(() => {
-                api.post(`/notifications`, {
+            .then(({ data }) => {
+                api.post("/knowledges", {
+                    notification: data.notification,
                     from: notification.from,
                     to: notification.to,
                     subject: notification.subject,
                     content: notification.content
                 })
-                    .then(response => console.log(response.status))
+                    .then(() => navigate('/'))
             })
-        
+
     }
 
     return (
