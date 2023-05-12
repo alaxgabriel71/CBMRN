@@ -17,15 +17,16 @@ export default function CheckMaterialHistory() {
     // const today = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + formatedDate
 
     const [users, setUsers] = useState([])
-    const [movements, setMovements] = useState([])
+    const [ranks, setRanks] = useState([])
     const [knowledges, setKnowledges] = useState([])
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(localStorage.getItem('active') || 1)
     const [itemsPerPage, setItemsPerPage] = useState(localStorage.getItem('itemsPerPage') || 10)
     const [search, setSearch] = useState('')
-    const [remark, setRemark] = useState('')
-    const [operation, setOperation] = useState('')
+    const [subject, setSubject] = useState('')
+    const [from, setFrom] = useState('')
+    const [status, setStatus] = useState('')
     // const [date, setDate] = useState('')
     const [day, setDay] = useState('')
     const [month, setMonth] = useState('')
@@ -44,10 +45,16 @@ export default function CheckMaterialHistory() {
 
         api.get('/users-name')
             .then(({data}) => setUsers(data.users))
+            .then(() => {
+                api.get("/ranks")
+                    .then(({ data }) => setRanks(data.ranks))
+            })
             .catch(err => console.error(err))
         setLoading(false)
     }, []);
     // console.log(movements)div
+
+    useEffect(() => console.log(status), [status])
 
     const dayOptions = []
     for (let i = 1; i <= 31; i++) {
@@ -75,50 +82,61 @@ export default function CheckMaterialHistory() {
 
     const indexOfLastMove = currentPage * itemsPerPage
     const indexOfFirstMove = indexOfLastMove - itemsPerPage
-    const currentMoves = movements.slice(indexOfFirstMove, indexOfLastMove)
+    const currentKnowledges = knowledges.slice(indexOfFirstMove, indexOfLastMove)
 
     var filteredItems = []
     var searchFilteredItems = []
-    var remarkFilteredItems = []
-    var operationFilteredItems = []
+    var subjectFilteredItems = []
+    var fromFilteredItems = []
+    var statusFilteredItems = []
     var dayFilteredItems = []
     var monthFilteredItems = []
     var yearFilteredItems = []
     var responsibleFilteredItems = []
 
     const lowerCaseSearch = search.toLowerCase()
-    currentMoves.forEach(move => {
-        if (move.description.toLowerCase().includes(lowerCaseSearch)) {
-            searchFilteredItems.push(move)
+    currentKnowledges.forEach(knowledge => {
+        if (knowledge.content.toLowerCase().includes(lowerCaseSearch)) {
+            searchFilteredItems.push(knowledge)
         }
     })
 
-    if(!remark) {
-        remarkFilteredItems = searchFilteredItems
+    if(!subject) {
+        subjectFilteredItems = searchFilteredItems
     } else {
-        searchFilteredItems.forEach(move => {
-            if(move.remark.includes(remark)) {
-                remarkFilteredItems.push(move)
+        searchFilteredItems.forEach(knowledge => {
+            if(knowledge.subject.toLowerCase().includes(subject.toLowerCase())) {
+                subjectFilteredItems.push(knowledge)
             }
         })
     }
 
-    if (!operation) {
-        operationFilteredItems = remarkFilteredItems
+    if (!from) {
+        fromFilteredItems = subjectFilteredItems
     } else {
-        remarkFilteredItems.forEach(move => {
-            if (move.operation.includes(operation)) {
-                operationFilteredItems.push(move)
+        subjectFilteredItems.forEach(knowledge => {
+            if (knowledge.from === Number(from)) {
+                fromFilteredItems.push(knowledge)
+            }
+        })
+    }
+
+    if (status === '') {
+        statusFilteredItems = fromFilteredItems
+    } else {
+        fromFilteredItems.forEach(knowledge => {
+            if (knowledge.status === status) {
+                statusFilteredItems.push(knowledge)
             }
         })
     }
 
     if (!day) {
-        dayFilteredItems = operationFilteredItems
+        dayFilteredItems = statusFilteredItems
     } else {
-        operationFilteredItems.forEach(move => {
-            if (move.date.slice(8, 10).includes(day)) {
-                dayFilteredItems.push(move)
+        statusFilteredItems.forEach(knowledge => {
+            if (knowledge.createdAt.slice(8, 10).includes(day)) {
+                dayFilteredItems.push(knowledge)
             }
         })
     }
@@ -126,9 +144,9 @@ export default function CheckMaterialHistory() {
     if (!month) {
         monthFilteredItems = dayFilteredItems
     } else {
-        dayFilteredItems.forEach(move => {
-            if (move.date.slice(5, 7).includes(month)) {
-                monthFilteredItems.push(move)
+        dayFilteredItems.forEach(knowledge => {
+            if (knowledge.createdAt.slice(5, 7).includes(month)) {
+                monthFilteredItems.push(knowledge)
             }
         })
     }
@@ -136,9 +154,9 @@ export default function CheckMaterialHistory() {
     if (!year) {
         yearFilteredItems = monthFilteredItems
     } else {
-        monthFilteredItems.forEach(move => {
-            if (move.date.slice(0, 4).includes(year)) {
-                yearFilteredItems.push(move)
+        monthFilteredItems.forEach(knowledge => {
+            if (knowledge.createdAt.slice(0, 4).includes(year)) {
+                yearFilteredItems.push(knowledge)
             }
         })
     }
@@ -146,9 +164,9 @@ export default function CheckMaterialHistory() {
     if(!responsible) {
         responsibleFilteredItems = yearFilteredItems
     } else {
-        yearFilteredItems.forEach(move => {
-            if(move.user_name.includes(responsible)) {
-                responsibleFilteredItems.push(move)
+        yearFilteredItems.forEach(knowledge => {
+            if(knowledge.to === Number(responsible)) {
+                responsibleFilteredItems.push(knowledge)
             }
         })
     }
@@ -161,9 +179,11 @@ export default function CheckMaterialHistory() {
     }
 
     function clearFilter() {
-        setOperation('');
-        setRemark('');
+        setFrom('');
+        setResponsible('');
+        setSubject('');
         setSearch('');
+        setStatus('');
         setDay('');
         setMonth('');
         setYear('');
@@ -180,9 +200,26 @@ export default function CheckMaterialHistory() {
         return formatedDate
     }
 
+    const getRankName = id => {
+        let name = ''
+        ranks.forEach(rank => {
+            if(rank._id === id) name = rank.rank
+        })
+        return name
+    }
+
+    const getUserName = (id) => {
+        let name = ''
+        users.forEach(user => {
+            if(user._id === id) {
+                name = getRankName(user.rank) + " " + user.qra
+            }
+        })
+        return name
+    }
     return (
         <article className={styles.MainContainer}>
-            <h2>Histórico de Movimentações</h2>
+            <h2>Histórico da Conferência de Materiais</h2>
             <div className={styles.AccordionContainer}>
                 <Accordion defaultActiveKey="0" alwaysOpen={false}>
                     <Accordion.Item eventKey="1">
@@ -192,47 +229,62 @@ export default function CheckMaterialHistory() {
                                 <fieldset className={styles.FieldsetContainer}>
                                     <div className={styles.DescriptionContainer}>
                                         <FloatingLabel
-                                            label="Operação"
-                                            value={operation}
-                                            onChange={event => setOperation(event.target.value)}
+                                            label="De"
+                                            value={from}
+                                            onChange={event => setFrom(event.target.value)}
                                             className={styles.FloatingLabel}
                                         >
                                             <Form.Select>
-                                                <option value="">-- Escolha a operação --</option>
-                                                <option value="Recebimento">Recebimento</option>
-                                                <option value="Atualização">Atualização</option>
-                                                <option value="Devolução">Devolução</option>
-                                                <option value="Exclusão">Exclusão</option>
+                                                <option value="">-- Escolher Militar --</option>
+                                                {users?.map(user => (
+                                                    <option key={user._id} value={user._id}>{`${getRankName(user.rank)} ${user.qra}`}</option>
+                                                ))}
                                             </Form.Select>
                                         </FloatingLabel>
                                         <FloatingLabel
-                                            label="Responsável"
+                                            label="Para"
                                             value={responsible}
                                             onChange={event => setResponsible(event.target.value)}
                                             className={styles.FloatingLabel}
                                         >
                                             <Form.Select>
-                                                <option value="">-- Escolha o responsável --</option>
+                                                <option value="">-- Escolher Militar --</option>
                                                 {users?.map(user => (
-                                                    <option key={user._id}>{`${user.rank} ${user.qra}`}</option>
+                                                    <option key={user._id} value={user._id}>{`${getRankName(user.rank)} ${user.qra}`}</option>
                                                 ))}
                                             </Form.Select>
                                         </FloatingLabel>
                                         <FloatingLabel
-                                            label="Buscar na descrição por..."
+                                            label="Buscar no assunto por..."
+                                            value={subject}
+                                            onChange={event => setSubject(event.target.value)}
+                                            className={styles.FloatingLabel}
+                                        >
+                                            <Form.Control type="text" placehoder="Buscar no assunto por..." />
+                                        </FloatingLabel>
+                                        <FloatingLabel
+                                            label="Buscar no conteúdo por..."
                                             value={search}
                                             onChange={event => setSearch(event.target.value)}
                                             className={styles.FloatingLabel}
                                         >
-                                            <Form.Control type="text" placehoder="Buscar na descrição por..." />
+                                            <Form.Control type="text" placehoder="Buscar no conteúdo por..." />
                                         </FloatingLabel>
                                         <FloatingLabel
-                                            label="Buscar nas observações por..."
-                                            value={remark}
-                                            onChange={event => setRemark(event.target.value)}
+                                            label="Confirmação"
+                                            value={status}
+                                            onChange={event => {
+                                                if(event.target.value === 'false') setStatus(false)
+                                                else if(event.target.value === 'true')setStatus(true)
+                                                else setStatus('')
+                                            }}
                                             className={styles.FloatingLabel}
                                         >
-                                            <Form.Control type="text" placehoder="Buscar nas obeservações por..." />
+                                            <Form.Select>
+                                                <option value="">--  --</option>
+                                                <option value={true}>Ciente</option>
+                                                <option value={false}>Sem resposta</option>                                                
+                                            </Form.Select>
                                         </FloatingLabel>
                                     </div>
                                     <div className={styles.DateContainer}>
@@ -286,14 +338,14 @@ export default function CheckMaterialHistory() {
                     </Accordion.Item>
                 </Accordion>
             </div>
-            <Pagination setItemsPerPage={setItemsPerPage} itemsPerPage={itemsPerPage} totalItems={movements.length} paginate={paginate} />
-            <Button
+            <Pagination setItemsPerPage={setItemsPerPage} itemsPerPage={itemsPerPage} totalItems={knowledges.length} paginate={paginate} />
+            {/* <Button
                 className="btn btn-danger"
                 onClick={() => setShow(true)}
                 id="confirm"
             >
                 Apagar Histórico
-            </Button>
+            </Button> */}
             <Loading loading={loading} />
             <Table striped bordered hover size="sm">
                 <thead>
@@ -307,14 +359,14 @@ export default function CheckMaterialHistory() {
                     </tr>
                 </thead>
                 <tbody>
-                    {knowledges?.map(knowledge => (
+                    {filteredItems?.map(knowledge => (
                         <tr key={knowledge._id}>
-                            <td>{knowledge.from}</td>
-                            <td>{knowledge.to}</td>
+                            <td>{getUserName(knowledge.from)}</td>
+                            <td>{getUserName(knowledge.to)}</td>
                             <td>{knowledge.subject}</td>
                             <td>{knowledge.content}</td>
                             <td>{knowledge.status? "Ciente" : "Sem resposta"}</td>
-                            <td>{getDate(knowledge.updatedAt)}</td>
+                            <td>{getDate(knowledge.createdAt)}</td>
                         </tr>
                     ))}
                 </tbody>
