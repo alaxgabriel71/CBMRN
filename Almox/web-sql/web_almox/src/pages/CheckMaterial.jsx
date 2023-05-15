@@ -101,8 +101,8 @@ export default function CheckMaterial() {
             <FloatingLabel
                 label="Viatura"
             >
-                <Form.Select onChange={getMaterials}>
-                    <option>-- Escolha a viatura --</option>
+                <Form.Select onChange={getMaterials} required={true} form="form">
+                    <option value=''>-- Escolha a viatura --</option>
                     {vehicles.map(v => {
                         if (v.list) {
                             return <option key={v._id} value={v._id}>{v.name}</option>
@@ -137,7 +137,7 @@ export default function CheckMaterial() {
                     ))}
                 </tbody>
             </Table>
-            <form onSubmit={handleSave}>
+            <form onSubmit={handleSave} id="form">
                 <FloatingLabel
                     label="Observações"
                     value={remark}

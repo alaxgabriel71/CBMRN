@@ -33,6 +33,7 @@ import DefineGuard from './pages/DefineGuard';
 import CreateGuards from './pages/CreateGuards';
 import Notifications from './pages/Notifications';
 import CheckMaterialHistory from './pages/CheckMaterialHistory';
+import SimpleVehicleChecklist from './pages/SimpleVehicleChecklist';
 
 export default function AppRoutes() {
     
@@ -78,6 +79,7 @@ export default function AppRoutes() {
                 <Route exact path="/" element={<Private><Home /></Private>} />
                 <Route path="/materials-list" element={<Private><MaterialsList /></Private>} />
                 <Route path="/check-material" element={<Private><CheckMaterial /></Private>} />
+                <Route path="/simple-vehicle-checklist" element={<Private><SimpleVehicleChecklist /></Private>} />
                 <Route path="/notifications/:id" element={<Private><Notifications /></Private>} />
                 <Route path="/define/guards" element={<Private><DefineGuard /></Private>} />
                 <Route path="/movements/history" element={<Private><Moderator><MovementHistory /></Moderator></Private>} />
