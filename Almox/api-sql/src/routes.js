@@ -51,6 +51,9 @@ const NotificationController = require("./controllers/NotificationController")
 const Knowledge = require("./models/Knowledge")
 const KnowledgeController = require("./controllers/KnowledgeController")
 
+const VehicleChecklist = require("./models/VehicleChecklist")
+const VehicleChecklistController = require("./controllers/VehicleChecklistController")
+
 
 User.sync()
 // User.sync({ alter: true })
@@ -70,6 +73,7 @@ Cleaning.sync()
 Guard.sync()
 Notification.sync()
 Knowledge.sync()
+VehicleChecklist.sync()
 
 routes.get("/", (request, response) => response.send("Hello, World!"))
 
@@ -149,6 +153,9 @@ routes.put("/notifications/:id", AuthMiddleware.checkToken, NotificationControll
 routes.get("/knowledges", AuthMiddleware.checkToken, KnowledgeController.index)
 routes.post("/knowledges", AuthMiddleware.checkToken, KnowledgeController.store)
 routes.put("/knowledges/:id", AuthMiddleware.checkToken, KnowledgeController.update)
+
+routes.get("/vehicle-checklists", AuthMiddleware.checkToken, VehicleChecklistController.index)
+routes.post("/vehicle-checklists", AuthMiddleware.checkToken, VehicleChecklistController.store)
 
 routes.get("/auth", AuthController.verify)
 

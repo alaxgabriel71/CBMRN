@@ -34,6 +34,7 @@ import CreateGuards from './pages/CreateGuards';
 import Notifications from './pages/Notifications';
 import CheckMaterialHistory from './pages/CheckMaterialHistory';
 import SimpleVehicleChecklist from './pages/SimpleVehicleChecklist';
+import VehicleChecklistHistory from './pages/VehicleChecklistHistory';
 
 export default function AppRoutes() {
     
@@ -84,6 +85,7 @@ export default function AppRoutes() {
                 <Route path="/define/guards" element={<Private><DefineGuard /></Private>} />
                 <Route path="/movements/history" element={<Private><Moderator><MovementHistory /></Moderator></Private>} />
                 <Route path="/check-materials/history" element={<Private><Moderator><CheckMaterialHistory /></Moderator></Private>} />
+                <Route path="/simple-vehicle-checklist/history" element={<Private><Moderator><VehicleChecklistHistory /></Moderator></Private>} />
                 <Route path="/military-list" element={<Private><Regular><MilitaryList /></Regular></Private>} />
                 <Route path="/spots" element={<Private><Regular><Spots /></Regular></Private>} />
                 <Route path="/define/service-routine" element={<Private><Regular><DefineServiceRoutine /> </Regular></Private>} />

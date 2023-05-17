@@ -1,70 +1,106 @@
 import { useState, useEffect, useContext } from "react";
 import { FloatingLabel, Form, Table, Button } from "react-bootstrap";
+
 import { UserContext } from "../components/contexts/UserContext";
+import api from "../services/api";
 
 export function Item({ id, name, checkeds }) {
 
     return (
         <tr>
             <td>{name}</td>
-            <td><input type="radio" name={'checklist-' + id} onClick={() => checkeds(id, false)} required/></td>
-            <td><input type="radio" name={'checklist-' + id} onClick={() => checkeds(id, true)}/></td>
-            <td><input type="radio" name={'checklist-' + id} onClick={() => checkeds(id, false)}/></td>
+            <td><input type="radio" name={'checklist-' + id} id="without-alteration" onClick={() => checkeds(id, name, false)} required /></td>
+            <td><input type="radio" name={'checklist-' + id} id="with-alteration" onClick={() => checkeds(id, name, true)} /></td>
+            <td><input type="radio" name={'checklist-' + id} id="not-aplicable" onClick={() => checkeds(id, name, false)} /></td>
         </tr>
     )
 }
 
 export default function SimpleVehicleChecklist() {
-    const { vehicles } = useContext(UserContext)
+    const { vehicles, user } = useContext(UserContext)
+
     const [checkeds, setCheckeds] = useState([])
+    const [vehicle, setVehicle] = useState()
 
     useEffect(() => console.log(checkeds), [checkeds])
 
     const items = [
-        {id: 1, name: 'Combustível'},
-        {id: 2, name: 'Nível de óleo do motor'},
-        {id: 3, name: 'Nível do fluido de freio'},
-        {id: 4, name: 'Nível do fluido de direção'},
-        {id: 5, name: 'Nível de água do parabrisa'},
-        {id: 6, name: 'Nível de água do radiador'},
-        {id: 7, name: 'Extintor'},
-        {id: 8, name: 'Cinto de segurança'},
-        {id: 9, name: 'Freio'},
-        {id: 10, name: 'Condição dos pneus'},
-        {id: 11, name: 'Acessórios para troca de pneus'},
-        {id: 12, name: 'Condição do step'},
-        {id: 13, name: 'Pisca esquerdo'},
-        {id: 14, name: 'Pisca direito'},
-        {id: 15, name: 'Luz de freio'},
-        {id: 16, name: 'Luz de ré'},
-        {id: 17, name: 'Pisca alerta'},
-        {id: 18, name: 'Luz alta'},
-        {id: 19, name: 'Luz baixa'},
-        {id: 20, name: 'Luz de estacionamento'},
-        {id: 21, name: 'Farol de milha'},
-        {id: 22, name: 'Luz interna'},
-        {id: 23, name: 'Giroflex'},
-        {id: 24, name: 'Luz do painel'}
+        { id: 1, name: 'Combustível' },
+        { id: 2, name: 'Nível de óleo do motor' },
+        { id: 3, name: 'Nível do fluido de freio' },
+        { id: 4, name: 'Nível do fluido de direção' },
+        { id: 5, name: 'Nível de água do parabrisa' },
+        { id: 6, name: 'Nível de água do radiador' },
+        { id: 7, name: 'Extintor' },
+        { id: 8, name: 'Cinto de segurança' },
+        { id: 9, name: 'Freio' },
+        { id: 10, name: 'Condição dos pneus' },
+        { id: 11, name: 'Acessórios para troca de pneus' },
+        { id: 12, name: 'Condição do step' },
+        { id: 13, name: 'Pisca esquerdo' },
+        { id: 14, name: 'Pisca direito' },
+        { id: 15, name: 'Luz de freio' },
+        { id: 16, name: 'Luz de ré' },
+        { id: 17, name: 'Pisca alerta' },
+        { id: 18, name: 'Luz alta' },
+        { id: 19, name: 'Luz baixa' },
+        { id: 20, name: 'Luz de estacionamento' },
+        { id: 21, name: 'Farol de milha' },
+        { id: 22, name: 'Luz interna' },
+        { id: 23, name: 'Giroflex' },
+        { id: 24, name: 'Luz do painel' }
     ]
+
+
+    function insertChecked(id, name, alteration) {
+        let exists = false
+        checkeds.forEach(check => {
+            if (check.id === id) exists = true
+        })
+        if (!exists && alteration) setCheckeds([...checkeds, { id: id, name: name, remark: ''}])
+        else if (exists && !alteration) {
+            let aux = []
+            checkeds.forEach(check => {
+                if (check.id !== id) aux.push(check)
+            })
+            setCheckeds(aux)
+        }
+    }
+
+    const changeRemark = (event, k) => {
+        let aux = [...checkeds]
+        aux[k].remark = event.target.value
+        setCheckeds(aux)
+    }
 
     const handleSubmit = event => {
         event.preventDefault()
         console.log('submit')
-    }
-
-    function insertChecked(id, alteration) {
-        let exists = false
-        checkeds.forEach(check => {
-            if(check === id) exists = true
-        })
-        if(!exists && alteration) setCheckeds([...checkeds, id])
-        else if(exists && !alteration) {
-            let aux = []
+        let status = ''
+        let alterations = ''
+        let remark = ''
+        if (checkeds.length === 0) status = 'A viatura não apresentou alterações.'
+        else {
+            /* items.forEach(item => {
+                checkeds.forEach(check => {
+                    if(item.id === check) alterations = alterations + item.name + "; "
+                })
+            }) */
             checkeds.forEach(check => {
-                if(check !== id) aux.push(check)
+                alterations = alterations + check.name + '; '
+                remark = remark + check.name + ': ' + check.remark + '; '
             })
-            setCheckeds(aux)
+            status = `A viatura apresentou alteração nos seguintes items: ${alterations}`
         }
+        console.log(status, remark)
+
+        api.post("/vehicle-checklists", {
+            vehicle,
+            driver: user.id,
+            status,
+            remark
+        })
+            .then((response) => console.log(response.status))
     }
 
     return (
@@ -75,7 +111,7 @@ export default function SimpleVehicleChecklist() {
                     label="Viatura"
                     required
                 >
-                    <Form.Select required={true}>
+                    <Form.Select onChange={(event) => setVehicle(event.target.value)} required={true}>
                         <option value=''>-- --</option>
                         {vehicles?.map(vehicle => vehicle.active ? <option key={vehicle._id} value={vehicle._id}>{vehicle.name}</option> : null)}
                     </Form.Select>
@@ -95,19 +131,22 @@ export default function SimpleVehicleChecklist() {
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map(item => <Item key={item.id} id={item.id} name={item.name} checkeds={(id, alteration) => insertChecked(id, alteration)} />)}
+                        {items.map(item => <Item key={item.id} id={item.id} name={item.name} checkeds={(id, name, alteration) => insertChecked(id, name, alteration)} />)}
                     </tbody>
                 </Table>
-                <FloatingLabel
-                    label="Observações"
-                >
-                    <Form.Control type="textarea" required={checkeds.length > 0 ? true : false} />
-                </FloatingLabel>
+                {checkeds?.map((check, k) => (
+                    <FloatingLabel
+                        label={"Observações - "+check.name}
+                        key={check.id}
+                    >
+                        <Form.Control onChange={event => changeRemark(event, k)} type="textarea" required/* ={checkeds.length > 0 ? true : false} */ />
+                    </FloatingLabel>
+                ))}
                 <Button type="submit" variant="danger" size="sm">Confirmar Conferência</Button>
             </form>
-            <p>*S/A = Sem Alterações</p>
-            <p>*C/A = Com Alterações</p>
-            <p>*N/A = Não se Aplica</p>
+            <label htmlFor="without-alteration">S/A = Sem Alterações</label>
+            <label htmlFor="with-alteration">C/A = Com Alterações</label>
+            <label htmlFor="not-aplicable">N/A = Não se Aplica</label>
         </article>
     )
 }
