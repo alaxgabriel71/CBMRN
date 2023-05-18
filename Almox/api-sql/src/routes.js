@@ -11,6 +11,7 @@ const Movement = require("./models/Movement")
 const MovementController = require("./controllers/MovementController")
 
 const AuthMiddleware = require("./middlewares/AuthMiddleware")
+const PasswordMiddleware = require("./middlewares/PasswordMiddleware")
 
 const LoginController = require("./controllers/LoginController")
 const AuthController = require("./controllers/AuthController")
@@ -146,16 +147,16 @@ routes.put("/guards/:id", AuthMiddleware.checkToken, GuardController.update)
 routes.delete("/guards/:id", AuthMiddleware.checkToken, GuardController.remove)
 
 routes.get("/notifications/:id", AuthMiddleware.checkToken, NotificationController.show)
-routes.post("/notifications", AuthMiddleware.checkToken, NotificationController.store)
+routes.post("/notifications", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, NotificationController.store)
 routes.delete("/notifications/:id", AuthMiddleware.checkToken, NotificationController.remove)
 routes.put("/notifications/:id", AuthMiddleware.checkToken, NotificationController.update)
 
 routes.get("/knowledges", AuthMiddleware.checkToken, KnowledgeController.index)
-routes.post("/knowledges", AuthMiddleware.checkToken, KnowledgeController.store)
+routes.post("/knowledges", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, KnowledgeController.store)
 routes.put("/knowledges/:id", AuthMiddleware.checkToken, KnowledgeController.update)
 
 routes.get("/vehicle-checklists", AuthMiddleware.checkToken, VehicleChecklistController.index)
-routes.post("/vehicle-checklists", AuthMiddleware.checkToken, VehicleChecklistController.store)
+routes.post("/vehicle-checklists", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, VehicleChecklistController.store)
 
 routes.get("/auth", AuthController.verify)
 

@@ -5,6 +5,7 @@ import { UserContext } from "../components/contexts/UserContext";
 //import VehicleMaterialTD from "../components/VehicleMaterialTD"
 import api from "../services/api";
 import { useNavigate } from "react-router";
+import PasswordModal from "../components/modals/PasswordModal";
 
 export default function CheckMaterial() {
     const { vehicles, user } = useContext(UserContext)
@@ -17,6 +18,9 @@ export default function CheckMaterial() {
     const [ranks, setRanks] = useState([])
     const [commander, setCommander] = useState()
     const [vehicleName, setVehicleName] = useState()
+    const [show, setShow] = useState(false)
+    const [registration, setRegistration] = useState()
+    const [password, setPassword] = useState()
 
     //setMaterials([])
 
@@ -65,8 +69,14 @@ export default function CheckMaterial() {
 
     useEffect(() => { console.log("checkeds", checkeds) }, [checkeds])
 
+    const handleSubmit = event => {
+        event.preventDefault()
+        setShow(true)
+    }
+
     const handleSave = event => {
         event.preventDefault()
+        console.log(password, registration)
         const notification = {
             from: user.id,
             to: commander,
@@ -77,6 +87,9 @@ export default function CheckMaterial() {
             notification.content = `Materiais da VTR ${vehicleName} foram conferidos e apresentou as seguintes alterações: ${remark}`
         }
         api.post("/notifications", {
+            password,
+            registration,
+            id: user.id,
             from: notification.from,
             to: notification.to,
             subject: notification.subject,
@@ -84,15 +97,20 @@ export default function CheckMaterial() {
         })
             .then(({ data }) => {
                 api.post("/knowledges", {
+                    password,
+                    registration,
+                    id: user.id,
                     notification: data.notification,
                     from: notification.from,
                     to: notification.to,
                     subject: notification.subject,
                     content: notification.content
                 })
+                    .then(() => setShow(false))
                     .then(() => navigate('/'))
             })
 
+        
     }
 
     return (
@@ -137,7 +155,7 @@ export default function CheckMaterial() {
                     ))}
                 </tbody>
             </Table>
-            <form onSubmit={handleSave} id="form">
+            <form onSubmit={handleSubmit} id="form">
                 <FloatingLabel
                     label="Observações"
                     value={remark}
@@ -155,6 +173,7 @@ export default function CheckMaterial() {
                 </FloatingLabel>
                 <Button variant="danger" type="submit" >Enviar para o Comandante</Button>
             </form>
+            <PasswordModal show={show} onClose={() => setShow(false)} save={handleSave} reg={(value) => setRegistration(value)} pass={(value) => setPassword(value)} />
         </article>
     )
 }
