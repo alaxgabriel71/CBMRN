@@ -37,14 +37,14 @@ export default function CheckMaterialHistory() {
 
     const [users, setUsers] = useState([])
     const [ranks, setRanks] = useState([])
-    const [knowledges, setKnowledges] = useState([])
+    const [vehicleChecklists, setVehicleChecklists] = useState([])
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(localStorage.getItem('active') || 1)
     const [itemsPerPage, setItemsPerPage] = useState(Number(localStorage.getItem('itemsPerPage')) || 10)
     const [search, setSearch] = useState('')
     const [subject, setSubject] = useState('')
-    const [from, setFrom] = useState('')
+    const [vehicle, setVehicle] = useState('')
     const [status, setStatus] = useState('')
     // const [date, setDate] = useState('')
     const [day, setDay] = useState('')
@@ -52,14 +52,14 @@ export default function CheckMaterialHistory() {
     const [year, setYear] = useState('')
     const [responsible, setResponsible] = useState('')
 
-    const { user } = useContext(UserContext)
+    const { user, vehicles } = useContext(UserContext)
     
     api.defaults.headers.Authorization = `Bearer ${user.token}`
 
     useEffect(() => {
         setLoading(true)
-        api.get('/knowledges')
-            .then(({ data }) => setKnowledges(data.knowledges))
+        api.get('/vehicle-checklists')
+            .then(({ data }) => setVehicleChecklists(data.vehicleChecklists))
             .catch(err => console.error(err))
 
         api.get('/users-name')
@@ -101,46 +101,45 @@ export default function CheckMaterialHistory() {
 
     const indexOfLastMove = currentPage * itemsPerPage
     const indexOfFirstMove = indexOfLastMove - itemsPerPage
-    const currentKnowledges = knowledges.slice(indexOfFirstMove, indexOfLastMove)
+    const currentChecklists = vehicleChecklists.slice(indexOfFirstMove, indexOfLastMove)
 
     var filteredItems = []
     var searchFilteredItems = []
     var subjectFilteredItems = []
-    var fromFilteredItems = []
-    var statusFilteredItems = []
+    var vehicleFilteredItems = []
     var dayFilteredItems = []
     var monthFilteredItems = []
     var yearFilteredItems = []
     var responsibleFilteredItems = []
 
     const lowerCaseSearch = search.toLowerCase()
-    currentKnowledges.forEach(knowledge => {
-        if (knowledge.content.toLowerCase().includes(lowerCaseSearch)) {
-            searchFilteredItems.push(knowledge)
+    currentChecklists.forEach(checklist => {
+        if (checklist.remark.toLowerCase().includes(lowerCaseSearch)) {
+            searchFilteredItems.push(checklist)
         }
     })
 
     if(!subject) {
         subjectFilteredItems = searchFilteredItems
     } else {
-        searchFilteredItems.forEach(knowledge => {
-            if(knowledge.subject.toLowerCase().includes(subject.toLowerCase())) {
-                subjectFilteredItems.push(knowledge)
+        searchFilteredItems.forEach(checklist => {
+            if(checklist.status.toLowerCase().includes(subject.toLowerCase())) {
+                subjectFilteredItems.push(checklist)
             }
         })
     }
 
-    if (!from) {
-        fromFilteredItems = subjectFilteredItems
+    if (!vehicle) {
+        vehicleFilteredItems = subjectFilteredItems
     } else {
-        subjectFilteredItems.forEach(knowledge => {
-            if (knowledge.from === Number(from)) {
-                fromFilteredItems.push(knowledge)
+        subjectFilteredItems.forEach(checklist => {
+            if (checklist.vehicle === Number(vehicle)) {
+                vehicleFilteredItems.push(checklist)
             }
         })
     }
 
-    if (status === '') {
+    /* if (status === '') {
         statusFilteredItems = fromFilteredItems
     } else {
         fromFilteredItems.forEach(knowledge => {
@@ -148,14 +147,14 @@ export default function CheckMaterialHistory() {
                 statusFilteredItems.push(knowledge)
             }
         })
-    }
+    } */
 
     if (!day) {
-        dayFilteredItems = statusFilteredItems
+        dayFilteredItems = vehicleFilteredItems
     } else {
-        statusFilteredItems.forEach(knowledge => {
-            if (knowledge.createdAt.slice(8, 10).includes(day)) {
-                dayFilteredItems.push(knowledge)
+        vehicleFilteredItems.forEach(checklist => {
+            if (checklist.createdAt.slice(8, 10).includes(day)) {
+                dayFilteredItems.push(checklist)
             }
         })
     }
@@ -163,9 +162,9 @@ export default function CheckMaterialHistory() {
     if (!month) {
         monthFilteredItems = dayFilteredItems
     } else {
-        dayFilteredItems.forEach(knowledge => {
-            if (knowledge.createdAt.slice(5, 7).includes(month)) {
-                monthFilteredItems.push(knowledge)
+        dayFilteredItems.forEach(checklist => {
+            if (checklist.createdAt.slice(5, 7).includes(month)) {
+                monthFilteredItems.push(checklist)
             }
         })
     }
@@ -183,9 +182,9 @@ export default function CheckMaterialHistory() {
     if(!responsible) {
         responsibleFilteredItems = yearFilteredItems
     } else {
-        yearFilteredItems.forEach(knowledge => {
-            if(knowledge.to === Number(responsible)) {
-                responsibleFilteredItems.push(knowledge)
+        yearFilteredItems.forEach(checklist => {
+            if(checklist.driver === Number(responsible)) {
+                responsibleFilteredItems.push(checklist)
             }
         })
     }
@@ -198,7 +197,7 @@ export default function CheckMaterialHistory() {
     }
 
     function clearFilter() {
-        setFrom('');
+        setVehicle('');
         setResponsible('');
         setSubject('');
         setSearch('');
@@ -236,6 +235,15 @@ export default function CheckMaterialHistory() {
         })
         return name
     }
+
+    const getVehicleName = id => {
+        let name = ''
+        vehicles.forEach(vehicle => {
+            if(vehicle._id === id) name = vehicle.name
+        })
+        return name
+    }
+
     return (
         <article className={styles.MainContainer}>
             <h2>Histórico de checklist das viaturas</h2>
@@ -248,15 +256,15 @@ export default function CheckMaterialHistory() {
                                 <fieldset className={styles.FieldsetContainer}>
                                     <div className={styles.DescriptionContainer}>
                                         <FloatingLabel
-                                            label="De"
-                                            value={from}
-                                            onChange={event => setFrom(event.target.value)}
+                                            label="Viatura"
+                                            value={vehicle}
+                                            onChange={event => setVehicle(event.target.value)}
                                             className={styles.FloatingLabel}
                                         >
                                             <Form.Select>
-                                                <option value="">-- Escolher Militar --</option>
-                                                {users?.map(user => (
-                                                    <option key={user._id} value={user._id}>{`${getRankName(user.rank)} ${user.qra}`}</option>
+                                                <option value="">-- --</option>
+                                                {vehicles?.map(vehicle => (
+                                                    <option key={vehicle._id} value={vehicle._id}>{vehicle.name}</option>
                                                 ))}
                                             </Form.Select>
                                         </FloatingLabel>
@@ -274,22 +282,22 @@ export default function CheckMaterialHistory() {
                                             </Form.Select>
                                         </FloatingLabel>
                                         <FloatingLabel
-                                            label="Buscar no assunto por..."
+                                            label="Buscar nas condições por..."
                                             value={subject}
                                             onChange={event => setSubject(event.target.value)}
                                             className={styles.FloatingLabel}
                                         >
-                                            <Form.Control type="text" placehoder="Buscar no assunto por..." />
+                                            <Form.Control type="text" placehoder="Buscar nas condições por..." />
                                         </FloatingLabel>
                                         <FloatingLabel
-                                            label="Buscar no conteúdo por..."
+                                            label="Buscar nas observações por..."
                                             value={search}
                                             onChange={event => setSearch(event.target.value)}
                                             className={styles.FloatingLabel}
                                         >
-                                            <Form.Control type="text" placehoder="Buscar no conteúdo por..." />
+                                            <Form.Control type="text" placehoder="Buscar nas observações por..." />
                                         </FloatingLabel>
-                                        <FloatingLabel
+                                        {/* <FloatingLabel
                                             label="Confirmação"
                                             value={status}
                                             onChange={event => {
@@ -304,7 +312,7 @@ export default function CheckMaterialHistory() {
                                                 <option value={true}>Ciente</option>
                                                 <option value={false}>Sem resposta</option>                                                
                                             </Form.Select>
-                                        </FloatingLabel>
+                                        </FloatingLabel> */}
                                     </div>
                                     <div className={styles.DateContainer}>
                                         <FloatingLabel
@@ -357,7 +365,7 @@ export default function CheckMaterialHistory() {
                     </Accordion.Item>
                 </Accordion>
             </div>
-            <Pagination setItemsPerPage={setItemsPerPage} itemsPerPage={itemsPerPage} totalItems={knowledges.length} paginate={paginate} />
+            <Pagination setItemsPerPage={setItemsPerPage} itemsPerPage={itemsPerPage} totalItems={vehicleChecklists.length} paginate={paginate} />
             {/* <Button
                 className="btn btn-danger"
                 onClick={() => setShow(true)}
@@ -369,22 +377,20 @@ export default function CheckMaterialHistory() {
             <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
-                        <th>De</th>
-                        <th>Para</th>
-                        <th>Assunto</th>
-                        <th>Conteúdo</th>
-                        <th>Confirmação</th>
-                        <th>Data do Registro</th>
+                        <th>Viatura</th>
+                        <th>Motorista</th>
+                        <th>Condições</th>
+                        <th>Observações</th>
+                        <th>Data</th>
                     </tr>
                 </thead>
                 <tbody>
                     {filteredItems?.map(knowledge => (
                         <tr key={knowledge._id}>
-                            <td>{getUserName(knowledge.from)}</td>
-                            <td>{getUserName(knowledge.to)}</td>
-                            <td>{knowledge.subject}</td>
-                            <td>{knowledge.content}</td>
-                            <td>{knowledge.status? "Ciente" : "Sem resposta"}</td>
+                            <td>{getVehicleName(knowledge.vehicle)}</td>
+                            <td>{getUserName(knowledge.driver)}</td>
+                            <td>{knowledge.status}</td>
+                            <td>{knowledge.remark}</td>
                             <td>{getDate(knowledge.createdAt)}</td>
                         </tr>
                     ))}

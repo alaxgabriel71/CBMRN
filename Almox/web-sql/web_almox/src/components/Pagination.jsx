@@ -2,17 +2,20 @@
 import { ToggleButton, FloatingLabel, Form } from 'react-bootstrap'
 
 import styles from './Pagination.module.css'
+import { useEffect } from 'react'
 
 export default function Pagination({ itemsPerPage, totalItems, paginate, setItemsPerPage }) {
     // const [active, setActive] = useState(localStorage.getItem('active') || '1')
-    const totalPages = Number(localStorage.getItem('totalPages'))
-    const active = localStorage.getItem('active')
-    if(totalPages > totalItems || Number(itemsPerPage) === 0 || Number(active) > totalPages) {
-        itemsPerPage = 10
-        localStorage.setItem('itemsPerPage', `${10}`)
-        //localStorage.setItem('active', `${1}`)
-        paginate(1)
-    }
+    useEffect(() => {
+        const totalPages = Number(localStorage.getItem('totalPages'))
+        const active = localStorage.getItem('active')
+        if (Number(itemsPerPage) === 0 || Number(active) > totalPages) {
+            //itemsPerPage = 10
+            localStorage.setItem('itemsPerPage', `${10}`)
+            //localStorage.setItem('active', `${1}`)
+            paginate(1)
+        }
+    }, [itemsPerPage, paginate])
 
     //if(active>Math.ceil(totalItems / itemsPerPage)) paginate(totalItems)
 
@@ -44,9 +47,8 @@ export default function Pagination({ itemsPerPage, totalItems, paginate, setItem
                     value={itemsPerPage}
                     onChange={e => {
                         setItemsPerPage(e.target.value)
-                        localStorage.setItem('itemsPerPage', `${e.target.value}`)                        
+                        localStorage.setItem('itemsPerPage', `${e.target.value}`)
                         paginate(1)
-                        console.log('opa!')
                     }}
                     className={styles.FormSelect}
                 >
