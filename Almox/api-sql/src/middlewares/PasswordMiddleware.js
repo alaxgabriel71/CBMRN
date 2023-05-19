@@ -16,7 +16,7 @@ module.exports = {
 
             const match = await bcrypt.compare(password, user.password)
             if(match) next()
-            else return response.status(400).json({ error: "Operation failed!" })
+            else return response.status(401).json({ error: "Access denied!" })
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }

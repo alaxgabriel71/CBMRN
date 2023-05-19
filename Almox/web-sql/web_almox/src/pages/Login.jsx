@@ -49,10 +49,10 @@ export default function Login() {
                 setLogin(false)
             })
             .catch(err => {
-                if (err.response.status === 401) {
+                if (err.response.status === 401 || err.response.status === 404) {
                     setShow(true)
                     setStatus('Atenção')
-                    setMessage('Corrija email e/ou senha.')
+                    setMessage('Corrija suas credenciais de login.')
                     setVariant('warning')
                 } else {
                     setShow(true)

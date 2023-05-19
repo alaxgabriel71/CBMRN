@@ -67,6 +67,7 @@ export const UserProvider = ({children}) => {
     function saveLoggedUser(loggedUser) {
         localStorage.setItem('user', JSON.stringify(loggedUser))
         setUser(loggedUser)
+        setIsAuthenticated(false)
 
         //api.defaults.headers.Authorization = `Bearer ${user.token}`
     }

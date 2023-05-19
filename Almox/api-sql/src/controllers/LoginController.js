@@ -29,7 +29,7 @@ module.exports = {
                }})
 
                return response.status(200).json({ id: user._id, name: `${rank.rank} ${user.qra}`, admin: admin.level, token })
-            } else return response.status(400).json({ error: "Operation failed!" })
+            } else return response.status(401).json({ error: "Access denied!" })
          } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
          }
