@@ -1,12 +1,20 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useParams } from "react-router"
 
 import api from "../services/api"
 import { Button } from "react-bootstrap"
+import { UserContext } from "../components/contexts/UserContext"
+import PasswordModal from "../components/modals/PasswordModal"
 
 export function NotificationCard({ notification, from, content, subject, status, createdAt, reload }) {
+    const { user } = useContext(UserContext)
+
     const [users, setUsers] = useState([])
     const [ranks, setRanks] = useState([])
+
+    const [show, setShow] = useState(false)
+    const [registration, setRegistration] = useState()
+    const [password, setPassword] = useState()
 
 
     useEffect(() => {
@@ -21,7 +29,7 @@ export function NotificationCard({ notification, from, content, subject, status,
     function getRank(id) {
         let name = ''
         ranks.forEach(rank => {
-            if(rank._id === id) name = rank.rank
+            if (rank._id === id) name = rank.rank
         })
 
         return name
@@ -30,7 +38,7 @@ export function NotificationCard({ notification, from, content, subject, status,
     function getFrom(id) {
         let name = ''
         users.forEach(user => {
-            if(user._id === id) {
+            if (user._id === id) {
                 name = `${getRank(user.rank)} ${user.qra}`
             }
         })
@@ -42,23 +50,44 @@ export function NotificationCard({ notification, from, content, subject, status,
         let formatedDate = d.split('T')
         formatedDate = formatedDate[1].split(':')
         let hour = String(Number(formatedDate[0]) - 3)
-        hour = Number(hour) < 10 ? ("0"+hour) : hour
-        formatedDate = hour+":"+formatedDate[1]
-        formatedDate = date.toLocaleDateString('pt-br')+" - "+formatedDate
+        hour = Number(hour) < 10 ? ("0" + hour) : hour
+        formatedDate = hour + ":" + formatedDate[1]
+        formatedDate = date.toLocaleDateString('pt-br') + " - " + formatedDate
         return formatedDate
     }
 
     const handleRemove = () => {
-        api.delete(`/notifications/${notification}`)
-            .then(() => reload())
+        api.delete(`/notifications/${notification}`, {
+            id: user.id,
+            registration,
+            password
+        })
+            .then(() => {
+                setShow(false)
+                reload()
+            })
+            .catch((err) => console.log(err))
     }
 
     const handleKnowledge = () => {
-        api.put(`/notifications/${notification}`)
-        .then(() => {
-            api.put(`/knowledges/${notification}`)
-                .then(() => reload())
+        api.put(`/notifications/${notification}`, {
+            id: user.id,
+            registration,
+            password
         })
+            .then(() => {
+                api.put(`/knowledges/${notification}`, {
+                    id: user.id,
+                    registration,
+                    password
+                })
+                    .then(() => {
+                        setShow(false)
+                        reload()
+                    })
+                    .catch((err) => console.log(err))
+            })
+            .catch((err) => console.log(err))
     }
 
     return (
@@ -68,7 +97,10 @@ export function NotificationCard({ notification, from, content, subject, status,
             <p>{content}</p>
             <span>{getDate(createdAt)}</span>
             <Button variant="secondary" onClick={handleRemove}>Excluir</Button>
-            <Button variant="danger" onClick={handleKnowledge} disabled={status}>Ciente</Button>
+            <Button variant="danger" onClick={() => setShow(true)} hidden={status}>Ciente</Button>
+            <div>
+                <PasswordModal show={show} onClose={() => setShow(false)} save={handleKnowledge} reg={(value) => setRegistration(value)} pass={(value) => setPassword(value)} />
+            </div>
         </div>
     )
 }
@@ -103,6 +135,7 @@ export default function Notifications() {
                     reload={reload}
                 />
             ))}
+            {/* <PasswordModal show={show} onClose={() => setShow(false)} /* save={handleKnowledge} */ /*reg={(value) => setRegistration(value)} pass={(value) => setPassword(value)} /> */}
         </article>
     )
 }

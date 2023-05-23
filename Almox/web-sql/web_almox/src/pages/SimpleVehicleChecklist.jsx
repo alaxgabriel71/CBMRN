@@ -3,6 +3,8 @@ import { FloatingLabel, Form, Table, Button } from "react-bootstrap";
 
 import { UserContext } from "../components/contexts/UserContext";
 import api from "../services/api";
+import PasswordModal from "../components/modals/PasswordModal";
+import { useNavigate } from "react-router";
 
 export function Item({ id, name, checkeds }) {
 
@@ -19,8 +21,13 @@ export function Item({ id, name, checkeds }) {
 export default function SimpleVehicleChecklist() {
     const { vehicles, user } = useContext(UserContext)
 
+    const navigate = useNavigate()
+
     const [checkeds, setCheckeds] = useState([])
     const [vehicle, setVehicle] = useState()
+    const [show, setShow] = useState(false)
+    const [password, setPassword] = useState()
+    const [registration, setRegistration] = useState()
 
     useEffect(() => console.log(checkeds), [checkeds])
 
@@ -48,7 +55,8 @@ export default function SimpleVehicleChecklist() {
         { id: 21, name: 'Farol de milha' },
         { id: 22, name: 'Luz interna' },
         { id: 23, name: 'Giroflex' },
-        { id: 24, name: 'Luz do painel' }
+        { id: 24, name: 'Luz do painel' },
+        { id: 25, name: 'Carroceria' }
     ]
 
 
@@ -73,8 +81,7 @@ export default function SimpleVehicleChecklist() {
         setCheckeds(aux)
     }
 
-    const handleSubmit = event => {
-        event.preventDefault()
+    const handleSubmit = () => {
         console.log('submit')
         let status = ''
         let alterations = ''
@@ -92,21 +99,31 @@ export default function SimpleVehicleChecklist() {
             })
             status = `A viatura apresentou alteração nos seguintes items: ${alterations}`
         }
-        console.log(status, remark)
+        //console.log(status, remark)
 
         api.post("/vehicle-checklists", {
+            id: user.id,
+            registration,
+            password,
             vehicle,
             driver: user.id,
             status,
             remark
         })
-            .then((response) => console.log(response.status))
+            .then(() => {
+                setShow(false)
+                navigate("/")
+            })
+            .catch((err) => console.error(err))
     }
 
     return (
         <article>
             <h1>Checklist Simples de Viatura</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={event => {
+                event.preventDefault()
+                setShow(true)
+            }}>
                 <FloatingLabel
                     label="Viatura"
                     required
@@ -147,6 +164,7 @@ export default function SimpleVehicleChecklist() {
             <label htmlFor="without-alteration">S/A = Sem Alterações</label>
             <label htmlFor="with-alteration">C/A = Com Alterações</label>
             <label htmlFor="not-aplicable">N/A = Não se Aplica</label>
+            <PasswordModal show={show} onClose={() => setShow(false)} save={handleSubmit} reg={(reg) => setRegistration(reg)} pass={(pass) => setPassword(pass)} />
         </article>
     )
 }

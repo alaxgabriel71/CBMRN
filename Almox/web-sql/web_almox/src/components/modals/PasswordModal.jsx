@@ -11,23 +11,30 @@ export default function PasswordModal({ show, onClose, save, reg, pass }) {
         <div className={styles.modal}>
             <div className={styles.modal_content}>
                 <div className={styles.modal_header}>
-                    <h4 className={styles.modal_title}>Modal Title</h4>
+                    <h4 className={styles.modal_title}>Confirme os dados</h4>
                 </div>
                 <div className={styles.modal_body}>
-                    <form id="form1" onSubmit={save}>
-                        <MaskedFormControl
-                            type="text"
-                            mask="111.111-1"
-                            pattern="[0-9]{3,}\+?.+[0-9]{3,}\+?-+[0-9]{1,}"
-                            placeholder="Informe sua matrícula"
-                            onChange={e => reg(e.target.value)}
-                            required
-                        />
+                    <form id="form1" onSubmit={event => {
+                        event.preventDefault()
+                        save()
+                    }}>
+                        <FloatingLabel
+                            label="Matrícula"
+                            //placeholder="Matrícula"
+                        >
+                            <MaskedFormControl
+                                type="text"
+                                mask="111.111-1"
+                                pattern="[0-9]{3,}\+?.+[0-9]{3,}\+?-+[0-9]{1,}"
+                                onChange={e => reg(e.target.value)}
+                                required
+                            />
+                        </FloatingLabel>
                         <FloatingLabel
                             label="Senha"
                             required={true}
                         >
-                            <Form.Control type="password" onChange={e => pass(e.target.value)} required={true} />
+                            <Form.Control type="password" onChange={e => pass(e.target.value)} placeholder="Senha" required={true} />
                         </FloatingLabel>
                     </form>
                 </div>

@@ -148,12 +148,12 @@ routes.delete("/guards/:id", AuthMiddleware.checkToken, GuardController.remove)
 
 routes.get("/notifications/:id", AuthMiddleware.checkToken, NotificationController.show)
 routes.post("/notifications", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, NotificationController.store)
-routes.delete("/notifications/:id", AuthMiddleware.checkToken, NotificationController.remove)
-routes.put("/notifications/:id", AuthMiddleware.checkToken, NotificationController.update)
+routes.delete("/notifications/:id", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, NotificationController.remove)
+routes.put("/notifications/:id", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, NotificationController.update)
 
 routes.get("/knowledges", AuthMiddleware.checkToken, KnowledgeController.index)
 routes.post("/knowledges", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, KnowledgeController.store)
-routes.put("/knowledges/:id", AuthMiddleware.checkToken, KnowledgeController.update)
+routes.put("/knowledges/:id", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, KnowledgeController.update)
 
 routes.get("/vehicle-checklists", AuthMiddleware.checkToken, VehicleChecklistController.index)
 routes.post("/vehicle-checklists", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, VehicleChecklistController.store)
