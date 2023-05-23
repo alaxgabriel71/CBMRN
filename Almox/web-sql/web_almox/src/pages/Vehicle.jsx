@@ -27,7 +27,7 @@ export default function Vehicle() {
                         .then(({ data }) => setMaterials(data.list))
                 }
             })
-    })
+    }, [])
 
     useEffect(() => {
         function getVehicleParams(id) {

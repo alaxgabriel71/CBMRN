@@ -37,12 +37,12 @@ export default function EditVehicleList() {
             .catch(err => console.error(err))
     }, [id])
 
-    useEffect(() => {
+    /* useEffect(() => {
     }, [newName, newQuantity, newRemark, materialId])
 
     useEffect(() => {
         console.log("useEffect", materials)
-    }, [materials])
+    }, [materials]) */
 
 
     const getVehicleParams = useCallback((id) => {
@@ -108,7 +108,7 @@ export default function EditVehicleList() {
     }
 
     const handleVehicleChange = e => {
-        //console.log(e.target.value)
+        console.log(e.target.value)
         navigate(`/vehicle-materials-list/${e.target.value}`)
     }
 
@@ -195,7 +195,7 @@ export default function EditVehicleList() {
         api.put(`/vehicles-materials-list/${id}`, {
             list: materials
         })
-            .then(() => /* window.location.reload(false) */ console.log("salvou"))
+            .then(() => window.location.reload(false))
             .catch(err => console.error(err))
     }
 
@@ -208,7 +208,7 @@ export default function EditVehicleList() {
                 <Form.Select onChange={handleVehicleChange}>
                     <option>-- Viatura --</option>
                     {vehicles.map(v => {
-                        if(v.list && vehicleName !== v.name) return <option key={v._id} value={v.list}>{v.name}</option>
+                        if(v.list && (vehicleName !== v.name)) return <option key={v._id} value={v.list}>{v.name}</option>
                         else return null
                     })}
                 </Form.Select>
