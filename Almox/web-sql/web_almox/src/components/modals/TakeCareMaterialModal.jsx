@@ -22,6 +22,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
     const [status, setStatus] = useState('')
     const [variant, setVariant] = useState('')
     const [visible, setVisible] = useState(false)
+    const [ranks, setRanks] = useState([])
 
     const { user } = useContext(UserContext)
 
@@ -30,6 +31,10 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
             .then(({ data }) => {
                 setOptions(data.users)
             })
+            .then(() => {
+                api.get("/ranks")
+                    .then(({ data }) => setRanks(data.ranks))
+            })
             .catch(err => {
                 console.error(err)
             })
@@ -37,10 +42,20 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
 
     if (!show) return null
 
+    const getRankName = rank => {
+        let name = ''
+        ranks.forEach(r => {
+            if(r._id === Number(rank)) name = r.rank
+        })
+        return name
+    }
+
     const takeCareMaterial = (e) => {
         e.preventDefault()
         const finalQuantity = Number(materialQuantity) - Number(takeCareQuantity);
         const takeCareDate = date.slice(8, 10) + '/' + date.slice(5, 7) + '/' + date.slice(0, 4)
+        //const takeCareDate = new Date(date).toLocaleDateString('pt-BR')
+        //const takeCareDate = date
         const mili = dateObject.getTime()
 
         if (finalQuantity === 0) {
@@ -53,7 +68,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
                         user_id: user.id,
                         user_name: user.name,
                         operation: "Cautela",
-                        date: today,
+                        date: dateObject.toLocaleDateString('pt-BR'),
                         mili,
                         description
                     })
@@ -93,7 +108,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
                         user_id: user.id,
                         user_name: user.name,
                         operation: "Cautela",
-                        date: today,
+                        date: dateObject.toLocaleDateString('pt-BR'),
                         mili,
                         description
                     })
@@ -152,7 +167,7 @@ export default function TakeCareMaterialModal({ show, onClose, materialId, mater
                             <Form.Select value={military} onChange={e => setMilitary(e.target.value)}>
                                 <option value="" key="0">-- Selecione um militar --</option>
                                 {options?.map(option =>
-                                    <option key={option._id} value={`${option.rank} ${option.qra}`}>{`${option.rank} ${option.qra}`}</option>
+                                    <option key={option._id} value={`${getRankName(option.rank)} ${option.qra}`}>{`${getRankName(option.rank)} ${option.qra}`}</option>
                                 )}
                             </Form.Select>
                         </FloatingLabel>

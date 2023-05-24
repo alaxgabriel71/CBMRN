@@ -191,6 +191,7 @@ export default function MovementHistory() {
                                                 <option value="Atualização">Atualização</option>
                                                 <option value="Devolução">Devolução</option>
                                                 <option value="Exclusão">Exclusão</option>
+                                                <option value="Transferência">Transferência</option>
                                             </Form.Select>
                                         </FloatingLabel>
                                         <FloatingLabel
@@ -300,7 +301,7 @@ export default function MovementHistory() {
                             <td>{movement.user_name}</td>
                             <td>{movement.description}</td>
                             <td>{movement.remark}</td>
-                            <td>{movement.date.slice(8, 10) + '/' + movement.date.slice(5, 7) + '/' + movement.date.slice(0, 4)}</td>
+                            <td>{movement.date/* .slice(8, 10) + '/' + movement.date.slice(5, 7) + '/' + movement.date.slice(0, 4) */}</td>
                         </tr>
                     ))}
                 </tbody>

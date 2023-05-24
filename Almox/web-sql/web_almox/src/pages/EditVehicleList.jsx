@@ -10,7 +10,7 @@ import TransferMaterialModal from '../components/modals/TransferMaterialModal'
 
 export default function EditVehicleList() {
     const { id } = useParams()
-    const { vehicles } = useContext(UserContext)
+    const { vehicles, user } = useContext(UserContext)
     const navigate = useNavigate()
 
     const [materials, setMaterials] = useState([])
@@ -174,13 +174,26 @@ export default function EditVehicleList() {
         setShowTransfer(true)
     }
 
-    const totalTransferAlmox = () => {
+    const totalTransferAlmox = (origin, destiny) => {
+        const date = new Date()
+        const mili = date.getTime()
         materials.forEach(material => {
             api.post("/materials", {
                 name: material.name,
                 quantity: material.quantity,
                 remark: material.remark
             })
+                .then(() => {
+                    api.post("/movements", {
+                        user_id: user.id,
+                        user_name: user.name,
+                        operation: "Transferência",
+                        date: date.toLocaleDateString('pt-BR'),
+                        mili,
+                        description: `Lista de materiais da VTR ${origin} foi transferido para -> ${destiny}.`,
+                        remark: ''
+                    })
+                })
         })
         setMaterials([])
         api.put(`/vehicle/materials-list/${vehicleId}`, { list: null })
@@ -208,7 +221,7 @@ export default function EditVehicleList() {
                 <Form.Select onChange={handleVehicleChange}>
                     <option>-- Viatura --</option>
                     {vehicles.map(v => {
-                        if(v.list && (vehicleName !== v.name)) return <option key={v._id} value={v.list}>{v.name}</option>
+                        if (v.list && (vehicleName !== v.name)) return <option key={v._id} value={v.list}>{v.name}</option>
                         else return null
                     })}
                 </Form.Select>

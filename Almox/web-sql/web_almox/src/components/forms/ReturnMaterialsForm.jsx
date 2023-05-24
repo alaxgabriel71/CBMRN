@@ -26,6 +26,7 @@ export default function ReturnMaterialsForm() {
     const [status, setStatus] = useState('')
     const [variant, setVariant] = useState('')
     const [visible, setVisible] = useState(false)
+    const [ranks, setRanks] = useState([])
 
     const { user } = useContext(UserContext)
     
@@ -51,11 +52,22 @@ export default function ReturnMaterialsForm() {
             .then(({ data }) => {
                 setOptions(data.users)
             })
+            .then(() => {
+                api.get("/ranks")
+                    .then(({ data }) => setRanks(data.ranks))
+            })
             .catch(err => {
                 console.error(err)
             })
     }, [])
 
+    const getRankName = rank => {
+        let name = ''
+        ranks.forEach(r => {
+            if(r._id === Number(rank)) name = r.rank
+        })
+        return name
+    }
 
     function insertNewMaterial(event) {
         event.preventDefault();
@@ -67,6 +79,7 @@ export default function ReturnMaterialsForm() {
         var currentRemark = '';
         var description = '';
         const returnDate = date.slice(8, 10) + '/' + date.slice(5, 7) + '/' + date.slice(0, 4)
+        //const returnDate = date.toLocaleDateString('pt-BR')
 
 
         materials?.forEach(material => {
@@ -100,7 +113,7 @@ export default function ReturnMaterialsForm() {
                         user_id: user.id,
                         user_name: user.name,
                         operation: "Devolução",
-                        date,
+                        date: dateObject.toLocaleDateString('pt-BR'),
                         mili,
                         description,
                         remark: finalRemark
@@ -143,7 +156,7 @@ export default function ReturnMaterialsForm() {
                         user_id: user.id,
                         user_name: user.name,
                         operation: "Devolução",
-                        date,
+                        date: dateObject.toLocaleDateString('pt-BR'),
                         mili,
                         description,
                         remark: newRemark
@@ -207,7 +220,7 @@ export default function ReturnMaterialsForm() {
                         >
                             <option value="" key="0">-- Selecione um militar --</option>
                             {options?.map(option =>
-                                <option key={option._id} value={`${option.rank} ${option.qra}`}>{`${option.rank} ${option.qra}`}</option>
+                                <option key={option._id} value={`${option.rank} ${option.qra}`}>{`${getRankName(option.rank)} ${option.qra}`}</option>
                             )}
                         </Form.Select>
                     </FloatingLabel>

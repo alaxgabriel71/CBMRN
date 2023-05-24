@@ -7,19 +7,38 @@ import styles from './Modal.module.css'
 import api from '../../services/api'
 
 export default function Modal({ show, onClose, id, material, quantity, remark, origin, updateMaterialQuantity, handleSave, total, totalTransferAlmox, listId, vehicleId }) {
-    const { vehicles } = useContext(UserContext)
+    const { vehicles, user } = useContext(UserContext)
 
     const navigate = useNavigate()
 
     const [totalTransferQuantity, setTotalTransferQuantity] = useState(quantity)
     const [destiny, setDestiny] = useState()
+    const [destinyName, setDestinyName] = useState()
 
     if (!show) return null
+
+    const getDestinyName = to => {
+        let name = ''
+        if(to === 'almox') name = 'Almoxarifado'
+        else if(total) {
+            vehicles.forEach(v => {
+                if (Number(v._id) === Number(to)) name = v.name
+            })
+        } else {
+            vehicles.forEach(v => {
+                if (Number(v.list) === Number(to)) name = v.name
+            })
+        }
+        console.log('destino', name)
+        return name
+    }
 
     const handleMaterialTransfer = e => {
         e.preventDefault()
         console.log(totalTransferQuantity, destiny)
         const remainingQuantity = Number(quantity) - Number(totalTransferQuantity)
+        const date = new Date()
+        const mili = date.getTime()
 
         if (!total) {
             if (destiny === 'almox') {
@@ -30,9 +49,20 @@ export default function Modal({ show, onClose, id, material, quantity, remark, o
                     remark: remark
                 })
                     .then(() => {
-                        updateMaterialQuantity(id, remainingQuantity)
+                        api.post("/movements", {
+                            user_id: user.id,
+                            user_name: user.name,
+                            operation: "Transferência",
+                            date: date.toLocaleDateString('pt-BR'),
+                            mili,
+                            description: `Material transferido -> ${totalTransferQuantity}x ${material}. Da VTR -> ${origin}. Para -> ${destinyName}.`,
+                            remark: ''
+                        })
+                            .then(() => {
+                                updateMaterialQuantity(id, remainingQuantity)
+                            })
+                            .then(() => onClose())
                     })
-                    .then(() => onClose())
             } else {
                 console.log('vtr')
                 const transferMaterial = { id: '', name: material, quantity: totalTransferQuantity, remark: remark }
@@ -40,14 +70,25 @@ export default function Modal({ show, onClose, id, material, quantity, remark, o
                     material: transferMaterial
                 })
                     .then(() => {
-                        updateMaterialQuantity(id, remainingQuantity)
+                        api.post("/movements", {
+                            user_id: user.id,
+                            user_name: user.name,
+                            operation: "Transferência",
+                            date: date.toLocaleDateString('pt-BR'),
+                            mili,
+                            description: `Material transferido -> ${totalTransferQuantity}x ${material}. Da VTR -> ${origin}. Para -> ${destinyName}.`,
+                            remark: ""
+                        })
+                            .then(() => {
+                                updateMaterialQuantity(id, remainingQuantity)
+                            })
+                            .then(() => handleSave())
+                            .then(() => onClose())
                     })
-                    .then(() => handleSave())
-                    .then(() => onClose())
             }
         } else {
             if (destiny === 'almox') {
-                totalTransferAlmox()
+                totalTransferAlmox(origin, destinyName)
                 onClose()
                 navigate("/vehicles-tabs")
             } else {
@@ -55,8 +96,19 @@ export default function Modal({ show, onClose, id, material, quantity, remark, o
                 api.put(`/vehicle/materials-list/${destiny}`, { list: listId })
                     .then(() => {
                         api.put(`/vehicle/materials-list/${vehicleId}`, { list: null })
-                            .then(() => onClose())
-                            .then(() => window.location.reload(false))
+                            .then(() => {
+                                api.post("/movements", {
+                                    user_id: user.id,
+                                    user_name: user.name,
+                                    operation: "Transferência",
+                                    date: date.toLocaleDateString('pt-BR'),
+                                    mili,
+                                    description: `Lista de materiais da VTR ${origin} foi transferido para -> ${destinyName}.`,
+                                    remark: ''
+                                })
+                                    .then(() => onClose())
+                                    .then(() => window.location.reload(false))
+                            })
                     })
             }
         }
@@ -76,7 +128,10 @@ export default function Modal({ show, onClose, id, material, quantity, remark, o
                         <FloatingLabel
                             label="Destino"
                             value={destiny}
-                            onChange={e => setDestiny(e.target.value)}
+                            onChange={e => {
+                                setDestiny(e.target.value)
+                                setDestinyName(getDestinyName(e.target.value))
+                            }}
                         >
                             {!total && (
                                 <Form.Select required>
