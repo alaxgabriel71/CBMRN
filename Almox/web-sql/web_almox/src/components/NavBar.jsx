@@ -40,13 +40,14 @@ function NavBar() {
               2º SGB/1ºGBM
             </Navbar.Brand>
             <div className="navbar-user">
-              <Dropdown>
+              <Dropdown variant="danger">
                 <Dropdown.Toggle variant="danger">
                   {user.name}
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
+                <Dropdown.Menu variant="danger">
                   {/* <Dropdown.Item><NavLink to="/login">Sair</NavLink></Dropdown.Item> */}
                   <Dropdown.Item onClick={() => navigate(`/notifications/${user.id}`)}>Notificações</Dropdown.Item>
+                  <Dropdown.Item onClick={() => navigate(`/change-password`)}>Alterar Senha</Dropdown.Item>
                   <Dropdown.Item onClick={handleLogout}>Sair</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

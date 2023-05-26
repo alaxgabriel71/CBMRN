@@ -35,6 +35,7 @@ import Notifications from './pages/Notifications';
 import CheckMaterialHistory from './pages/CheckMaterialHistory';
 import SimpleVehicleChecklist from './pages/SimpleVehicleChecklist';
 import VehicleChecklistHistory from './pages/VehicleChecklistHistory';
+import ChangePassword from './pages/ChangePassword';
 
 export default function AppRoutes() {
     
@@ -78,6 +79,7 @@ export default function AppRoutes() {
             <NavBar className="App-header" />
             <Routes className="App-main">
                 <Route exact path="/" element={<Private><Home /></Private>} />
+                <Route path="/change-password" element={<Private><ChangePassword /></Private>} />
                 <Route path="/materials-list" element={<Private><MaterialsList /></Private>} />
                 <Route path="/check-material" element={<Private><CheckMaterial /></Private>} />
                 <Route path="/simple-vehicle-checklist" element={<Private><SimpleVehicleChecklist /></Private>} />

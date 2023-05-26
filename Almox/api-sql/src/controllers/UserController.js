@@ -141,5 +141,34 @@ module.exports = {
         } catch(err) {
             return response.status(500).json({ error: "Try again later!" })
         }
+    },
+    async newPassword(request, response) {
+        const { id } = request.params
+        const { currentPassword, newPassword } = request.body
+
+        if(!currentPassword || !newPassword) return response.status(400).json({ error: "Operation failed!"})
+        
+        try {
+            const user = await User.findOne({
+                where: {
+                    _id: id
+                }
+            })
+            const match = await bcrypt.compare(currentPassword, user.password)
+            if(match) {
+                const salt = await bcrypt.genSalt(12)
+                const passwordHash = await bcrypt.hash(newPassword, salt)
+                await User.update({ password: passwordHash }, {
+                    where: {
+                        _id: id
+                    }
+                })
+                return response.status(201).json({ message: "Password updated successfully!" })
+            } else {
+                return response.status(401).json({ error: "Confirm the current password!" })
+            }
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!"})
+        }
     }
 }

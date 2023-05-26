@@ -88,6 +88,7 @@ routes.put("/users/rank/:id", AuthMiddleware.checkToken, UserController.updateRa
 routes.put("/users/active/:id", AuthMiddleware.checkToken, UserController.updateActive)
 routes.put("/users/adjunct/:id", AuthMiddleware.checkToken, UserController.adjunct)
 routes.get("/users-name", AuthMiddleware.checkToken, UserController.show)
+routes.put("/users/new-password/:id", AuthMiddleware.checkToken, UserController.newPassword)
 
 routes.get("/admin", AuthMiddleware.checkToken, AdminController.index)
 routes.post("/admin", AuthMiddleware.checkToken, AdminController.store)
