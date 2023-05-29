@@ -66,16 +66,23 @@ function NavBar() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="/">Página Inicial</Nav.Link>
-                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator') && (user.admin !== 'regular'))}href="/materials-tabs">Controle de Materiais</Nav.Link>
-                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator'))} href="/movements/history">Histórico de movimentações</Nav.Link>
-                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator'))} href="/check-materials/history">Histórico de Conferência de Materias</Nav.Link>
+                  <Nav.Link onClick={() => navigate("/")}>Página Inicial</Nav.Link>
+                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator') && (user.admin !== 'regular'))} onClick={() => navigate("/materials-tabs")} >Controle de Materiais</Nav.Link>
                   {/* <Nav.Link href="/military-tabs">Militares</Nav.Link> */}
-                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/users">Controle de Usuários</Nav.Link>
-                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/register">Cadastrar Militar</Nav.Link>
-                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/garrisons-tabs">Controle de Guarnições</Nav.Link>
-                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} href="/vehicles-tabs">Controle de Viaturas</Nav.Link>
-                  <p onClick={() => navigate('/check-material')}>teste</p>
+                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} onClick={() => navigate("/users")}>Controle de Usuários</Nav.Link>
+                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} onClick={() => navigate("/register")}>Cadastrar Militar</Nav.Link>
+                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} onClick={() => navigate("/garrisons-tabs")}>Controle de Guarnições</Nav.Link>
+                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} onClick={() => navigate("/vehicles-tabs")}>Controle de Viaturas</Nav.Link>
+                  <Nav.Link hidden={!user|| (user.admin !== 'commander')} onClick={() => navigate("/control/guards")}>Controle das Guardas</Nav.Link>
+                  <Nav.Link onClick={() => navigate("/vehicle-materials-list")}>Lista de Materiais das Viaturas</Nav.Link>
+                  <Nav.Link onClick={() => navigate('/check-material')}>Conferência de Material</Nav.Link>
+                  <Nav.Link onClick={() => navigate('/simple-vehicle-checklist')}>Checklist Simples de Viatura</Nav.Link>
+                  <Nav.Link onClick={() => navigate('/define/guards')}>Definir Horário das Guardas</Nav.Link>
+                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator') && (user.admin !== 'regular'))} onClick={() => navigate('/define/service-routine')}>Definir Rotina de Serviço</Nav.Link>
+                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator') && (user.admin !== 'regular'))} onClick={() => navigate("/spots")} >Locais do Quartel</Nav.Link>
+                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator'))} onClick={() => navigate("/movements/history")} >Histórico de Movimentações de Materiais</Nav.Link>
+                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator'))} onClick={() => navigate("/check-materials/history")} >Histórico de Conferência de Materias</Nav.Link>
+                  <Nav.Link hidden={!user|| ((user.admin !== 'commander') && (user.admin !== 'moderator'))} onClick={() => navigate('/simple-vehicle-checklist/history')}>Histórico do Checklist Simples de Viatura</Nav.Link>
                   {/* <NavDropdown
                   title="Dropdown"
                   id={`offcanvasNavbarDropdown-expand-${expand}`}

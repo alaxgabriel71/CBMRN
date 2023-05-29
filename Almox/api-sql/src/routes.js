@@ -145,6 +145,7 @@ routes.delete("/cleaning/:id", AuthMiddleware.checkToken, CleaningController.rem
 routes.get("/guards", AuthMiddleware.checkToken, GuardController.index)
 routes.post("/guards", AuthMiddleware.checkToken, GuardController.store)
 routes.put("/guards/:id", AuthMiddleware.checkToken, GuardController.update)
+routes.put("/guards/status/:id", AuthMiddleware.checkToken, GuardController.updateStatus)
 routes.delete("/guards/:id", AuthMiddleware.checkToken, GuardController.remove)
 
 routes.get("/notifications/:id", AuthMiddleware.checkToken, NotificationController.show)

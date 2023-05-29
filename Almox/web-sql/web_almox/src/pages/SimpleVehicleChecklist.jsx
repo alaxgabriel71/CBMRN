@@ -11,9 +11,9 @@ export function Item({ id, name, checkeds }) {
     return (
         <tr>
             <td>{name}</td>
-            <td><input type="radio" name={'checklist-' + id} id="without-alteration" onClick={() => checkeds(id, name, false)} required /></td>
-            <td><input type="radio" name={'checklist-' + id} id="with-alteration" onClick={() => checkeds(id, name, true)} /></td>
-            <td><input type="radio" name={'checklist-' + id} id="not-aplicable" onClick={() => checkeds(id, name, false)} /></td>
+            <td><input type="radio" name={'checklist-' + id}  onClick={() => checkeds(id, name, false)} required /></td>
+            <td><input type="radio" name={'checklist-' + id}  onClick={() => checkeds(id, name, true)} /></td>
+            <td><input type="radio" name={'checklist-' + id}  onClick={() => checkeds(id, name, false)} /></td>
         </tr>
     )
 }
@@ -142,9 +142,9 @@ export default function SimpleVehicleChecklist() {
                     <thead>
                         <tr>
                             <th>Item</th>
-                            <th>S/A</th>
-                            <th>C/A</th>
-                            <th>N/A</th>
+                            <th id="without-alteration">S/A</th>
+                            <th id="with-alteration">C/A</th>
+                            <th id="not-aplicable">N/A</th>
                         </tr>
                     </thead>
                     <tbody>

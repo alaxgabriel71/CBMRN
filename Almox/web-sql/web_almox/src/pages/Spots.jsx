@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import api from '../services/api'
+import { Button } from 'react-bootstrap'
 
 export function SpotCard({ id, name, sync }) {
     const [show, setShow] = useState(false)
@@ -12,7 +13,7 @@ export function SpotCard({ id, name, sync }) {
         <li onMouseOver={() => setShow(true)} onMouseOut={() => setShow(false)}>
             <strong>{name}</strong>
             {show && (
-                <button onClick={() => handleRemove(id)}>Excluir</button>
+                <Button variant="secondary" onClick={() => handleRemove(id)}>Excluir</Button>
             )}
         </li>
     )
@@ -44,7 +45,7 @@ export default function Spots() {
             <fieldset>
                 <form onSubmit={handleSubmit}>
                     <input type="text" value={name} onChange={e => setName(e.target.value)} />
-                    <button type='submit'>Adicionar Novo Local</button>
+                    <Button variant="danger" type='submit'>Adicionar Novo Local</Button>
                 </form>
             </fieldset>
             <ol>

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 
 import CreateGarrison from './CreateGarrison'
-import DayGarrisons from './DayGarrisons'
+//import DayGarrisons from './DayGarrisons'
 import EditGarrisons from './EditGarrisons'
 import ExistingGarrisons from './ExistingGarrisons'
 
@@ -29,9 +29,9 @@ export default function GarrisonsTabs() {
                 <Tab eventKey="edit-garrison" title="Editar Guarnição">
                     <EditGarrisons />
                 </Tab>
-                <Tab eventKey="day-garrisons" title="Guarnições do dia">
+                {/* <Tab eventKey="day-garrisons" title="Guarnições do dia">
                     <DayGarrisons />
-                </Tab>
+                </Tab> */}
             </Tabs>
         </article>
     )

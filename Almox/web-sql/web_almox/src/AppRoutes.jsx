@@ -36,6 +36,7 @@ import CheckMaterialHistory from './pages/CheckMaterialHistory';
 import SimpleVehicleChecklist from './pages/SimpleVehicleChecklist';
 import VehicleChecklistHistory from './pages/VehicleChecklistHistory';
 import ChangePassword from './pages/ChangePassword';
+import VehicleList from './pages/VehicleList';
 
 export default function AppRoutes() {
     
@@ -104,6 +105,7 @@ export default function AppRoutes() {
                 <Route path="/garrisons-tabs" element={<Private><Commander><GarrisonsTabs /></Commander></Private>} />
                 <Route path="/vehicles-tabs" element={<Private><Commander><VehiclesTabs /></Commander></Private>} />
                 <Route path="/vehicle-materials-list/:id" element={<Private><Commander><EditVehicleList /></Commander></Private>} />
+                <Route path="/vehicle-materials-list" element={<Private><Commander><VehicleList /></Commander></Private>} />
                 <Route path="/vehicles/:id" element={<Private><Regular><Vehicle /></Regular></Private>} />
             </Routes>
             <Footer className="App-footer" />

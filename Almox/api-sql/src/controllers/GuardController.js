@@ -41,6 +41,21 @@ module.exports = {
             return response.status(500).json({ error: "Try again later!" })
         }
     },
+    async updateStatus(request, response) {
+        const { id } = request.params
+        const { active } = request.body
+
+        try {
+            await Guard.update( { active }, {
+                where: {
+                    _id: id
+                }
+            })
+            return response.status(201).json({ message: "Guard status updated successfully!" })
+        } catch(err) {
+            return response.status(500).json({ error: "Try again later!" })
+        }
+    },
     async remove(request, response) {
         const { id } = request.params
 
