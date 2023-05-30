@@ -150,7 +150,7 @@ routes.delete("/guards/:id", AuthMiddleware.checkToken, GuardController.remove)
 
 routes.get("/notifications/:id", AuthMiddleware.checkToken, NotificationController.show)
 routes.post("/notifications", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, NotificationController.store)
-routes.delete("/notifications/:id", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, NotificationController.remove)
+routes.delete("/notifications/:id", AuthMiddleware.checkToken, NotificationController.remove)
 routes.put("/notifications/:id", PasswordMiddleware.checkPassword, AuthMiddleware.checkToken, NotificationController.update)
 
 routes.get("/knowledges", AuthMiddleware.checkToken, KnowledgeController.index)

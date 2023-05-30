@@ -16,7 +16,7 @@ module.exports = {
     async store(request, response) {
         const { vehicle, driver, status, remark } = request.body
 
-        if(!vehicle || !driver || !status) return response.status(400).json({ error: "Operation failed!" })
+        if(!vehicle || !driver || !status) return response.status(400).json({ error: "faltou..." })
 
         try {
             await VehicleChecklist.create({

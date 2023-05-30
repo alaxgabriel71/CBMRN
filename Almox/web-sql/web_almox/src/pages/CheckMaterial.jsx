@@ -4,12 +4,12 @@ import { FloatingLabel, Form, Table, Button } from "react-bootstrap";
 import { UserContext } from "../components/contexts/UserContext";
 //import VehicleMaterialTD from "../components/VehicleMaterialTD"
 import api from "../services/api";
-import { useNavigate } from "react-router";
+//import { useNavigate } from "react-router";
 import PasswordModal from "../components/modals/PasswordModal";
 
 export default function CheckMaterial() {
     const { vehicles, user } = useContext(UserContext)
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
 
     const [materials, setMaterials] = useState([])
     const [checkeds, setCheckeds] = useState([])
@@ -21,6 +21,7 @@ export default function CheckMaterial() {
     const [show, setShow] = useState(false)
     const [registration, setRegistration] = useState()
     const [password, setPassword] = useState()
+    const [response, setResponse] = useState()
 
     //setMaterials([])
 
@@ -74,9 +75,10 @@ export default function CheckMaterial() {
         setShow(true)
     }
 
-    const handleSave = event => {
-        event.preventDefault()
-        console.log(password, registration)
+    const handleSave = () => {
+        //event.preventDefault()
+        //console.log(password, registration)
+        setResponse('')
         const notification = {
             from: user.id,
             to: commander,
@@ -106,8 +108,15 @@ export default function CheckMaterial() {
                     subject: notification.subject,
                     content: notification.content
                 })
-                    .then(() => setShow(false))
-                    .then(() => navigate('/'))
+                    .then((response) => {
+                        setResponse(response.status)
+                    })
+                    .catch((err) => {
+                        setResponse(err.response.status)
+                    })
+            })
+            .catch((err) => {
+                setResponse(err.response.status)
             })
 
         
@@ -173,7 +182,7 @@ export default function CheckMaterial() {
                 </FloatingLabel>
                 <Button variant="danger" type="submit" >Enviar para o Comandante</Button>
             </form>
-            <PasswordModal show={show} onClose={() => setShow(false)} save={handleSave} reg={(value) => setRegistration(value)} pass={(value) => setPassword(value)} />
+            <PasswordModal show={show} onClose={() => setShow(false)} save={handleSave} reg={(value) => setRegistration(value)} pass={(value) => setPassword(value)} response={response} />
         </article>
     )
 }

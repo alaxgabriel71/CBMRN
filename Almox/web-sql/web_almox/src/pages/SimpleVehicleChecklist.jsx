@@ -4,7 +4,7 @@ import { FloatingLabel, Form, Table, Button } from "react-bootstrap";
 import { UserContext } from "../components/contexts/UserContext";
 import api from "../services/api";
 import PasswordModal from "../components/modals/PasswordModal";
-import { useNavigate } from "react-router";
+//import { useNavigate } from "react-router";
 
 export function Item({ id, name, checkeds }) {
 
@@ -21,13 +21,14 @@ export function Item({ id, name, checkeds }) {
 export default function SimpleVehicleChecklist() {
     const { vehicles, user } = useContext(UserContext)
 
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
 
     const [checkeds, setCheckeds] = useState([])
     const [vehicle, setVehicle] = useState()
     const [show, setShow] = useState(false)
     const [password, setPassword] = useState()
     const [registration, setRegistration] = useState()
+    const [status, setStatus] = useState()
 
     useEffect(() => console.log(checkeds), [checkeds])
 
@@ -82,7 +83,7 @@ export default function SimpleVehicleChecklist() {
     }
 
     const handleSubmit = () => {
-        console.log('submit')
+        setStatus('')       
         let status = ''
         let alterations = ''
         let remark = ''
@@ -110,11 +111,12 @@ export default function SimpleVehicleChecklist() {
             status,
             remark
         })
-            .then(() => {
-                setShow(false)
-                navigate("/")
+            .then((response) => {
+                setStatus(response.status)
             })
-            .catch((err) => console.error(err))
+            .catch((err) => {
+                setStatus(err.response.status)
+            })
     }
 
     return (
@@ -136,7 +138,7 @@ export default function SimpleVehicleChecklist() {
                 <FloatingLabel
                     label="Hodômetro (km da VTR)"
                 >
-                    <Form.Control type="number" required />
+                    <Form.Control type="number" min="0" required />
                 </FloatingLabel>
                 <Table striped bordered hover size="sm">
                     <thead>
@@ -164,7 +166,7 @@ export default function SimpleVehicleChecklist() {
             <label htmlFor="without-alteration">S/A = Sem Alterações</label>
             <label htmlFor="with-alteration">C/A = Com Alterações</label>
             <label htmlFor="not-aplicable">N/A = Não se Aplica</label>
-            <PasswordModal show={show} onClose={() => setShow(false)} save={handleSubmit} reg={(reg) => setRegistration(reg)} pass={(pass) => setPassword(pass)} />
+            <PasswordModal show={show} onClose={() => setShow(false)} save={handleSubmit} reg={(reg) => setRegistration(reg)} pass={(pass) => setPassword(pass)} response={status} />
         </article>
     )
 }

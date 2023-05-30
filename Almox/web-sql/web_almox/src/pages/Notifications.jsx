@@ -15,6 +15,7 @@ export function NotificationCard({ notification, from, content, subject, status,
     const [show, setShow] = useState(false)
     const [registration, setRegistration] = useState()
     const [password, setPassword] = useState()
+    const [response, setResponse] = useState()
 
 
     useEffect(() => {
@@ -70,24 +71,25 @@ export function NotificationCard({ notification, from, content, subject, status,
     }
 
     const handleKnowledge = () => {
+        setResponse('')
         api.put(`/notifications/${notification}`, {
             id: user.id,
             registration,
             password
         })
-            .then(() => {
+            .then((response) => {
                 api.put(`/knowledges/${notification}`, {
                     id: user.id,
                     registration,
                     password
                 })
-                    .then(() => {
-                        setShow(false)
-                        reload()
+                    .then((response) => {
+                        setResponse(response.status)
+                        //reload()
                     })
-                    .catch((err) => console.log(err))
+                    .catch((err) => setResponse(err.response.status))
             })
-            .catch((err) => console.log(err))
+            .catch((err) => setResponse(err.response.status))
     }
 
     return (
@@ -99,7 +101,7 @@ export function NotificationCard({ notification, from, content, subject, status,
             <Button variant="secondary" onClick={handleRemove}>Excluir</Button>
             <Button variant="danger" onClick={() => setShow(true)} hidden={status}>Ciente</Button>
             <div>
-                <PasswordModal show={show} onClose={() => setShow(false)} save={handleKnowledge} reg={(value) => setRegistration(value)} pass={(value) => setPassword(value)} />
+                <PasswordModal show={show} onClose={() => setShow(false)} save={handleKnowledge} reg={(value) => setRegistration(value)} pass={(value) => setPassword(value)} response={response} />
             </div>
         </div>
     )

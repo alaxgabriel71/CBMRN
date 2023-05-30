@@ -13,7 +13,7 @@ module.exports = {
                 }
             })
 
-            if (!user || user.registration !== registration) return response.status(400).json({ error: "Operation failed!" })
+            if (!user || user.registration !== registration) return response.status(401).json({ error: "Access denied!" })
 
             const match = await bcrypt.compare(password, user.password)
             if (match) next()
