@@ -2,16 +2,29 @@ import { useState, useEffect } from 'react'
 import { FloatingLabel, Form, Button } from 'react-bootstrap'
 
 import api from '../services/api'
+import StatusMessage from '../components/StatusMessage'
 
 export const HourCard = ({ from, to, id, setMilitary }) => {
     const [users, setUsers] = useState([])
+    const [ranks, setRanks] = useState([])
     const [selectValue, setSelectValue] = useState('')
 
     useEffect(() => {
         api.get("/users")
             .then(({ data }) => setUsers(data.users))
+            .then(() => {
+                api.get("/ranks")
+                    .then(({ data }) => setRanks(data.ranks))
+            })
     }, [])
 
+    function getRankName(r_id) {
+        let name = ''
+        ranks.forEach(r => {
+            if(r._id === Number(r_id)) name = r.rank
+        })
+        return name
+    }
     return (
         <div>
             <strong>{`${from} às ${to}`}</strong>
@@ -25,7 +38,7 @@ export const HourCard = ({ from, to, id, setMilitary }) => {
             >
                 <Form.Select required>
                     <option value=''>--</option>
-                    {users.map(user => <option key={user._id} value={user._id} >{user.qra}</option>)}
+                    {users.map(user => <option key={user._id} value={user._id} >{getRankName(user.rank) + " " + user.qra}</option>)}
                 </Form.Select>
             </FloatingLabel>
         </div>
@@ -38,6 +51,10 @@ export function GuardForm({ id }) {
     const [end, setEnd] = useState()
     const [show, setShow] = useState(false)
     const [schedules, setSchedules] = useState([])
+    const [message, setMessage] = useState()
+    const [status, setStatus] = useState()
+    const [variant, setVariant] = useState()
+    const [showStatus, setShowStatus] = useState(false)
 
     function getMinutes(start, end) {
         const from = start.split(':')
@@ -97,11 +114,23 @@ export function GuardForm({ id }) {
     const handleSave = event => {
         event.preventDefault()
         //console.log(schedules)
+        setShowStatus(false)
         api.put(`/guards/${id}`, {
             active: true,
             schedules
         })
-            .then(response => console.log(response.data.message))
+            .then(() => {
+                setMessage('Horários definidos.')
+                setStatus('Sucesso')
+                setVariant('success')
+                setShowStatus(true)
+            })
+            .catch(() => {
+                setMessage('Tente novamente mais tarde.')
+                setStatus('Erro no servidor')
+                setVariant('secondary')
+                setShowStatus(true)
+            })
     }
 
     return (
@@ -129,6 +158,7 @@ export function GuardForm({ id }) {
             </form>
             {show && (
                 <form onSubmit={handleSave}>
+                    <StatusMessage message={message} status={status} variant={variant} show={showStatus} />
                     {schedules.map(schedule => <HourCard key={schedule.id} from={schedule.from} to={schedule.to} id={schedule.id} setMilitary={setMilitary} />)}
                     <Button type="submit" variant="danger" size="sm">Salvar</Button>
                 </form>
