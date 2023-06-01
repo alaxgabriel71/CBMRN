@@ -120,6 +120,7 @@ routes.delete("/garrison/:id", AuthMiddleware.checkToken, GarrisonController.rem
 
 routes.get("/functions", AuthMiddleware.checkToken, FunctionController.index)
 routes.post("/functions", AuthMiddleware.checkToken, FunctionController.store)
+routes.delete("/functions/:id", AuthMiddleware.checkToken, FunctionController.remove)
 
 routes.get("/vehicles-materials-lists", AuthMiddleware.checkToken, VehicleMaterialsListController.index)
 routes.get("/vehicle-materials-list/:id", AuthMiddleware.checkToken, VehicleMaterialsListController.getOne)

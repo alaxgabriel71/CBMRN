@@ -4,6 +4,7 @@ import { FloatingLabel, Form, Button } from 'react-bootstrap'
 import { UserContext } from '../contexts/UserContext'
 import StatusMessage from '../StatusMessage'
 import api from '../../services/api'
+import { Link } from 'react-router-dom'
 
 export default function NewGarrison() {
     
@@ -105,6 +106,7 @@ export default function NewGarrison() {
                                 <option key={func._id} value={func._id} >{func.name}</option>
                             ))}
                         </Form.Select>
+                        <Link to="/functions/control">Gerenciar Funções</Link>
                     </FloatingLabel>
                     <h4>Componentes selecionados:</h4>
                     <ul>

@@ -52,7 +52,7 @@ export default function Login() {
                 if (err.response.status === 401 || err.response.status === 404) {
                     setShow(true)
                     setStatus('Atenção')
-                    setMessage('Corrija suas credenciais de login.')
+                    setMessage('Corrija suas credenciais de login. Ou entre em contato com o comando.')
                     setVariant('warning')
                 } else {
                     setShow(true)
