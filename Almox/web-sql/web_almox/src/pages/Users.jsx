@@ -26,6 +26,7 @@ export default function Users() {
             .catch(err => {
             console.error(err.message)
             })
+        console.log(users)
     }, [])
 
     function getLevel(id) {
@@ -92,7 +93,7 @@ export default function Users() {
         <article>
             <h1>Usuários</h1>
             
-            <Table striped bordered hover size="sm">
+            <Table striped bordered hover size="sm" responsive>
                 <thead>
                     <tr>
                         <th>ID</th>

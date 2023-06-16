@@ -68,7 +68,7 @@ export default function Login() {
         <article>
             <div className="login-form-area">
                 <form className="login-form" onSubmit={handleSubmit}>
-                    <h3>Login</h3>
+                    <h1>Login</h1>
                     <fieldset>
                         <StatusMessage show={show} status={status} variant={variant} message={message} />
                         <UserContext.Provider value={{ email, password }}>
