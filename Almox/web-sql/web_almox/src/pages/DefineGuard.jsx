@@ -26,10 +26,11 @@ export const HourCard = ({ from, to, id, setMilitary }) => {
         return name
     }
     return (
-        <div>
-            <strong>{`${from} às ${to}`}</strong>
+        <div className="floatinglabel-area">
+            <span>{`${from} às ${to}`}</span>
             <FloatingLabel
                 label="Militar"
+                className="floating-label"
                 onChange={event => {
                     setMilitary(id, event.target.value)
                     setSelectValue(event.target.value)
@@ -138,18 +139,21 @@ export function GuardForm({ id }) {
             <form onSubmit={handleSubmit}>
                 <FloatingLabel
                     label="Quantidade de militares"
+                    className="floating-label"
                     onChange={e => setQuantity(e.target.value)}
                 >
                     <Form.Control type="number" min="1" required />
                 </FloatingLabel>
                 <FloatingLabel
                     label="Início"
+                    className="floating-label"
                     onChange={e => setStart(e.target.value)}
                 >
                     <Form.Control type="time" required />
                 </FloatingLabel>
                 <FloatingLabel
                     label="Término"
+                    className="floating-label"
                     onChange={e => setEnd(e.target.value)}
                 >
                     <Form.Control type="time" required />
@@ -157,7 +161,7 @@ export function GuardForm({ id }) {
                 <Button type="submit" variant="secondary" size="sm">Gerar</Button>
             </form>
             {show && (
-                <form onSubmit={handleSave}>
+                <form onSubmit={handleSave} className="schedule-form">
                     <StatusMessage message={message} status={status} variant={variant} show={showStatus} />
                     {schedules.map(schedule => <HourCard key={schedule.id} from={schedule.from} to={schedule.to} id={schedule.id} setMilitary={setMilitary} />)}
                     <Button type="submit" variant="danger" size="sm">Salvar</Button>
@@ -187,7 +191,7 @@ export default function DefineGuard() {
             {guards.map(guard => {
                 if(guard.active) {
                     return (
-                        <li key={guard._id}>
+                        <li key={guard._id} className="simple-check">
                             <h2>{guard.name}</h2>
                             <GuardForm id={guard._id} />
                         </li>

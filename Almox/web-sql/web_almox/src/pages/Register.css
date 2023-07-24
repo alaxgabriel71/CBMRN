@@ -47,3 +47,8 @@ article {
 .fullname {
     flex-grow: 1;
 }
+
+.radio-area {
+    display: flex;
+    flex-direction: column;
+}

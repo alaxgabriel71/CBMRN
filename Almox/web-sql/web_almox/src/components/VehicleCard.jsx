@@ -4,7 +4,7 @@ export default function VehicleCard({ id, name, active, model, plate, seats}) {
     
     return(
         <li>
-            <Link to={`/vehicles/${id}`} >
+            <Link to={`/vehicles/${id}`} className="vehicle-card" >
                 <fieldset>
                     <h5>{name}</h5>
                     <small>Modelo: {model}</small>

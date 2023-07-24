@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, FloatingLabel, Form, NavLink } from "react-bootstrap";
 
 import api from "../services/api";
+import { useNavigate } from "react-router";
 
 export function FunctionCard({ id, name, refresh }) {
     const [show, setShow] = useState(false)
@@ -25,6 +26,8 @@ export default function FunctionsControl() {
     const [functions, setFunctions] = useState([])
     const [refresh, setRefresh] = useState(false)
 
+    const navigate = useNavigate()
+
     useEffect(() => {
         api.get("/functions")
             .then(({ data }) => setFunctions(data.functions))
@@ -42,7 +45,7 @@ export default function FunctionsControl() {
     return (
         <article>
             <h1>Funções das Guarnições</h1>
-            <NavLink href="/garrisons-tabs">Voltar</NavLink>
+            <NavLink onClick={() => navigate("/garrisons-tabs")}>Voltar</NavLink>
             <form onSubmit={handleSubmit}>
                 <FloatingLabel
                     label="Função"

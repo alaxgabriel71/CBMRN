@@ -27,7 +27,7 @@ function NavBar() {
   return (
     <>
       {!login && (
-        <Navbar key={expand} bg="danger" expand={expand} className="mb-3">
+        <Navbar key={expand} bg="secondary" expand={expand} className="mb-3">
           <Container fluid>
             <Navbar.Brand href="/" className="Nav-Brand">
               <img
@@ -41,7 +41,7 @@ function NavBar() {
             </Navbar.Brand>
             <div className="navbar-user">
               <Dropdown variant="danger">
-                <Dropdown.Toggle variant="danger">
+                <Dropdown.Toggle variant="secondary">
                   {user.name}
                 </Dropdown.Toggle>
                 <Dropdown.Menu variant="danger">

@@ -227,9 +227,11 @@ export default function EditVehicleList() {
                 </Form.Select>
             </FloatingLabel>
             <h2>Viatura: {vehicleName}</h2>
-            <Button variant="secondary" size="sm" onClick={handleClean}>Limpar Lista</Button>
-            <Button variant="warning" size="sm" onClick={handleCompleteTransfer}>Transferir Lista</Button>
-            <Button variant="danger" size="sm" onClick={handleSave}>Salvar Edição</Button>
+            <div className="actions-area">
+                <Button variant="secondary" size="sm" onClick={handleClean}>Limpar Lista</Button>
+                <Button variant="secondary" size="sm" onClick={handleCompleteTransfer}>Transferir Lista</Button>
+                <Button variant="danger" size="sm" onClick={handleSave}>Salvar Edição</Button>
+            </div>
             <form onSubmit={handleSubmit}>
                 <FloatingLabel
                     label="Quantidade"

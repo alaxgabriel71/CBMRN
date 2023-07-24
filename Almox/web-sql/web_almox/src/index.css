@@ -60,6 +60,7 @@ html body #root article {
   /* align-items: flex-start; */
   width: 100vw;
   max-width: 1080px;
+  align-self: center;
 }
 
 html body #root footer {
@@ -76,15 +77,15 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color:#f6f6f6;
   width: 100%;
   padding: .5rem;
   /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
   font-size: 22px;
   padding: 1rem;
-  /* background-color: var(--theme-light-gray); */
-  color: var(--theme-gray);
-  border-radius: .5rem;
+  background-color: var(--theme-gray);
+  color: var(--theme-light);
+  /* border-radius: .5rem; */
+  align-self: center;
 }
 
 h2 {
@@ -118,6 +119,10 @@ fieldset {
 
 p {
   padding: .5rem;
+}
+
+strong {
+  margin: .5rem;
 }
 
 /* input {

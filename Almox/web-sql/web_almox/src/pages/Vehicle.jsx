@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 
 import api from '../services/api'
 import { UserContext } from '../components/contexts/UserContext'
-import { Table } from 'react-bootstrap'
+import { Table, Button, NavLink } from 'react-bootstrap'
 
 export default function Vehicle() {
     const { id } = useParams()
@@ -27,7 +27,7 @@ export default function Vehicle() {
                         .then(({ data }) => setMaterials(data.list))
                 }
             })
-    }, [])
+    }, [id])
 
     useEffect(() => {
         function getVehicleParams(id) {
@@ -48,6 +48,7 @@ export default function Vehicle() {
 
     return (
         <article>
+            <NavLink onClick={() => navigate("/vehicles-tabs")}>Voltar</NavLink>
             <h1>{name}</h1>
             <strong>Placa</strong><span>{plate}</span>
             <strong>Modelo</strong><span>{model}</span>
@@ -55,7 +56,7 @@ export default function Vehicle() {
             <strong>Ativo</strong><span>{active}</span>
             {list && (
                 <>
-                    <strong>Lista de Materiais <button onClick={() => navigate(`/vehicle-materials-list/${list}`)}>Editar</button></strong>
+                    <strong>Lista de Materiais <Button variant="danger" size="sm" onClick={() => navigate(`/vehicle-materials-list/${list}`)}>Editar</Button></strong>
                     <Table striped bordered hover size="sm">
                         <thead>
                             <tr>

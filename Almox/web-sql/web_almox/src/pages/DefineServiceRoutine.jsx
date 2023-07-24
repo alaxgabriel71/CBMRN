@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from 'react-bootstrap'
+import { Button, FloatingLabel, Form } from 'react-bootstrap'
 
 import SetGarrisonsOfDay from "./SetGarrisonsOfDay";
 import api from "../services/api";
@@ -40,14 +40,16 @@ export function SetAdjunct() {
         <fieldset>
             <h2>Adjunto do dia {`(${date.toLocaleDateString('pt-BR')})`}</h2>
             <form onSubmit={handleSubmit}>
-                <label>
-                    Escolher militar:
-                    <select onChange={e => setAdjunct(e.target.value)}>
-                        <option>- - -</option>
+                <FloatingLabel 
+                    label="Militar"
+                    className="floating-label"
+                >
+                    <Form.Select onChange={e => setAdjunct(e.target.value)}>
+                        <option>-- Escolher militar --</option>
                         {users.map(user => (user.admin === 3) ? (<option key={user._id} value={user._id}>{`${getRankName(user.rank)} ${user.qra}`}</option>) : null)}
-                    </select>
-                </label>
-                <button type="submit">Salvar</button>
+                    </Form.Select>
+                </FloatingLabel>
+                <Button variant="danger" size="sm" type="submit">Salvar</Button>
             </form>
         </fieldset>
     )
@@ -131,12 +133,18 @@ export function CleaningCard({ spot, name }) {
     }
 
     return (
-        <li>
+        <li className="schedule-form">
             <h3>{name}</h3>
-            <select onChange={handleChange}>
+            <FloatingLabel >
+                <Form.Select onChange={handleChange}>
+                    <option value="">-- Escolher Militar --</option>
+                    {users.map(user => <option key={user._id} value={user._id}>{`${getRankName(user.rank)} ${user.qra}`}</option>)}
+                </Form.Select>
+            </FloatingLabel>
+            {/* <select onChange={handleChange}>
                 <option value="">-- Escolher Militar --</option>
                 {users.map(user => <option key={user._id} value={user._id}>{`${getRankName(user.rank)} ${user.qra}`}</option>)}
-            </select>
+            </select> */}
             {composition?.map(component => <p key={component.id} onClick={() => removeComponent(component)}>{getMilitaryName(component.name)}</p>)}
             <Button variant="danger" size="sm" onClick={handleSave}>Salvar</Button>
         </li>

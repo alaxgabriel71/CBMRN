@@ -107,9 +107,10 @@ export function GarrisonCard({ name, composition }) {
     return (
         <fieldset>
             <h3>{name}</h3>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="schedule-form">
                 <FloatingLabel
                     label="Viatura"
+                    className="floating-label"
                 >
                     <Form.Select 
                         onChange={event => setChoosedVehicle(event.target.value)}
@@ -125,6 +126,7 @@ export function GarrisonCard({ name, composition }) {
                 {composition.map(component => (
                     <FloatingLabel key={component}
                         label={getComponentName(component)}
+                        className="floating-label"
                     >
                         <Form.Select onChange={e => insertSelecteds(component, e.target.value)} required={component === 1}>
                             <option value="">-- Escolher militar --</option>

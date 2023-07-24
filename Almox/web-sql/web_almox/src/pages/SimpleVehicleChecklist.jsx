@@ -11,9 +11,9 @@ export function Item({ id, name, checkeds }) {
     return (
         <tr>
             <td>{name}</td>
-            <td><input type="radio" name={'checklist-' + id}  onClick={() => checkeds(id, name, false)} required /></td>
-            <td><input type="radio" name={'checklist-' + id}  onClick={() => checkeds(id, name, true)} /></td>
-            <td><input type="radio" name={'checklist-' + id}  onClick={() => checkeds(id, name, false)} /></td>
+            <td><input type="radio" name={'checklist-' + id} onClick={() => checkeds(id, name, false)} required /></td>
+            <td><input type="radio" name={'checklist-' + id} onClick={() => checkeds(id, name, true)} /></td>
+            <td><input type="radio" name={'checklist-' + id} onClick={() => checkeds(id, name, false)} /></td>
         </tr>
     )
 }
@@ -66,7 +66,7 @@ export default function SimpleVehicleChecklist() {
         checkeds.forEach(check => {
             if (check.id === id) exists = true
         })
-        if (!exists && alteration) setCheckeds([...checkeds, { id: id, name: name, remark: ''}])
+        if (!exists && alteration) setCheckeds([...checkeds, { id: id, name: name, remark: '' }])
         else if (exists && !alteration) {
             let aux = []
             checkeds.forEach(check => {
@@ -83,7 +83,7 @@ export default function SimpleVehicleChecklist() {
     }
 
     const handleSubmit = () => {
-        setStatus('')       
+        setStatus('')
         let status = ''
         let alterations = ''
         let remark = ''
@@ -122,24 +122,28 @@ export default function SimpleVehicleChecklist() {
     return (
         <article>
             <h1>Checklist Simples de Viatura</h1>
-            <form onSubmit={event => {
+            <form className="simple-check" onSubmit={event => {
                 event.preventDefault()
                 setShow(true)
             }}>
-                <FloatingLabel
-                    label="Viatura"
-                    required
-                >
-                    <Form.Select onChange={(event) => setVehicle(event.target.value)} required={true}>
-                        <option value=''>-- --</option>
-                        {vehicles?.map(vehicle => vehicle.active ? <option key={vehicle._id} value={vehicle._id}>{vehicle.name}</option> : null)}
-                    </Form.Select>
-                </FloatingLabel>
-                <FloatingLabel
-                    label="Hodômetro (km da VTR)"
-                >
-                    <Form.Control type="number" min="0" required />
-                </FloatingLabel>
+                <div className="floatinglabel-area">
+                    <FloatingLabel
+                        label="Viatura"
+                        className="floating-label"
+                        required
+                    >
+                        <Form.Select onChange={(event) => setVehicle(event.target.value)} required={true}>
+                            <option value=''>-- --</option>
+                            {vehicles?.map(vehicle => vehicle.active ? <option key={vehicle._id} value={vehicle._id}>{vehicle.name}</option> : null)}
+                        </Form.Select>
+                    </FloatingLabel>
+                    <FloatingLabel
+                        label="Hodômetro (km da VTR)"
+                        className="floating-label"
+                    >
+                        <Form.Control type="number" min="0" required />
+                    </FloatingLabel>
+                </div>
                 <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
@@ -155,13 +159,15 @@ export default function SimpleVehicleChecklist() {
                 </Table>
                 {checkeds?.map((check, k) => (
                     <FloatingLabel
-                        label={"Observações - "+check.name}
+                        label={"Observações - " + check.name}
                         key={check.id}
                     >
                         <Form.Control onChange={event => changeRemark(event, k)} type="textarea" required/* ={checkeds.length > 0 ? true : false} */ />
                     </FloatingLabel>
                 ))}
-                <Button type="submit" variant="danger" size="sm">Confirmar Conferência</Button>
+                <div>
+                    <Button type="submit" variant="danger" size="sm">Confirmar Conferência</Button>
+                </div>
             </form>
             <label htmlFor="without-alteration">S/A = Sem Alterações</label>
             <label htmlFor="with-alteration">C/A = Com Alterações</label>

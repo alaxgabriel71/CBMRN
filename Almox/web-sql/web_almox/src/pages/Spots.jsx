@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import api from '../services/api'
-import { Button } from 'react-bootstrap'
+import { Button, FloatingLabel, Form } from 'react-bootstrap'
 
 export function SpotCard({ id, name, sync }) {
     const [show, setShow] = useState(false)
@@ -44,7 +44,10 @@ export default function Spots() {
             <h1>Locais do Quartel</h1>
             <fieldset>
                 <form onSubmit={handleSubmit}>
-                    <input type="text" value={name} onChange={e => setName(e.target.value)} />
+                    <FloatingLabel label="Nome do Local" className="floating-label">
+                        <Form.Control type="text" value={name} onChange={e => setName(e.target.value)} />
+                    </FloatingLabel>
+                    {/* <input type="text" value={name} onChange={e => setName(e.target.value)} /> */}
                     <Button variant="danger" type='submit'>Adicionar Novo Local</Button>
                 </form>
             </fieldset>

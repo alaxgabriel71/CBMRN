@@ -127,6 +127,7 @@ export default function CheckMaterial() {
             <h1>Conferência de Material</h1>
             <FloatingLabel
                 label="Viatura"
+                className="mb-3"
             >
                 <Form.Select onChange={getMaterials} required={true} form="form">
                     <option value=''>-- Escolha a viatura --</option>

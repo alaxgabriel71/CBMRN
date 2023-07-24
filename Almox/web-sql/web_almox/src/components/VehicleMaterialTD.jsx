@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Button } from "react-bootstrap"
 
 export default function VehicleMaterialTD({id, name, quantity, remark, remove, removeItem, edit, editingItem, transfer, handleTransfer}) {    
     const [visible, setVisible] = useState(false)
@@ -13,9 +14,9 @@ export default function VehicleMaterialTD({id, name, quantity, remark, remove, r
             <td>
                 {visible && (
                     <div>
-                        {remove && <button onClick={() => removeItem(id)}>Remover</button>}
-                        {edit && <button onClick={() => editingItem(id, name, quantity, remark)}>Editar</button>}
-                        {transfer && <button onClick={() => handleTransfer(id, name, quantity, remark)}>Transferir</button>}
+                        {remove && <Button variant="danger" size="sm" onClick={() => removeItem(id)}>Remover</Button>}
+                        {edit && <Button variant="danger" size="sm" onClick={() => editingItem(id, name, quantity, remark)}>Editar</Button>}
+                        {transfer && <Button variant="danger" size="sm" onClick={() => handleTransfer(id, name, quantity, remark)}>Transferir</Button>}
                     </div>
                 )}
             </td>

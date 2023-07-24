@@ -43,7 +43,7 @@ export default function CreateVehicleMaterialsList() {
         let newArray = [...materials]
         console.log(materials)
         newArray.forEach(material => {
-            if(material.id === id) {
+            if (material.id === id) {
                 console.log(quantity)
                 material.name = name
                 material.quantity = quantity
@@ -86,8 +86,8 @@ export default function CreateVehicleMaterialsList() {
 
     const handleClean = () => {
         const choice = window.confirm(`Isso removerá todos os materiais adicionados à lista!`)
-        
-        if(choice) setMaterials([])
+
+        if (choice) setMaterials([])
     }
 
     const handleSave = () => {
@@ -117,8 +117,9 @@ export default function CreateVehicleMaterialsList() {
             <h1>Criar Lista de Materiais</h1>
             <fieldset>
                 <FloatingLabel
+                    className="mb-3"
                     label="Para"
-                    >
+                >
                     <Form.Select value={vehicle} onChange={e => setVehicle(JSON.parse(e.target.value))}>
                         <option>-- Escolha a viatura --</option>
                         {vehicles.map(v => {
@@ -171,18 +172,18 @@ export default function CreateVehicleMaterialsList() {
                     <tbody>
                         {materials?.map(material => (
                             <VehicleMaterialTD
-                              key={material.id}
-                              id={material.id}
-                              name={material.name}
-                              quantity={material.quantity}
-                              remove={true}
-                              removeItem={removeItem}
-                              remark={material.remark}
-                              edit={true}
-                              editingItem={editingItem} 
-                              transfer={false}
-                              handleTransfer={handleTransfer}
-                              />
+                                key={material.id}
+                                id={material.id}
+                                name={material.name}
+                                quantity={material.quantity}
+                                remove={true}
+                                removeItem={removeItem}
+                                remark={material.remark}
+                                edit={true}
+                                editingItem={editingItem}
+                                transfer={false}
+                                handleTransfer={handleTransfer}
+                            />
                         ))}
                     </tbody>
                 </Table>

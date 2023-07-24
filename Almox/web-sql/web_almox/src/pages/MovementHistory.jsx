@@ -32,7 +32,7 @@ export default function MovementHistory() {
     const [responsible, setResponsible] = useState('')
 
     const { user } = useContext(UserContext)
-    
+
     api.defaults.headers.Authorization = `Bearer ${user.token}`
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export default function MovementHistory() {
             .catch(err => console.error(err))
 
         api.get('/users-name')
-            .then(({data}) => setUsers(data.users))
+            .then(({ data }) => setUsers(data.users))
             .catch(err => console.error(err))
         setLoading(false)
     }, []);
@@ -92,11 +92,11 @@ export default function MovementHistory() {
         }
     })
 
-    if(!remark) {
+    if (!remark) {
         remarkFilteredItems = searchFilteredItems
     } else {
         searchFilteredItems.forEach(move => {
-            if(move.remark.includes(remark)) {
+            if (move.remark.includes(remark)) {
                 remarkFilteredItems.push(move)
             }
         })
@@ -142,11 +142,11 @@ export default function MovementHistory() {
         })
     }
 
-    if(!responsible) {
+    if (!responsible) {
         responsibleFilteredItems = yearFilteredItems
     } else {
         yearFilteredItems.forEach(move => {
-            if(move.user_name.includes(responsible)) {
+            if (move.user_name.includes(responsible)) {
                 responsibleFilteredItems.push(move)
             }
         })
@@ -276,13 +276,15 @@ export default function MovementHistory() {
                 </Accordion>
             </div>
             <Pagination setItemsPerPage={(n) => setItemsPerPage(n)} itemsPerPage={itemsPerPage} totalItems={movements.length} paginate={(n) => paginate(n)} />
-            <Button
-                className="btn btn-danger"
-                onClick={() => setShow(true)}
-                id="confirm"
-            >
-                Apagar Histórico
-            </Button>
+            <div>
+                <Button
+                    className="btn btn-danger"
+                    onClick={() => setShow(true)}
+                    id="confirm"
+                >
+                    Apagar Histórico
+                </Button>
+            </div>
             <Loading loading={loading} />
             <Table striped bordered hover size="sm">
                 <thead>

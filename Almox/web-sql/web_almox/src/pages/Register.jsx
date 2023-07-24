@@ -116,7 +116,7 @@ export default function Register() {
         <article>
             <div className="register-form-area">
                 <form className="register-form" onSubmit={handleSubmit}>
-                    <h3>Cadastro no Sistema</h3>
+                    <h1>Cadastro no Sistema</h1>
                     <fieldset>
                         <StatusMessage show={show} status={status} variant={variant} message={message} />
                         <div className="military-area">
@@ -231,8 +231,8 @@ export default function Register() {
                                 />
                             </FloatingLabel>
                         </div>
-                        <div className="mb-3 radio-area">
-                            <FormLabel > Nível de administrador
+                        <div className="mb-3">
+                            <FormLabel className="radio-area"> Nível de administrador
                                 <Form.Check
                                     inline
                                     label="Comandante"
